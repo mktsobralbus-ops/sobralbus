@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobralbus - Compra de Ônibus</title>
+  <meta name="description" content="A maior plataforma de compra e de ônibus do Brasil. Encontre ônibus novos e seminovos das melhores marcas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --primary:#1e40af;--primary-dark:#1e3a8a;--primary-light:#3b82f6;
+      --accent:#16a34a;--background:#f8fafc;--foreground:#0f172a;
+      --muted:#64748b;--card:#ffffff;--border:#e2e8f0;
+    }
+    body{font-family:'Inter',sans-serif;background-color:var(--background);color:var(--foreground);line-height:1.6;font-size:15px}
+    a{text-decoration:none;color:inherit}
+    img{loading:lazy;decoding:async}
+    .container{max-width:1280px;margin:0 auto;padding:0 1rem}
+
+    /* Header — esconde/aparece no scroll */
+    .header{background-color:#2554A2;position:fixed;top:0;left:0;right:0;z-index:100;transition:transform .28s ease,box-shadow .28s ease;will-change:transform}
+    .header.hidden{transform:translateY(-100%)}
+    .header.scrolled{box-shadow:0 2px 12px rgba(0,0,0,.22)}
+    body{padding-top:92px}
+    .header-content{display:flex;align-items:center;justify-content:space-between;padding:0.45rem 0.6rem;position:relative}
+    .logo{display:flex;align-items:center;gap:.5rem;margin-right:auto;margin-left:-5rem}
+    .logo-image{width:300px;height:68px;object-fit:contain}
+
+    @media(max-width:767px){
+      .header-content{justify-content:center}
+      .header .logo{margin:0 auto}
+      .footer-brand{max-width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+      .footer-brand .logo{margin:0 auto 1rem}
+      .social-links{justify-content:center}
+      body{padding-top:80px}
+    }
+    .logo-icon{width:220px;height:90px;background-color:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white}
+    .nav{display:none}
+    @media(min-width:768px){.nav{display:flex;gap:1.75rem;position:absolute;left:50%;transform:translateX(-50%)}}
+    .nav a{color:rgba(255,255,255,.82);font-weight:500;font-size:.875rem;transition:color .2s}
+    .nav a:hover{color:white}
+    .header-contact{display:none}
+    @media(min-width:1024px){.header-contact{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.8);font-weight:600;font-size:.875rem}}
+    .menu-btn{display:flex;padding:1.2rem;background:none;border:1px solid rgba(255,255,255,.2);border-radius:8px;cursor:pointer}
+    @media(min-width:768px){.menu-btn{display:none}}
+
+    /* Mobile Menu */
+    .mobile-menu-overlay{display:none;position:fixed;inset:0;background-color:rgba(0,0,0,.5);z-index:200;opacity:0;transition:opacity .3s}
+    .mobile-menu-overlay.active{display:block;opacity:1}
+    .mobile-menu{position:fixed;top:0;right:-100%;width:280px;max-width:80%;height:100%;background-color:white;z-index:201;transition:right .3s ease;overflow-y:auto}
+    .mobile-menu.active{right:0}
+    .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;background-color:var(--primary);color:white}
+    .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:none;color:white;cursor:pointer}
+    .mobile-menu-links{display:flex;flex-direction:column;padding:1rem}
+    .mobile-menu-link{display:block;padding:.875rem 1rem;color:var(--foreground);font-weight:500;font-size:.9rem;border-bottom:1px solid var(--border);transition:all .2s}
+    .mobile-menu-link:hover{color:var(--primary);background-color:rgba(30,64,175,.05)}
+    .mobile-menu-link:last-child{border-bottom:none}
+
+    /* Hero */
+    .hero{background-color:var(--card);color:var(--foreground);padding:3rem 0}
+    @media(min-width:768px){.hero{padding:4.5rem 0}}
+    .hero-content{text-align:center;max-width:780px;margin:0 auto}
+    .hero h1{font-size:1.75rem;font-weight:800;margin-bottom:.875rem;line-height:1.2}
+    @media(min-width:768px){.hero h1{font-size:2.5rem}}
+    .hero p{font-size:1rem;opacity:.9;margin-bottom:1.75rem}
+    .search-box{background:white;padding:1.25rem;border-radius:1rem;display:flex;flex-direction:column;gap:.875rem;border:1px solid var(--border)}
+    @media(min-width:768px){.search-box{flex-direction:row;align-items:center}}
+    .search-box input,.search-box select{flex:1;padding:.75rem .875rem;border:1px solid var(--border);border-radius:.5rem;font-size:.9rem;color:var(--foreground)}
+    .search-box input:focus,.search-box select:focus{outline:none;border-color:var(--primary)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.75rem 1.25rem;border:none;border-radius:.5rem;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-primary{background-color:var(--primary);color:white}
+    .btn-primary:hover{background-color:var(--primary-dark)}
+    .btn-accent{background-color:var(--accent);color:white}
+    .btn-accent:hover{opacity:.9}
+    .btn-outline{background-color:transparent;color:var(--primary);border:2px solid var(--primary)}
+    .btn-outline:hover{background-color:var(--primary);color:white}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:2.5rem;text-align:center}
+    @media(min-width:768px){.stats{grid-template-columns:repeat(4,1fr)}}
+    .stat-number{font-size:1.65rem;font-weight:800}
+    .stat-label{font-size:.8rem;opacity:.8}
+
+    /* Catalog */
+    .catalog{padding:3rem 0}
+    .section-header{text-align:center;margin-bottom:2.25rem}
+    .section-title{font-size:1.65rem;font-weight:800;color:var(--foreground);margin-bottom:.4rem}
+    .section-subtitle{color:var(--muted);font-size:1rem}
+    .filters{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1.75rem;justify-content:center}
+    .filter-btn{padding:.4rem .875rem;border:1px solid var(--border);border-radius:2rem;background:white;color:var(--muted);cursor:pointer;font-size:.82rem;transition:all .2s}
+    .filter-btn:hover,.filter-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+    .bus-grid{display:grid;grid-template-columns:1fr;gap:1.25rem}
+    @media(min-width:640px){.bus-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.bus-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:1280px){.bus-grid{grid-template-columns:repeat(4,1fr)}}
+    .bus-card{background:var(--card);border-radius:.875rem;overflow:hidden;border:1px solid var(--border);transition:transform .25s,box-shadow .25s}
+    .bus-card:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.09)}
+    .bus-card-image{position:relative;height:170px;overflow:hidden}
+    .bus-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
+    .bus-card:hover .bus-card-image img{transform:scale(1.04)}
+    .bus-badge{position:absolute;top:.6rem;left:.6rem;padding:.2rem .6rem;border-radius:1rem;font-size:.68rem;font-weight:600;text-transform:uppercase}
+    .badge-highlight{background-color:var(--accent);color:white}
+    .badge-type{position:absolute;top:.6rem;right:.6rem;background-color:var(--primary);color:white;padding:.2rem .6rem;border-radius:1rem;font-size:.68rem;font-weight:600}
+    .bus-card-content{padding:1rem}
+    .bus-card-title{font-size:.9rem;font-weight:700;color:var(--foreground);margin-bottom:.35rem;line-height:1.3}
+    .bus-card-brand{font-size:.78rem;color:var(--muted);margin-bottom:.75rem}
+    .bus-card-specs{display:flex;gap:.75rem;margin-bottom:.75rem;font-size:.75rem;color:var(--muted);flex-wrap:wrap}
+    .bus-card-spec{display:flex;align-items:center;gap:.2rem}
+    .bus-card-price{font-size:1.1rem;font-weight:800;color:var(--primary);margin-bottom:.75rem}
+    .bus-card-actions{display:flex;gap:.4rem}
+    .bus-card-actions .btn{flex:1;padding:.5rem .4rem;font-size:.78rem}
+
+    /* Services */
+    .services{padding:3rem 0;background-color:var(--card)}
+    .services-grid{display:grid;grid-template-columns:1fr;gap:1.25rem}
+    @media(min-width:640px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.services-grid{grid-template-columns:repeat(4,1fr)}}
+    .service-card{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:1rem;transition:all .3s}
+    .service-card:hover{border-color:var(--primary);box-shadow:0 6px 14px rgba(30,64,175,.1)}
+    .service-icon{width:56px;height:56px;background-color:rgba(30,64,175,.1);border-radius:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto .875rem;color:var(--primary)}
+    .service-title{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+    .service-desc{font-size:.82rem;color:var(--muted)}
+
+    /* About */
+    .about{padding:3rem 0}
+    .about-grid{display:grid;grid-template-columns:1fr;gap:2.5rem;align-items:center}
+    @media(min-width:1024px){.about-grid{grid-template-columns:1fr 1fr}}
+    .about-image{border-radius:1rem;overflow:hidden;height:360px}
+    .about-image img{width:100%;height:100%;object-fit:cover}
+    .about-content h2{font-size:1.65rem;font-weight:800;margin-bottom:1.25rem}
+    .about-content p{color:var(--muted);margin-bottom:1.25rem;font-size:.9rem}
+    .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:1.75rem}
+    .about-stat{text-align:center;padding:.875rem;background-color:rgba(30,64,175,.05);border-radius:.5rem}
+    .about-stat-number{font-size:1.35rem;font-weight:800;color:var(--primary)}
+    .about-stat-label{font-size:.78rem;color:var(--muted)}
+
+    /* Contact */
+    .contact{padding:3rem 0;background-color:var(--card)}
+    .contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:stretch}
+    @media(max-width:900px){.contact-layout{grid-template-columns:1fr}}
+    .contact-left-col{display:flex;flex-direction:column;gap:1.25rem}
+    .contact-item{display:flex;align-items:flex-start;gap:.875rem;padding:1rem 1.25rem;background:var(--background);border:1px solid var(--border);border-radius:.75rem;transition:box-shadow .2s}
+    .contact-item:hover{box-shadow:0 4px 14px rgba(30,64,175,.08)}
+    .contact-icon{width:44px;height:44px;flex-shrink:0;background-color:rgba(30,64,175,.1);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:var(--primary)}
+    .contact-item-title{font-weight:600;margin-bottom:.2rem;color:var(--foreground);font-size:.875rem}
+    .contact-item-value{color:var(--muted);font-size:.85rem;line-height:1.6}
+    .contact-item-value a{color:var(--primary);font-weight:500}
+    .contact-item-value a:hover{text-decoration:underline}
+    .contact-map-col{border-radius:1rem;overflow:hidden;border:1px solid var(--border);min-height:420px;position:relative}
+    .contact-map-col iframe{width:100%;height:100%;min-height:420px;border:none;display:block}
+
+    /* Footer */
+    .footer{background-color:#2554A2;color:white;padding:3rem 0 1.75rem}
+    .footer-grid{display:grid;grid-template-columns:1fr;gap:1.75rem;margin-bottom:2.5rem}
+    @media(min-width:640px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.footer-grid{grid-template-columns:2fr 1fr 1fr 1fr}}
+    .footer-brand{max-width:300px}
+    .footer-brand .logo{color:white;margin-bottom:.875rem}
+    .footer-brand .logo-icon{background-color:var(--primary-light)}
+    .footer-brand p{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:1.25rem}
+    .social-links{display:flex;gap:.625rem}
+    .social-link{width:36px;height:36px;background-color:rgba(255,255,255,.1);border-radius:.5rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .social-link:hover{background-color:var(--primary)}
+    .footer-title{font-size:.9rem;font-weight:700;margin-bottom:1.25rem}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:.625rem}
+    .footer-links a{color:rgba(255,255,255,.7);font-size:.82rem;transition:color .2s}
+    .footer-links a:hover{color:white}
+    .footer-bottom{padding-top:1.75rem;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:.75rem;align-items:center;text-align:center}
+    @media(min-width:768px){.footer-bottom{flex-direction:row;justify-content:space-between;text-align:left}}
+    .footer-bottom p{color:rgba(255,255,255,.5);font-size:.8rem}
+
+    /* WhatsApp Float */
+    .whatsapp-float{position:fixed;bottom:1.75rem;right:1.75rem;width:54px;height:54px;background-color:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:100;transition:transform .2s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+    .icon{width:22px;height:22px}
+    .icon-sm{width:14px;height:14px}
+    .icon-lg{width:28px;height:28px}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="site-onibus.html" class="logo">
+        <img loading="lazy" decoding="async" src="FOTOS/LOGO (Apresentação).png" alt="SobralBus" class="logo-image">
+      </a>
+      <nav class="nav">
+        <a href="#inicio">Início</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <div class="header-contact">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        (88) 9 9693-0066
+      </div>
+      <button class="menu-btn" id="menuBtn">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <span>Menu</span>
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="#inicio" class="mobile-menu-link">Início</a>
+      <a href="#catalogo" class="mobile-menu-link">Catálogo</a>
+      <a href="#servicos" class="mobile-menu-link">Serviços</a>
+      <a href="#sobre" class="mobile-menu-link">Sobre</a>
+      <a href="#contato" class="mobile-menu-link">Contato</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section id="inicio" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Encontre o Ônibus Ideal para o seu Negócio</h1>
+        <p>A maior plataforma de compra de ônibus do Nordeste. Mais de 100 veículos disponíveis com garantia e financiamento facilitado.</p>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar: marcopolo, comil, neobus, volvo, urbano, rodoviário, micro...">
+          <select id="typeSelect">
+            <option value="">Todos os tipos</option>
+            <option value="rodoviario">Rodoviário</option>
+            <option value="urbano">Urbano</option>
+            <option value="micro">Micro</option>
+          </select>
+          <button class="btn btn-primary" id="searchBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            Buscar
+          </button>
+        </div>
+        <div class="stats">
+          <div><div class="stat-number">100+</div><div class="stat-label">Veículos Disponíveis</div></div>
+          <div><div class="stat-number">15+</div><div class="stat-label">Anos de Experiência</div></div>
+          <div><div class="stat-number">100+</div><div class="stat-label">Clientes Satisfeitos</div></div>
+          <div><div class="stat-number">27</div><div class="stat-label">Estados Atendidos</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog -->
+  <section id="catalogo" class="catalog">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nosso Catálogo</h2>
+        <p class="section-subtitle">Encontre o ônibus perfeito para sua frota</p>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="rodoviario">Rodoviário</button>
+        <button class="filter-btn" data-filter="urbano">Urbano</button>
+        <button class="filter-btn" data-filter="micro">Micro</button>
+      </div>
+      <div class="bus-grid">
+        <div class="bus-card" data-type="rodoviario">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="RODOVIARIO/ACZ/A.png" alt="Comil Invictus DD - MB O500 RSD">
+            <span class="bus-badge badge-highlight">Destaque</span>
+            <span class="badge-type">Rodoviário</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Comil Invictus DD - MB O500 RSD</h3>
+            <p class="bus-card-brand">COMIL</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2019</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>1.000.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>43 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 1.150.000</div>
+            <div class="bus-card-actions">
+              <a href="comil-invictus-dd-mb-o500-rsd.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Comil Invictus DD - MB O500 RSD de 2019 no valor de R$1.150.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="rodoviario">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="RODOVIARIO/FZJ/A.png" alt="Marcopolo Paradiso New G7 1800 DD">
+            <span class="bus-badge badge-highlight">Destaque</span>
+            <span class="badge-type">Rodoviário</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Marcopolo Paradiso New G7 1800 DD - MB O500 RSD</h3>
+            <p class="bus-card-brand">Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2020</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>120.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>60 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 1.350.000</div>
+            <div class="bus-card-actions">
+              <a href="marcopolo-paradiso-new-g7-sobralbus.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Marcopolo Paradiso New G7 1800 DD - MB O500 RSD de 2020 no valor de R$1.350.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="urbano">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="URBANO/URBANO B RODOVIARIO/A.png" alt="URBANO NEOBUS OF 1721">
+            <span class="bus-badge badge-highlight">Destaque</span>
+            <span class="badge-type">Urbano</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Urbano Neobus- MB OF 1721</h3>
+            <p class="bus-card-brand">Neobus/Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2014</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>25.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>44 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 169.990</div>
+            <div class="bus-card-actions">
+              <a href="urbano-neobus-mb-of-1721-169-sobralbus.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Urbano Neobus de 2014 com poltronas soft no valor de R$169.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="rodoviario">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="RODOVIARIO/g7 1050/B.png" alt="Marcopolo G7 1050">
+            <span class="bus-badge badge-highlight">Destaque</span>
+            <span class="badge-type">Rodoviário</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Marcopolo G7 1050</h3>
+            <p class="bus-card-brand">Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2014</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>95.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>50 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 420.000</div>
+            <div class="bus-card-actions">
+              <a href="marcopolo-g7-1050.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Marcopolo G7 1050 de 2014 no valor de R$420.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="urbano">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="URBANO/URBANO HIM/A.png" alt="URBANO MARCOPOLO TORINO MB OF 1722">
+            <span class="badge-type">Urbano</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Urbano Marcopolo Torino MB OF 1722</h3>
+            <p class="bus-card-brand">Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2011</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>180.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>38 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 115.000</div>
+            <div class="bus-card-actions">
+              <a href="marcopolo-urbano-torino-sobralbus.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+<a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Urbano Marcopolo Torino MB OF 1722 de 2011 no valor de R$115.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="urbano">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="URBANO/URBANO NEOBUS 155/A.png" alt="Urbano Neobus MB Of 1721">
+            <span class="badge-type">Urbano</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Urbano Neobus MB Of 1721</h3>
+            <p class="bus-card-brand">Neobus/Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2014</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>140.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>44 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 155.000</div>
+            <div class="bus-card-actions">
+              <a href="urbano-neobus-mb-of-1721-155-2-sobralbus.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Urbano Neobus MB OF 1721 de 2014 no valor de R$155.00,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="urbano">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="URBANO/URBANO NEOBUS/14.png" alt="Urbano Neobus MB OF 1721">
+            <span class="badge-type">Urbano</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Urbano Neobus MB OF 1721</h3>
+            <p class="bus-card-brand">Neobus/Marcopolo</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2014</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>5.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>44 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 155.000</div>
+            <div class="bus-card-actions">
+              <a href="urbano-neobus-mb-of-1721-155-sobralbus.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Urbano Neobus 2014 no valor de R$155.000,00. Gostaria de mais informações." target="_blank" class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="bus-card" data-type="micro">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="Micro onibus/Comil Piá/A.png" alt="Comil Piá - MB LO 916">
+            <span class="badge-type">Micro</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">Comil Piá - MB LO 916</h3>
+            <p class="bus-card-brand">Comil</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2016</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>1.000.000 km</span>
+              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>32 lugares</span>
+            </div>
+            <div class="bus-card-price">R$ 320.000</div>
+            <div class="bus-card-actions">
+              <a href="comil-pia-micro.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Micro Comil Piá 2016 por R$320.000,00. Gostaria de mais informações." target="_blank" class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="servicos" class="services">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nossos Serviços</h2>
+        <p class="section-subtitle">Oferecemos soluções completas para sua empresa</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon"><svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
+          <h3 class="service-title">Garantia Estendida</h3>
+          <p class="service-desc">Todos os veículos com garantia de motor e câmbio por 6 meses</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+          <h3 class="service-title">Financiamento</h3>
+          <p class="service-desc">Parcele em até 60x com as melhores taxas do mercado</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div>
+          <h3 class="service-title">Troca</h3>
+          <p class="service-desc">Aceitamos seu veículo usado como parte do pagamento</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+          <h3 class="service-title">Entrega Nacional</h3>
+          <p class="service-desc">Entregamos em todo o Brasil com seguro total</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section id="sobre" class="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img loading="lazy" decoding="async" src="SOBRE-NOS/1.jpeg" alt="Sobre a SobralBus">
+        </div>
+        <div class="about-content">
+          <h2>Mais de 15 Anos de Experiência no Mercado</h2>
+          <p>A SobralBus é uma empresa especializada na comercialização de ônibus usados e seminovos, conectando vendedores e compradores com segurança, transparência e conhecimento técnico.</p>
+          <p>Nossa missão é conectar empresas de transporte aos melhores veículos do mercado, oferecendo <strong>qualidade</strong>,<strong>segurança</strong> e as <strong>melhores condições de pagamento</strong>.</p>
+          <div class="about-stats">
+            <div class="about-stat"><div class="about-stat-number">100+</div><div class="about-stat-label">Veículos Vendidos</div></div>
+            <div class="about-stat"><div class="about-stat-number">100+</div><div class="about-stat-label">Clientes</div></div>
+            <div class="about-stat"><div class="about-stat-number">27</div><div class="about-stat-label">Estados</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTATO — NOVO LAYOUT ─── -->
+  <section id="contato" class="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Entre em Contato</h2>
+        <p class="section-subtitle">Estamos prontos para atender você</p>
+      </div>
+
+      <div class="contact-layout">
+
+        <!-- COLUNA ESQUERDA: itens um embaixo do outro -->
+        <div class="contact-left-col">
+
+          <!-- Endereço -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <div>
+              <div class="contact-item-title">Endereço</div>
+              <div class="contact-item-value">
+                <a href="https://maps.app.goo.gl/j4o5f7StkyX7R3fu6"> Luis Frota Carneiro, 1045 - Dom José<br>Sobral - CE, 62015-120</div></a>
+            </div>
+          </div>
+
+          <!-- E-mail -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <div>
+              <div class="contact-item-title">E-mail</div>
+              <div class="contact-item-value">
+                <a href="mailto:sobral-bus@hotmail.com">sobral-bus@hotmail.com</a><br>
+              </div>
+            </div>
+          </div>
+
+          <!-- Telefone -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+            </div>
+            <div>
+              <div class="contact-item-title">Telefone / WhatsApp</div>
+              <div class="contact-item-value">
+                <a href="https://wa.me/5588996930066" target="_blank">(88) 9 9693-0066</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Horário -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div>
+              <div class="contact-item-title">Horário de Funcionamento</div>
+              <div class="contact-item-value">Segunda a Sexta: 8h às 18h<br>Sábado: 8h às 12h</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA: mapa grande -->
+        <div class="contact-map-col">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3978.123456789!2d-40.3567!3d-3.6897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ec0c0a0a0a0a0a1%3A0x1234567890abcdef!2sR.%20Luis%20Frota%20Carneiro%2C%201045%20-%20Dom%20Jos%C3%A9%2C%20Sobral%20-%20CE%2C%2062015-120!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Localização SobralBus">
+          </iframe>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#inicio" class="logo">
+            <img loading="lazy" decoding="async" src="FOTOS/LOGO (Apresentação).png" alt="SobralBus" class="logo-image">
+          </a>
+          <p>A maior plataforma de venda de ônibus do Nordeste. Qualidade, confiança e as melhores condições do mercado.</p>
+          <div class="social-links">
+            <a href="http://www.facebook.com/share/1GzW3VzFEu/?mibextid=wwXIfr" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/sobralbusoficial" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://wa.link/6x54k1" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Links Rápidos</h4>
+          <ul class="footer-links">
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#catalogo">Catálogo</a></li>
+            <li><a href="#sobre">Sobre Nós</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Categorias</h4>
+          <ul class="footer-links">
+            <li><a href="#catalogo" onclick="filterByCategory('rodoviario')">Rodoviário</a></li>
+            <li><a href="#catalogo" onclick="filterByCategory('urbano')">Urbano</a></li>
+            <li><a href="#catalogo" onclick="filterByCategory('micro')">Micro</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contato</h4>
+          <ul class="footer-links">
+            <li><a href="https://wa.me/5588996930066" target="_blank">(88) 9 9693-0066</a></li>
+            <li><a href="mailto:sobral-bus@hotmail.com" target="_blank">sobral-bus@hotmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Sobralbus. Todos os direitos reservados.</p>
+        <p>Desenvolvido com dedicação para o mercado de transportes</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float Button -->
+  <a href="https://wa.me/+558896930066" target="_blank" class="whatsapp-float">
+    <svg class="icon-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // === HEADER HIDE ON SCROLL ===
+      const header = document.querySelector('.header');
+      let lastY = window.scrollY;
+      let ticking = false;
+
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            const currentY = window.scrollY;
+            if (currentY > lastY && currentY > 80) {
+              header.classList.add('hidden');
+            } else {
+              header.classList.remove('hidden');
+            }
+            if (currentY > 10) {
+              header.classList.add('scrolled');
+            } else {
+              header.classList.remove('scrolled');
+            }
+            lastY = currentY;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileMenuClose = document.getElementById('mobileMenuClose');
+      const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+      if (menuBtn) menuBtn.addEventListener('click', function() {
+        mobileMenuOverlay.classList.add('active');
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      function closeMobileMenu() {
+        mobileMenuOverlay.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+      if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+      mobileMenuLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('searchInput').value = '';
+          document.getElementById('typeSelect').value = '';
+          const filter = this.getAttribute('data-filter');
+          document.querySelectorAll('.bus-card').forEach(card => {
+            card.style.display = (filter === 'todos' || card.getAttribute('data-type') === filter) ? '' : 'none';
+          });
+        });
+      });
+
+      function performSearch() {
+        let searchTerm = document.getElementById('searchInput').value.toLowerCase().trim().replace(/^#/, '');
+        const categoryFilter = document.getElementById('typeSelect').value;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-filter') === (categoryFilter || 'todos')) btn.classList.add('active');
+        });
+        document.querySelectorAll('.bus-card').forEach(card => {
+          const cardType = card.getAttribute('data-type');
+          const title = card.querySelector('.bus-card-title').textContent.toLowerCase();
+          const brand = card.querySelector('.bus-card-brand').textContent.toLowerCase();
+          const matchesCategory = !categoryFilter || cardType === categoryFilter;
+          const matchesKeyword = !searchTerm || title.includes(searchTerm) || brand.includes(searchTerm) || cardType === searchTerm;
+          card.style.display = (matchesCategory && matchesKeyword) ? '' : 'none';
+        });
+      }
+
+      const searchBtn = document.getElementById('searchBtn');
+      if (searchBtn) searchBtn.addEventListener('click', function() {
+        performSearch();
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { performSearch(); document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' }); }
+      });
+
+      const typeSelect = document.getElementById('typeSelect');
+      if (typeSelect) typeSelect.addEventListener('change', function() {
+        performSearch();
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      window.filterByCategory = function(category) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-filter') === category) btn.classList.add('active');
+        });
+        document.querySelectorAll('.bus-card').forEach(card => {
+          card.style.display = (category === 'todos' || card.getAttribute('data-type') === category) ? '' : 'none';
+        });
+      };
+    });
+  </script>
+</body>
+</html>
