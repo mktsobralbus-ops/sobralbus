@@ -32,9 +32,9 @@
     .header.hidden{transform:translateY(-100%)}
     .header.scrolled{box-shadow:0 2px 12px rgba(0,0,0,.22)}
     body{padding-top:92px}
-    .header-content{display:flex;align-items:center;justify-content:space-between;padding:0.45rem 0.6rem;position:relative}
+    .header-content{display:flex;align-items:center;justify-content:space-between;padding:.3rem .75rem;position:relative}
     .logo{display:flex;align-items:center;gap:.5rem;margin-right:auto;margin-left:-5rem}
-    .logo-image{width:300px;height:68px;object-fit:contain}
+    .logo-image{width:220px;height:52px;object-fit:contain}
 
     @media(max-width:767px){
       .header-content{justify-content:center}
@@ -47,13 +47,13 @@
     .logo-icon{width:220px;height:90px;background-color:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white}
     .nav{display:none}
     @media(min-width:768px){.nav{display:flex;gap:1.75rem;position:absolute;left:50%;transform:translateX(-50%)}}
-    .nav a{color:rgba(255,255,255,.82);font-weight:500;font-size:.875rem;transition:color .2s}
+    .nav a{color:rgba(255,255,255,.82);font-weight:500;font-size:.78rem;transition:color .2s}
     .nav a:hover{color:white}
     .header-contact{display:none}
-    @media(min-width:1024px){.header-contact{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.8);font-weight:600;font-size:.875rem}}
+    @media(min-width:1024px){.header-contact{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.8);font-weight:600;font-size:.78rem}}
     .header-contact .icon{width:34px;height:34px}
-    .menu-btn .icon{width:28px;height:28px}
-    .menu-btn{display:flex;padding:1.2rem;background:none;border:1px solid rgba(255,255,255,.2);border-radius:8px;cursor:pointer}
+    .menu-btn .icon{width:16px;height:16px}
+    .menu-btn{display:flex;padding:.45rem .5rem;background:none;border:1px solid rgba(255,255,255,.25);border-radius:5px;cursor:pointer}
     @media(min-width:768px){.menu-btn{display:none}}
 
     /* Mobile Menu */
@@ -185,6 +185,104 @@
     .icon{width:22px;height:22px}
     .icon-sm{width:14px;height:14px}
     .icon-lg{width:28px;height:28px}
+  
+    /* ══ MOBILE ULTRA COMPACTO ══ */
+    @media(max-width:639px){
+
+      /* ─ HEADER ─ */
+      body{font-size:11px}
+      :root{--header-h:40px}
+      .logo-image{width:130px;height:28px}
+      .menu-btn{padding:.35rem .4rem;border-radius:4px}
+      .menu-btn .icon{width:14px;height:14px}
+      .mobile-menu-header{padding:.6rem .875rem}
+      .mobile-menu-header span{font-size:.78rem}
+      .mobile-menu-close{width:28px;height:28px;font-size:.85rem}
+      .mobile-menu-links{padding:.5rem}
+      .mobile-menu-link{padding:.55rem .75rem;font-size:.75rem}
+
+      /* ─ HERO ─ */
+      .hero{padding:1rem 0}
+      .hero h1{font-size:1rem;margin-bottom:.3rem}
+      .hero p{font-size:.68rem;margin-bottom:.6rem}
+      .search-box input,.search-box select{font-size:.68rem;padding:.35rem .45rem}
+      .search-box .btn{font-size:.68rem;padding:.35rem .6rem}
+
+      /* ─ STATS ─ */
+      .stats{gap:.35rem;margin-top:.75rem;grid-template-columns:repeat(4,1fr)}
+      .stat-number{font-size:1rem}
+      .stat-label{font-size:.5rem}
+
+      /* ─ CATÁLOGO ─ */
+      .catalog{padding:1rem 0}
+      .section-title{font-size:.95rem}
+      .section-subtitle{font-size:.68rem}
+      .section-header{margin-bottom:.75rem}
+      .filters{gap:.3rem;margin-bottom:.75rem}
+      .filter-btn{padding:.22rem .45rem;font-size:.6rem}
+
+      /* ─ GRID 2 COLUNAS ─ */
+      .bus-grid{grid-template-columns:repeat(2,1fr);gap:.35rem}
+      .bus-card{border-radius:.4rem}
+      .bus-card-image{height:85px}
+      .bus-card-content{padding:.35rem}
+      .bus-card-title{font-size:.6rem;font-weight:700;margin-bottom:.08rem;line-height:1.2}
+      .bus-card-brand{font-size:.52rem;margin-bottom:.15rem}
+      .bus-card-specs{gap:.12rem;margin-bottom:.15rem;font-size:.5rem}
+      .bus-card-spec svg{width:8px;height:8px}
+      .bus-card-price{font-size:.68rem;font-weight:800;margin-bottom:.2rem}
+      .bus-card-actions{gap:.2rem}
+      .bus-card-actions .btn{padding:.28rem .12rem;font-size:.52rem;border-radius:.25rem}
+      .bus-badge{font-size:.44rem;padding:.08rem .3rem;top:.3rem;left:.3rem}
+      .badge-type{font-size:.44rem;padding:.08rem .3rem;top:.3rem;right:.3rem}
+
+      /* ─ SERVIÇOS ─ */
+      .services{padding:1rem 0}
+      .services .section-title{font-size:.95rem}
+      .services .section-subtitle{font-size:.68rem}
+      .services-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
+      .service-card{padding:.6rem .5rem;border-radius:.5rem}
+      .service-icon{font-size:1.2rem;margin-bottom:.3rem}
+      .service-card h3{font-size:.65rem;margin-bottom:.2rem}
+      .service-card p{font-size:.58rem;line-height:1.4}
+
+      /* ─ SOBRE ─ */
+      .about{padding:1rem 0}
+      .about h2{font-size:.95rem;margin-bottom:.4rem}
+      .about p{font-size:.65rem;line-height:1.5}
+      .about-stats{gap:.4rem;margin-top:.875rem}
+      .about-stats .stat-number{font-size:1rem}
+      .about-stats .stat-label{font-size:.55rem}
+
+      /* ─ CONTATO ─ */
+      .contact{padding:1rem 0}
+      .contact .section-title{font-size:.95rem}
+      .contact .section-subtitle{font-size:.68rem}
+      .contact-layout{gap:.6rem}
+      .contact-left-col{gap:.5rem}
+      .contact-item{padding:.5rem .65rem;border-radius:.45rem;gap:.5rem}
+      .contact-icon{width:28px;height:28px;border-radius:.35rem}
+      .contact-icon svg{width:14px;height:14px}
+      .contact-item-title{font-size:.65rem;margin-bottom:.08rem}
+      .contact-item-value{font-size:.6rem;line-height:1.4}
+      .contact-map-col{min-height:180px;border-radius:.5rem}
+      .contact-map-col iframe{min-height:180px}
+
+      /* ─ FOOTER ─ */
+      .footer{padding:1.25rem 0 .875rem}
+      .logo-image{width:120px;height:26px}
+      .footer-brand p{font-size:.62rem;margin-bottom:.75rem}
+      .social-link{width:28px;height:28px}
+      .footer-title{font-size:.65rem;margin-bottom:.65rem}
+      .footer-links a{font-size:.6rem}
+      .footer-links{gap:.4rem}
+      .footer-bottom{padding-top:.875rem;gap:.4rem}
+      .footer-bottom p{font-size:.58rem}
+
+      /* ─ CONTAINER ─ */
+      .container{padding:0 .55rem}
+    }
+
   </style>
 </head>
 <body>
