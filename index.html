@@ -37,11 +37,15 @@
     .logo-image{width:250px;height:82px;;object-fit:contain}
 
     @media(max-width:767px){
-      .header-content{justify-content:center}
-      .header .logo{margin:0 auto}
+      .header-content{justify-content:flex-start}
+      .header .logo{margin:0}
+      .menu-btn{margin-left:auto}
       .footer-brand{max-width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
       .footer-brand .logo{margin:0 auto 1rem}
       .social-links{justify-content:center}
+      .logo-image{width:180px;height:75px}
+      .menu-btn .icon{width:20px;height:20px}
+      .about-image{height:280px}
       body{padding-top:80px}
     }
     .logo-icon{width:220px;height:90px;background-color:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white}
@@ -105,7 +109,7 @@
     @media(min-width:1280px){.bus-grid{grid-template-columns:repeat(4,1fr)}}
     .bus-card{background:var(--card);border-radius:.875rem;overflow:hidden;border:1px solid var(--border);transition:transform .25s,box-shadow .25s}
     .bus-card:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.09)}
-    .bus-card-image{position:relative;height:170px;overflow:hidden}
+    .bus-card-image{position:relative;height:220px;overflow:hidden}
     .bus-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
     .bus-card:hover .bus-card-image img{transform:scale(1.04)}
     .bus-badge{position:absolute;top:.6rem;left:.6rem;padding:.2rem .6rem;border-radius:1rem;font-size:.68rem;font-weight:600;text-transform:uppercase}
@@ -190,7 +194,7 @@
     @media(max-width:645px){
 
       /* ─ HEADER ─ */
-      body{font-size:12px}
+      body{font-size:14px}
       :root{--header-h:40px}
       .logo-image{width:200px;height:100px}
       .menu-btn{padding:.35rem .4rem;border-radius:10px}
@@ -203,81 +207,90 @@
 
       /* ─ HERO ─ */
       .hero{padding:1rem 0}
-      .hero h1{font-size:1rem;margin-bottom:.3rem}
-      .hero p{font-size:.68rem;margin-bottom:.6rem}
-      .search-box input,.search-box select{font-size:.68rem;padding:.35rem .45rem}
-      .search-box .btn{font-size:.68rem;padding:.35rem .6rem}
+      .hero h1{font-size:1.15rem;margin-bottom:.3rem}
+      .hero p{font-size:.78rem;margin-bottom:.6rem}
+      .search-box input,.search-box select{font-size:.78rem;padding:.35rem .45rem}
+      .search-box .btn{font-size:.78rem;padding:.35rem .6rem}
 
       /* ─ STATS ─ */
       .stats{gap:.35rem;margin-top:.75rem;grid-template-columns:repeat(4,1fr)}
-      .stat-number{font-size:1rem}
-      .stat-label{font-size:.5rem}
+      .stat-number{font-size:1.1rem}
+      .stat-label{font-size:.58rem}
 
       /* ─ CATÁLOGO ─ */
       .catalog{padding:1rem 0}
-      .section-title{font-size:.95rem}
-      .section-subtitle{font-size:.68rem}
+      .section-title{font-size:1.05rem}
+      .section-subtitle{font-size:.78rem}
       .section-header{margin-bottom:.75rem}
       .filters{gap:.3rem;margin-bottom:.75rem}
-      .filter-btn{padding:.22rem .45rem;font-size:.6rem}
+      .filter-btn{padding:.22rem .45rem;font-size:.7rem}
 
       /* ─ GRID 2 COLUNAS ─ */
       .bus-grid{grid-template-columns:repeat(2,1fr);gap:.35rem}
       .bus-card{border-radius:.4rem}
-      .bus-card-image{height:85px}
+      .bus-card-image{height:130px}
       .bus-card-content{padding:.35rem}
-      .bus-card-title{font-size:.6rem;font-weight:700;margin-bottom:.08rem;line-height:1.2}
-      .bus-card-brand{font-size:.52rem;margin-bottom:.15rem}
-      .bus-card-specs{gap:.12rem;margin-bottom:.15rem;font-size:.5rem}
+      .bus-card-title{font-size:.7rem;font-weight:700;margin-bottom:.08rem;line-height:1.2}
+      .bus-card-brand{font-size:.62rem;margin-bottom:.15rem}
+      .bus-card-specs{gap:.12rem;margin-bottom:.15rem;font-size:.6rem}
       .bus-card-spec svg{width:8px;height:8px}
-      .bus-card-price{font-size:.68rem;font-weight:800;margin-bottom:.2rem}
+      .bus-card-price{font-size:.78rem;font-weight:800;margin-bottom:.2rem}
       .bus-card-actions{gap:.2rem}
-      .bus-card-actions .btn{padding:.28rem .12rem;font-size:.52rem;border-radius:.25rem}
-      .bus-badge{font-size:.44rem;padding:.08rem .3rem;top:.3rem;left:.3rem}
-      .badge-type{font-size:.44rem;padding:.08rem .3rem;top:.3rem;right:.3rem}
+      .bus-card-actions .btn{padding:.28rem .12rem;font-size:.62rem;border-radius:.25rem}
+      .bus-badge{font-size:.5rem;padding:.08rem .3rem;top:.3rem;left:.3rem}
+      .badge-type{font-size:.5rem;padding:.08rem .3rem;top:.3rem;right:.3rem}
 
       /* ─ SERVIÇOS ─ */
       .services{padding:1rem 0}
-      .services .section-title{font-size:.95rem}
-      .services .section-subtitle{font-size:.68rem}
+      .services .section-title{font-size:1.05rem}
+      .services .section-subtitle{font-size:.78rem}
       .services-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
       .service-card{padding:.6rem .5rem;border-radius:.5rem}
       .service-icon{font-size:1.2rem;margin-bottom:.3rem}
-      .service-card h3{font-size:.65rem;margin-bottom:.2rem}
-      .service-card p{font-size:.58rem;line-height:1.4}
+      .service-card h3{font-size:.75rem;margin-bottom:.2rem}
+      .service-card p{font-size:.68rem;line-height:1.4}
 
       /* ─ SOBRE ─ */
       .about{padding:1rem 0}
-      .about h2{font-size:.95rem;margin-bottom:.4rem}
-      .about p{font-size:.65rem;line-height:1.5}
+      .about h2{font-size:1.05rem;margin-bottom:.4rem}
+      .about p{font-size:.75rem;line-height:1.5}
       .about-stats{gap:.4rem;margin-top:.875rem}
-      .about-stats .stat-number{font-size:1rem}
-      .about-stats .stat-label{font-size:.55rem}
+      .about-stats .stat-number{font-size:1.1rem}
+      .about-stats .stat-label{font-size:.62rem}
 
       /* ─ CONTATO ─ */
       .contact{padding:1rem 0}
-      .contact .section-title{font-size:.95rem}
-      .contact .section-subtitle{font-size:.68rem}
+      .contact .section-title{font-size:1.05rem}
+      .contact .section-subtitle{font-size:.78rem}
       .contact-layout{gap:.6rem}
       .contact-left-col{gap:.5rem}
       .contact-item{padding:.5rem .65rem;border-radius:.45rem;gap:.5rem}
       .contact-icon{width:28px;height:28px;border-radius:.35rem}
       .contact-icon svg{width:14px;height:14px}
-      .contact-item-title{font-size:.65rem;margin-bottom:.08rem}
-      .contact-item-value{font-size:.6rem;line-height:1.4}
+      .contact-item-title{font-size:.75rem;margin-bottom:.08rem}
+      .contact-item-value{font-size:.7rem;line-height:1.4}
       .contact-map-col{min-height:180px;border-radius:.5rem}
       .contact-map-col iframe{min-height:180px}
 
       /* ─ FOOTER ─ */
-      .footer{padding:1.25rem 0 .875rem}
-      .logo-image{width:200px;height:98px}
-      .footer-brand p{font-size:.62rem;margin-bottom:.75rem}
-      .social-link{width:28px;height:28px}
-      .footer-title{font-size:.65rem;margin-bottom:.65rem}
-      .footer-links a{font-size:.6rem}
-      .footer-links{gap:.4rem}
-      .footer-bottom{padding-top:.875rem;gap:.4rem}
-      .footer-bottom p{font-size:.58rem}
+      .footer{padding:.875rem 0 .5rem}
+      .logo-image{width:140px;height:60px}
+      .footer-grid{grid-template-columns:repeat(3,1fr);gap:.6rem;text-align:center}
+      .footer-brand{max-width:100%}
+      .footer-brand p{font-size:.65rem;margin-bottom:.5rem}
+      .social-link{width:24px;height:24px}
+      .social-links{justify-content:center}
+      .footer-title{font-size:.7rem;margin-bottom:.4rem}
+      .footer-links{gap:.25rem}
+      .footer-links a{font-size:.65rem}
+      .footer-bottom{padding-top:.5rem;gap:.2rem}
+      .footer-bottom p{font-size:.6rem}
+
+      /* ─ SOBRE ─ */
+      .about-image{height:260px}
+
+      /* ─ MENU ─ */
+      .menu-btn .icon{width:22px;height:22px}
 
       /* ─ CONTAINER ─ */
       .container{padding:0 .55rem}
@@ -333,9 +346,9 @@
     <div class="container">
       <div class="hero-content">
         <h1>Encontre o Ônibus Ideal para o seu Negócio</h1>
-        <p>A maior plataforma de compra de ônibus do Nordeste. Mais de 90 veículos disponíveis com garantia e financiamento facilitado.</p>
+        <p>A maior plataforma de compra de ônibus do Nordeste. Na SobralBus, você encontra ônibus seminovos prontos para atender a necessidade do seu negócio.</p>
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar: marcopolo, comil, neobus, volvo, urbano, rodoviário, micro...">
+          <input type="text" id="searchInput" placeholder="Buscar: marcopolo, comil, neobus, urbano, rodoviário, micro...">
           <select id="typeSelect">
             <option value="">Todos os tipos</option>
             <option value="rodoviario">Rodoviário</option>
