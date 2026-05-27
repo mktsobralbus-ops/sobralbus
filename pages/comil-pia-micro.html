@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
   <style>
+
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
       --primary:#2554A2;--primary-dark:#1a3e80;--primary-light:#3b6fd4;
@@ -24,53 +25,8 @@
     .icon-sm{width:14px;height:14px}
     .icon-lg{width:28px;height:28px}
 
-    /* ═══ HEADER ═══ */
-    .header{
-      background:#2554A2;
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      height:var(--header-h);
-      transform:translateY(0);
-      transition:transform .3s ease, box-shadow .3s ease;
-      will-change:transform;
-    }
-    .header.hidden{transform:translateY(-100%)}
-    .header.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.25)}
-    .header-content{
-      display:flex;align-items:center;justify-content:space-between;
-      height:var(--header-h);padding:0 .75rem;position:relative;
-    }
-    .logo{display:flex;align-items:center;gap:.5rem;margin-right:auto;margin-left:-3rem}
-    .logo-image{width:240px;height:50px;object-fit:contain}
-    .nav{display:none}
-    @media(min-width:768px){
-      .nav{display:flex;gap:1.75rem;position:absolute;left:50%;transform:translateX(-50%)}
-    }
-    .nav a{color:rgba(255,255,255,.82);font-weight:600;font-size:.8rem;letter-spacing:.01em;transition:color .2s}
-    .nav a:hover{color:#fff}
-    .header-contact{display:none}
-    @media(min-width:1024px){
-      .header-contact{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.8);font-weight:600;font-size:.78rem}
-    }
-    .menu-btn{display:flex;padding:1rem;background:none;border:1px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer}
-    @media(min-width:768px){.menu-btn{display:none}}
-    @media(max-width:767px){
-      .header-content{justify-content:center}
-      .header .logo{margin:0 auto}
-    }
-
-    /* Mobile Menu */
-    .mobile-menu-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;transition:opacity .3s}
-    .mobile-menu-overlay.active{display:block;opacity:1}
-    .mobile-menu{position:fixed;top:0;right:-100%;width:270px;max-width:80%;height:100%;background:#fff;z-index:201;transition:right .3s ease;overflow-y:auto}
-    .mobile-menu.active{right:0}
-    .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:var(--primary);color:#fff}
-    .mobile-menu-header span{font-size:.85rem;font-weight:700}
-    .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:none;border:none;color:#fff;cursor:pointer;font-size:1.2rem}
-    .mobile-menu-links{display:flex;flex-direction:column;padding:.75rem}
-    .mobile-menu-link{display:block;padding:.875rem 1rem;color:var(--foreground);font-weight:600;font-size:.85rem;border-bottom:1px solid var(--border);transition:all .2s}
-    .mobile-menu-link:hover{color:var(--primary);background:rgba(37,84,162,.05)}
-    .mobile-menu-link:last-child{border-bottom:none}
-
+    
+    
     /* ═══ BREADCRUMB ═══ */
     .breadcrumb{background:var(--card);border-bottom:1px solid var(--border);padding:.55rem 0;margin-top:var(--header-h)}
     .breadcrumb-inner{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--muted);flex-wrap:wrap}
@@ -209,48 +165,239 @@
       .gallery-nav-btn{display:none}
       .gallery-main-img{height:260px}
     }
+  
+
+    /* ══ HEADER / NAV / MOBILE-MENU ══ */
+    /* ! Header — esconde/aparece no scroll */
+    .header{background:linear-gradient(135deg, rgba(37,84,162,.90), rgba(30,64,175,.70));backdrop-filter:saturate(150%) blur(10px);position:fixed;top:0;left:0;right:0;z-index:100;transition:transform .28s ease,box-shadow .28s ease;will-change:transform}
+    .header.hidden{transform:translateY(-100%)}
+    .header.scrolled{box-shadow:0 2px 12px rgba(0,0,0,.22)}
+    body{padding-top:35px}
+    .header-content{display:flex;align-items:center;justify-content:space-between;padding:.25rem .75rem;position:relative}
+    .logo{display:flex;align-items:center;gap:.5rem;margin-right:auto;margin-left:-4rem}
+    .logo-image{width:250px;height:82px;;object-fit:contain}
+
+    @media(max-width:767px){
+      .header-content{justify-content:flex-start}
+      .header .logo{margin:0}
+      .menu-btn{margin-left:auto}
+      .footer-brand{max-width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+      .footer-brand .logo{margin:0 auto 1rem}
+      .social-links{justify-content:center}
+      .logo-image{width:180px;height:75px}
+      .menu-btn .icon{width:20px;height:20px}
+      .about-image{height:280px}
+      body{padding-top:20px}
+    }
+    .logo-icon{width:220px;height:90px;background-color:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white}
+    .nav{display:none}
+    @media(min-width:1000px){.nav{display:flex;gap:1.75rem;position:absolute;left:50%;transform:translateX(-50%)}}
+    .nav a{color:rgba(255,255,255,.82);font-weight:500;font-size:.95rem;transition:color .2s}
+    .nav a:hover{color:white}
+    .header-contact{display:none}
+    @media(min-width:1024px){.header-contact{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.8);font-weight:600;font-size:.9rem}}
+    .header-contact .icon{width:28px;height:28px}
+    .menu-btn .icon{width:18px;height:18px}
+    .menu-btn{display:flex;padding:.45rem .5rem;background:none;border:1px solid rgba(255,255,255,.25);border-radius:5px;cursor:pointer}
+    @media(min-width:1000px){.menu-btn{display:none}}
+
+    /* ! Mobile Menu */
+    .mobile-menu-overlay{display:none;position:fixed;inset:0;background-color:rgba(0,0,0,.5);z-index:200;opacity:0;transition:opacity .3s}
+    .mobile-menu-overlay.active{display:block;opacity:1}
+    .mobile-menu{position:fixed;top:0;right:-100%;width:280px;max-width:80%;height:100%;background-color:white;z-index:201;transition:right .3s ease;overflow-y:auto}
+    .mobile-menu.active{right:0}
+    .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;background-color:var(--primary);color:white}
+    .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:none;color:white;cursor:pointer}
+    .mobile-menu-links{display:flex;flex-direction:column;padding:1rem}
+    .mobile-menu-link{display:block;padding:.875rem 1rem;color:var(--foreground);font-weight:500;font-size:.9rem;border-bottom:1px solid var(--border);transition:all .2s}
+    .mobile-menu-link:hover{color:var(--primary);background-color:rgba(30,64,175,.05)}
+    .mobile-menu-link:last-child{border-bottom:none}
+
+
+    /* ══ FOOTER / WHATSAPP ══ */
+    /* ! Footer */
+    .footer{background:linear-gradient(135deg, rgba(37,84,162,.82), rgba(30,64,175,.62));backdrop-filter:saturate(150%) blur(10px);color:white;padding:3rem 0 1.75rem}
+    .footer-grid{display:grid;grid-template-columns:1fr;gap:1.75rem;margin-bottom:2.5rem}
+    @media(min-width:640px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.footer-grid{grid-template-columns:2fr 1fr 1fr 1fr}}
+    .footer-brand{max-width:300px}
+    .footer-brand .logo{color:white;margin-bottom:.875rem}
+    .footer-brand .logo-icon{background-color:var(--primary-light)}
+    .footer-brand p{color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:1.25rem}
+    .social-links{display:flex;gap:.625rem}
+    .social-link{width:36px;height:36px;background-color:rgba(255,255,255,.1);border-radius:.5rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .social-link:hover{background-color:var(--primary)}
+    .footer-title{font-size:.9rem;font-weight:700;margin-bottom:1.25rem}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:.625rem}
+    .footer-links a{color:rgba(255,255,255,.7);font-size:.82rem;transition:color .2s}
+    .footer-links a:hover{color:white}
+    .footer-bottom{padding-top:1.75rem;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:.75rem;align-items:center;text-align:center}
+    @media(min-width:768px){.footer-bottom{flex-direction:row;justify-content:space-between;text-align:left}}
+    .footer-bottom p{color:rgba(255,255,255,.5);font-size:.8rem}
+
+    /* ! WhatsApp Float */
+    .whatsapp-float{position:fixed;bottom:1.75rem;right:1.75rem;width:54px;height:54px;background-color:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:100;transition:transform .2s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+    .icon{width:22px;height:22px}
+    .icon-sm{width:14px;height:14px}
+    .icon-lg{width:28px;height:28px}
+
+    /* ══ MOBILE COMPACTO ══ */
+    /* ! ══ MOBILE ULTRA COMPACTO ══ */
+    @media(max-width:645px){
+
+      /* ! ─ HEADER ─ */
+      body{font-size:14px}
+      :root{--header-h:40px}
+      .logo-image{width:200px;height:100px}
+      .menu-btn{padding:.35rem .4rem;border-radius:10px}
+      .menu-btn .icon{width:14px;height:14px}
+      .mobile-menu-header{padding:.6rem .875rem}
+      .mobile-menu-header span{font-size:.78rem}
+      .mobile-menu-close{width:28px;height:28px;font-size:.85rem}
+      .mobile-menu-links{padding:.5rem}
+      .mobile-menu-link{padding:.55rem .75rem;font-size:.75rem}
+
+      /* ! ─ HERO ─ */
+      .hero{padding:1rem 0}
+      .hero h1{font-size:1.15rem;margin-bottom:.3rem}
+      .hero p{font-size:.78rem;margin-bottom:.6rem}
+      .search-box input,.search-box select{font-size:.78rem;padding:.35rem .45rem}
+      .search-box .btn{font-size:.78rem;padding:.35rem .6rem}
+
+      /* ! ─ STATS ─ */
+      .stats{gap:.35rem;margin-top:.75rem;grid-template-columns:repeat(4,1fr)}
+      .stat-number{font-size:1.1rem}
+      .stat-label{font-size:.58rem}
+
+      /* ! ─ CATÁLOGO ─ */
+      .catalog{padding:1rem 0}
+      .section-title{font-size:1.05rem}
+      .section-subtitle{font-size:.78rem}
+      .section-header{margin-bottom:.75rem}
+      .filters{gap:.3rem;margin-bottom:.75rem}
+      .filter-btn{padding:.22rem .45rem;font-size:.7rem}
+
+      /* ! ─ GRID 2 COLUNAS ─ */
+      .bus-grid{grid-template-columns:repeat(2,1fr);gap:.35rem}
+      .bus-card{border-radius:.4rem}
+      .bus-card-image{height:130px}
+      .bus-card-content{padding:.35rem}
+      .bus-card-title{font-size:.7rem;font-weight:700;margin-bottom:.08rem;line-height:1.2}
+      .bus-card-brand{font-size:.62rem;margin-bottom:.15rem}
+      .bus-card-specs{gap:.12rem;margin-bottom:.15rem;font-size:.6rem}
+      .bus-card-spec svg{width:8px;height:8px}
+      .bus-card-price{font-size:.78rem;font-weight:800;margin-bottom:.2rem}
+      .bus-card-actions{gap:.2rem}
+      .bus-card-actions .btn{padding:.28rem .12rem;font-size:.62rem;border-radius:.25rem}
+      .bus-badge{font-size:.5rem;padding:.08rem .3rem;top:.3rem;left:.3rem}
+      .badge-type{font-size:.5rem;padding:.08rem .3rem;top:.3rem;right:.3rem}
+
+      /* ! ─ SERVIÇOS ─ */
+      .services{padding:1rem 0}
+      .services .section-title{font-size:1.05rem}
+      .services .section-subtitle{font-size:.78rem}
+      .services-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
+      .service-card{padding:.6rem .5rem;border-radius:.5rem}
+      .service-icon{font-size:1.2rem;margin-bottom:.3rem}
+      .service-card h3{font-size:.75rem;margin-bottom:.2rem}
+      .service-card p{font-size:.68rem;line-height:1.4}
+
+      /* ! ─ SOBRE ─ */
+      .about{padding:1rem 0}
+      .about h2{font-size:1.05rem;margin-bottom:.4rem}
+      .about p{font-size:.75rem;line-height:1.5}
+      .about-stats{gap:.4rem;margin-top:.875rem}
+      .about-stats .stat-number{font-size:1.1rem}
+      .about-stats .stat-label{font-size:.62rem}
+
+      /* ! ─ CONTATO ─ */
+      .contact{padding:1rem 0}
+      .contact .section-title{font-size:1.05rem}
+      .contact .section-subtitle{font-size:.78rem}
+      .contact-layout{gap:.6rem}
+      .contact-left-col{gap:.5rem}
+      .contact-item{padding:.5rem .65rem;border-radius:.45rem;gap:.5rem}
+      .contact-icon{width:28px;height:28px;border-radius:.35rem}
+      .contact-icon svg{width:14px;height:14px}
+      .contact-item-title{font-size:.75rem;margin-bottom:.08rem}
+      .contact-item-value{font-size:.7rem;line-height:1.4}
+      .contact-map-col{min-height:180px;border-radius:.5rem}
+      .contact-map-col iframe{min-height:180px}
+
+      /* ! ─ FOOTER ─ */
+      .footer{padding:.875rem 0 .5rem}
+      .logo-image{width:140px;height:60px}
+      .footer-grid{grid-template-columns:repeat(3,1fr);gap:.6rem;text-align:center}
+      .footer-brand{max-width:100%}
+      .footer-brand p{font-size:.65rem;margin-bottom:.5rem}
+      .social-link{width:24px;height:24px}
+      .social-links{justify-content:center}
+      .footer-title{font-size:.7rem;margin-bottom:.4rem}
+      .footer-links{gap:.25rem}
+      .footer-links a{font-size:.65rem}
+      .footer-bottom{padding-top:.5rem;gap:.2rem}
+      .footer-bottom p{font-size:.6rem}
+
+      /* ─ SOBRE ─ */
+      .about-image{height:260px}
+
+      /* ─ MENU ─ */
+      .menu-btn .icon{width:22px;height:22px}
+
+      /* ! ─ CONTAINER ─ */
+      .container{padding:0 .55rem}
+    }
+
+
   </style>
 </head>
-<body>
+<body> 
 
-<!-- ═══ HEADER ═══ -->
-<header class="header" id="header">
-  <div class="header-content container">
-    <a href="../index.html" class="logo">
-      <img src="../assets/fotos/logo.png" alt="SobralBus" class="logo-image">
-    </a>
-    <nav class="nav">
-      <a href="../index.html#inicio">Início</a>
-      <a href="../index.html#catalogo">Catálogo</a>
-      <a href="../index.html#sobre">Sobre</a>
-      <a href="../index.html#servicos">Serviços</a>
-      <a href="../index.html#contato">Contato</a>
-    </nav>
-    <div class="header-contact">
-      <svg class="icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-      (88) 9 9693-0066
+<!-- ! Header -->
+<!-- ! Header -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="../index.html" class="logo">
+        <img loading="lazy" decoding="async" src="../assets/fotos/logo.png" alt="SobralBus" class="logo-image">
+      </a>
+      <nav class="nav">
+        <a href="../index.html#inicio">Início</a>
+        <a href="../index.html#catalogo">Catálogo</a>
+        <a href="../index.html#sobre">Sobre</a>
+        <a href="../index.html#servicos">Serviços</a>
+        <a href="../index.html#contato">Contato</a>
+      </nav>
+      <div class="header-contact">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        (88) 9 9693-0066
+      </div>
+      <button class="menu-btn" id="menuBtn">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
     </div>
-    <button class="menu-btn" id="menuBtn" aria-label="Menu">
-      <svg class="icon-sm" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-  </div>
-</header>
+  </header>
 
 <!-- Mobile Menu -->
-<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-header">
-    <span>Menu</span>
-    <button class="mobile-menu-close" id="mobileMenuClose">✕</button>
+<!-- ! Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <span>Menu</span>
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="../index.html#inicio" class="mobile-menu-link">Início</a>
+      <a href="../index.html#catalogo" class="mobile-menu-link">Catálogo</a>
+      <a href="../index.html#servicos" class="mobile-menu-link">Serviços</a>
+      <a href="../index.html#sobre" class="mobile-menu-link">Sobre</a>
+      <a href="../index.html#contato" class="mobile-menu-link">Contato</a>
+    </div>
   </div>
-  <div class="mobile-menu-links">
-    <a href="../index.html#inicio" class="mobile-menu-link">Início</a>
-    <a href="../index.html#catalogo" class="mobile-menu-link">Catálogo</a>
-    <a href="../index.html#sobre" class="mobile-menu-link">Sobre Nós</a>
-    <a href="../index.html#servicos" class="mobile-menu-link">Serviços</a>
-    <a href="../index.html#contato" class="mobile-menu-link">Contato</a>
-  </div>
-</div>
+
+  
 
 <!-- ═══ BREADCRUMB ═══ -->
 <div class="breadcrumb">
@@ -363,7 +510,7 @@
             </div>
             <div class="contact-row">
               <div class="contact-icon"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-              <div><div class="contact-label">Horário</div><div class="contact-val">Seg–Sex: 8h–18h · Sáb: 8h–12h</div></div>
+              <div><div class="contact-label">Horário</div><div class="contact-val">Seg–Sex: 8h–17h · Sáb: 8h–12h</div></div>
             </div>
           </div>
         </div>
@@ -418,168 +565,199 @@
   </div>
 </main>
 
-<!-- ═══ FOOTER ═══ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="../index.html" style="display:block;margin-bottom:1rem">
-          <img src="../assets/fotos/logo.png" alt="SobralBus" style="width:200px;height:44px;object-fit:contain">
-        </a>
-        <p>A maior plataforma de venda de ônibus do Nordeste. Qualidade, confiança e as melhores condições do mercado.</p>
-        <div class="social-links">
-          <a href="http://www.facebook.com/share/1GzW3VzFEu/" class="social-link"><svg class="icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-          <a href="https://www.instagram.com/sobralbusoficial" class="social-link"><svg class="icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="https://wa.me/5588996930066" class="social-link"><svg class="icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></a>
+<!-- ! Footer -->
+<!-- ! Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="../index.html#inicio" class="logo">
+            <img loading="lazy" decoding="async" src="../assets/fotos/logo.png" alt="SobralBus" class="logo-image">
+          </a>
+          <p>A maior plataforma de venda de ônibus do Nordeste. Qualidade, confiança e as melhores condições do mercado.</p>
+          <div class="social-links">
+            <a href="http://www.facebook.com/share/1GzW3VzFEu/?mibextid=wwXIfr" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/sobralbusoficial" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://wa.link/6x54k1" class="social-link">
+              <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Links Rápidos</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html#inicio">Início</a></li>
+            <li><a href="../index.html#catalogo">Catálogo</a></li>
+            <li><a href="../index.html#sobre">Sobre Nós</a></li>
+            <li><a href="../index.html#servicos">Serviços</a></li>
+            <li><a href="../index.html#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Categorias</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html#catalogo" onclick="filterByCategory('rodoviario')">Rodoviário</a></li>
+            <li><a href="../index.html#catalogo" onclick="filterByCategory('urbano')">Urbano</a></li>
+            <li><a href="../index.html#catalogo" onclick="filterByCategory('micro')">Micro</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contato</h4>
+          <ul class="footer-links">
+            <li><a href="https://wa.me/5588996930066" target="_blank">(88) 9 9693-0066</a></li>
+            <li><a href="mailto: oscarsobralense@gmail.com" target="_blank">oscarsobralense@gmail.com</a></li>
+          </ul>
         </div>
       </div>
-      <div>
-        <h4 class="footer-title">Links Rápidos</h4>
-        <ul class="footer-links">
-          <li><a href="../index.html#inicio">Início</a></li>
-          <li><a href="../index.html#catalogo">Catálogo</a></li>
-          <li><a href="../index.html#sobre">Sobre Nós</a></li>
-          <li><a href="../index.html#servicos">Serviços</a></li>
-          <li><a href="../index.html#contato">Contato</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="footer-title">Categorias</h4>
-        <ul class="footer-links">
-          <li><a href="../index.html#catalogo">Rodoviário</a></li>
-          <li><a href="../index.html#catalogo">Urbano</a></li>
-          <li><a href="../index.html#catalogo">Micro</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="footer-title">Contato</h4>
-        <ul class="footer-links">
-          <li><a href="https://wa.me/5588996930066" target="_blank">(88) 9 9693-0066</a></li>
-          <li><a href="mailto:oscarsobralense@gmail.com">oscarsobralense@gmail.com</a></li>
-        </ul>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sobralbus. Todos os direitos reservados.</p>
+        <p>Desenvolvido com dedicação para o mercado de transportes</p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 Sobralbus. Todos os direitos reservados.</p>
-      <p>Desenvolvido com dedicação para o mercado de transportes</p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
 <!-- WhatsApp Float -->
-<a href="https://wa.me/5588996930066" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
-  <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-</a>
+<!-- ! WhatsApp Float Button -->
+  <a href="https://wa.me/5588996930066" target="_blank" class="whatsapp-float">
+    <svg class="icon-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lb-close" onclick="closeLightbox()">✕</button>
-  <button class="lb-nav prev" onclick="changeSlide(-1)">‹</button>
-  <img id="lbImg" src="" alt="Foto ampliada">
-  <button class="lb-nav next" onclick="changeSlide(1)">›</button>
-</div>
+  <script>
+// === HEADER SCROLL SHADOW ONLY ===
+      const header = document.querySelector('.header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 10) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
 
-<script>
-  const images = [
-    "../assets/micro-onibus/comil-pia/A.png",
-    "../assets/micro-onibus/comil-pia/B.png",
-    "../assets/micro-onibus/comil-pia/C.png",
-    "../assets/micro-onibus/comil-pia/D.png",
-    "../assets/micro-onibus/comil-pia/E.png",
-    "../assets/micro-onibus/comil-pia/F.png",
-    "../assets/micro-onibus/comil-pia/G.png",
-    "../assets/micro-onibus/comil-pia/H.png",
-    "../assets/micro-onibus/comil-pia/I.png",
-    "../assets/micro-onibus/comil-pia/J.png",
-    "../assets/micro-onibus/comil-pia/K.png",
-    "../assets/micro-onibus/comil-pia/L.png",
-    "../assets/micro-onibus/comil-pia/M.png",
-    "../assets/micro-onibus/comil-pia/O.png",
-    "../assets/micro-onibus/comil-pia/P.png",
-    "../assets/micro-onibus/comil-pia/Q.png",
-    "../assets/micro-onibus/comil-pia/R.png",
-  ];
-  let current = 0;
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileMenuClose = document.getElementById('mobileMenuClose');
+      const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
 
-  function buildThumbs() {
-    document.getElementById('thumbs').innerHTML = images.map((src,i) =>
-      `<div class="thumb ${i===0?'active':''}" onclick="goTo(${i})">
-        <img src="${src}" alt="Foto ${i+1}" loading="lazy" onerror="this.parentElement.style.opacity='.3'">
-      </div>`
-    ).join('');
-  }
+      if (menuBtn) menuBtn.addEventListener('click', function() {
+        mobileMenuOverlay.classList.add('active');
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
 
-  function updateGallery() {
-    document.getElementById('mainImg').src = images[current];
-    document.getElementById('lbImg').src = images[current];
-    document.getElementById('counter').textContent = `${current+1} / ${images.length}`;
-    document.querySelectorAll('.thumb').forEach((t,i) => t.classList.toggle('active', i===current));
-    // scroll thumb into view
-    const thumbs = document.getElementById('thumbs');
-    const activeThumb = thumbs.children[current];
-    if(activeThumb) activeThumb.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
-  }
-
-  function changeSlide(dir) { current=(current+dir+images.length)%images.length; updateGallery(); }
-  function goTo(i) { current=i; updateGallery(); }
-  function openLightbox() { document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
-
-  // ── Header hide-on-scroll ──
-  (function() {
-    const header = document.getElementById('header');
-    let lastY = 0, ticking = false;
-    function onScroll() {
-      const y = window.scrollY;
-      if(!ticking) {
-        requestAnimationFrame(function() {
-          header.classList.toggle('hidden', y > lastY && y > 80);
-          header.classList.toggle('scrolled', y > 10);
-          lastY = y;
-          ticking = false;
-        });
-        ticking = true;
+      // ! closeMobileMenu
+      function closeMobileMenu() {
+        mobileMenuOverlay.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
       }
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-  })();
 
-  // ── Touch swipe ──
-  (function() {
-    let startX = 0;
-    const gallery = document.querySelector('.gallery');
-    gallery.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
-    gallery.addEventListener('touchend', e => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if(Math.abs(dx) > 40) changeSlide(dx < 0 ? 1 : -1);
-    });
-  })();
+      if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+      if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+      mobileMenuLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
 
-  document.addEventListener('DOMContentLoaded', function() {
-    buildThumbs();
-    // Mobile menu
-    const menuBtn = document.getElementById('menuBtn');
-    const overlay = document.getElementById('mobileMenuOverlay');
-    const menu = document.getElementById('mobileMenu');
-    const closeBtn = document.getElementById('mobileMenuClose');
-    function openMobile() { overlay.classList.add('active'); menu.classList.add('active'); document.body.style.overflow='hidden'; }
-    function closeMobile() { overlay.classList.remove('active'); menu.classList.remove('active'); document.body.style.overflow=''; }
-    if(menuBtn) menuBtn.addEventListener('click', openMobile);
-    if(closeBtn) closeBtn.addEventListener('click', closeMobile);
-    if(overlay) overlay.addEventListener('click', closeMobile);
-    document.querySelectorAll('.mobile-menu-link').forEach(l => l.addEventListener('click', closeMobile));
-    // Keyboard lightbox
-    document.addEventListener('keydown', e => {
-      const lb = document.getElementById('lightbox');
-      if(!lb.classList.contains('open')) return;
-      if(e.key==='ArrowLeft') changeSlide(-1);
-      if(e.key==='ArrowRight') changeSlide(1);
-      if(e.key==='Escape') closeLightbox();
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('searchInput').value = '';
+          document.getElementById('typeSelect').value = '';
+          const filter = this.getAttribute('data-filter');
+          document.querySelectorAll('.bus-card').forEach(card => {
+            card.style.display = (filter === 'todos' || card.getAttribute('data-type') === filter) ? '' : 'none';
+          });
+        });
+      });
+
+      // ! performSearch
+      function performSearch() {
+        let searchTerm = document.getElementById('searchInput').value.toLowerCase().trim().replace(/^#/, '');
+        const categoryFilter = document.getElementById('typeSelect').value;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-filter') === (categoryFilter || 'todos')) btn.classList.add('active');
+        });
+        document.querySelectorAll('.bus-card').forEach(card => {
+          const cardType = card.getAttribute('data-type');
+          const title = card.querySelector('.bus-card-title').textContent.toLowerCase();
+          const brand = card.querySelector('.bus-card-brand').textContent.toLowerCase();
+          const matchesCategory = !categoryFilter || cardType === categoryFilter;
+          const matchesKeyword = !searchTerm || title.includes(searchTerm) || brand.includes(searchTerm) || cardType === searchTerm;
+          card.style.display = (matchesCategory && matchesKeyword) ? '' : 'none';
+        });
+      }
+
+      const searchBtn = document.getElementById('searchBtn');
+      if (searchBtn) searchBtn.addEventListener('click', function() {
+        performSearch();
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { performSearch(); document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' }); }
+      });
+
+      const typeSelect = document.getElementById('typeSelect');
+      if (typeSelect) typeSelect.addEventListener('change', function() {
+        performSearch();
+        document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // ! filterByCategory
+      window.filterByCategory = function(category) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-filter') === category) btn.classList.add('active');
+        });
+        document.querySelectorAll('.bus-card').forEach(card => {
+          card.style.display = (category === 'todos' || card.getAttribute('data-type') === category) ? '' : 'none';
+        });
+      };
+
+      // ! animateNumber
+      function animateNumber(element, target, suffix = '', duration = 1800) {
+        const startTime = performance.now();
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const current = Math.floor(progress * target);
+          element.textContent = current + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            element.textContent = target + suffix;
+          }
+        }
+        requestAnimationFrame(update);
+      }
+
+      const countObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = Number(counter.dataset.countTarget) || 0;
+            const suffix = counter.dataset.countSuffix || '';
+            animateNumber(counter, target, suffix, 1200);
+            observer.unobserve(counter);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      document.querySelectorAll('[data-count-target]').forEach(counter => countObserver.observe(counter));
     });
-    document.getElementById('lightbox').addEventListener('click', e => {
-      if(e.target===document.getElementById('lightbox')) closeLightbox();
-    });
-  });
-</script>
+  </script>
 </body>
 </html>
