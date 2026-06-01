@@ -421,7 +421,7 @@
     /* ── Mobile: header menor, espaço menor ── */
     @media(max-width:645px){
       :root{ --header-h:54px }
-      body{padding-top:20px}
+      body{padding-top:12px}
       .header-content{padding:.3rem 0 .3rem 0}
       .logo{margin-left:-2.5rem}
       .logo-image{width:240px;max-height:48px}
@@ -446,9 +446,9 @@
 
       /* Galeria */
       .gallery-nav-btn{display:none}
-      .gallery-main-img{height:200px;object-fit:contain}
-      .gallery-thumbs{padding:.15rem 0 .2rem;gap:.18rem;margin-top:-.1rem}
-      .thumb{width:48px;height:34px}
+      .gallery-main-img{height:320px;width:100%;object-fit:cover;object-position:center}
+      .gallery-thumbs{display:flex;gap:.35rem;padding:.2rem 0 0;overflow-x:auto;background:transparent;position:relative;z-index:2;justify-content:flex-start;margin-top:0;border-top:none}
+      .thumb{width:56px;height:42px;border:none;background:transparent;box-shadow:none;border-radius:0}
 
       /* Info do veículo */
       .bus-info{padding:.45rem .5rem}
@@ -501,7 +501,7 @@
       /* Relacionados */
       .related{margin-top:1rem}
       .related-title{font-size:.82rem;margin-bottom:.55rem}
-      .related-grid{grid-template-columns:1fr;gap:.5rem}
+      .related-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
       .mini-card img{height:84px}
       .mini-card-body{padding:.45rem;display:flex;flex-direction:column;justify-content:space-between;flex:1}
       .mini-card-title{font-size:.62rem;margin-bottom:.05rem}
