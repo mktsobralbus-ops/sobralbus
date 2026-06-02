@@ -123,10 +123,6 @@
     .mini-card{background:var(--card);border:1px solid var(--border);border-radius:.65rem;overflow:hidden;transition:all .3s cubic-bezier(.4,.0,.2,1);cursor:pointer;box-shadow:0 8px 24px rgba(30,64,175,.08);position:relative;display:flex;flex-direction:column}
     .mini-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(30,64,175,.12);border-color:var(--primary-light)}
     .mini-card img{width:100%;height:130px;object-fit:cover;object-position:center}
-    .mini-card-img-wrap{width:100%;height:130px;overflow:hidden;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative;flex-shrink:0}
-    .mini-card-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-    .mini-card-img-wrap::after{content:'';position:absolute;inset:0;background:inherit;background-size:cover;background-position:center;filter:blur(18px) brightness(.85) saturate(1.2);transform:scale(1.1);z-index:0}
-    .mini-card-img-wrap img{position:relative;z-index:1;object-fit:cover}
     .mini-card-body{padding:.6rem;display:flex;flex-direction:column;justify-content:space-between;flex:1}
     .mini-card-title{font-size:.78rem;font-weight:800;margin-bottom:.15rem;line-height:1.3}
     .mini-card-specs{font-size:.7rem;color:var(--muted);margin-bottom:.4rem}
@@ -168,7 +164,7 @@
     /* Touch swipe hint */
     .gallery-nav-btn{display:none}
     .gallery{min-height:220px;background:#f8fafc}
-    .gallery-main-img{height:auto;max-height:300px;object-fit:contain;background:#f8fafc;padding:8px 4px}
+    .gallery-main-img{height:auto;max-height:300px;object-fit:cover;background:#f8fafc;padding:8px 4px}
     .gallery-thumbs{padding:.35rem 0 .4rem;gap:.3rem;margin-top:-.1rem}
     .thumb{width:56px;height:40px}
     .detail-page{padding:.8rem 0 1.4rem}
@@ -189,7 +185,7 @@
     .spec-row{padding:.45rem .75rem;font-size:.72rem}
     .contact-box-body{padding:.75rem .9rem;gap:.55rem}
     .mini-card{border-radius:.75rem;display:flex;flex-direction:column;}
-    .mini-card img{height:110px;object-fit:cover}
+    .mini-card img{height:auto;object-fit:cover}
     .mini-card-body{padding:.55rem;display:flex;flex-direction:column;justify-content:space-between;flex:1;}
     .mini-card-title{font-size:.7rem}
     .mini-card-specs{font-size:.62rem}
@@ -585,8 +581,8 @@
 
     /* ── Mobile: header menor, espaço menor ── */
     @media(max-width:645px){
-      :root{ --header-h:54px }
-      body{padding-top:54px}
+      :root{ --header-h:28px }
+      body{padding-top:20px}
       .header-content{padding:.3rem 0 .3rem 0}
       .logo{margin-left:-2.5rem}
       .logo-image{width:240px;max-height:48px}
@@ -595,7 +591,7 @@
       .breadcrumb{ margin-top:calc(var(--header-h) - .25rem); padding:.18rem 0; }
       .breadcrumb-inner{ font-size:.65rem; gap:.24rem; }
       .detail-page{ padding:.7rem 0 2rem }
-      .gallery-main-img{ height:auto;max-height:300px;object-fit:contain;background:#f8fafc;padding:8px 4px }
+      .gallery-main-img{ height:auto;max-height:300px;object-fit:cover;background:#f8fafc;padding:1px 1px }
       .gallery-thumbs{ padding:.28rem 0 .33rem; gap:.28rem; margin-top:-.1rem }
       .thumb{ width:56px; height:40px }
       .bus-info{ padding:.8rem .9rem }
@@ -615,12 +611,12 @@
       .gallery-main-img{
         height:auto;
         min-height:220px;
-        max-height:320px;
+        max-height:auto;
         width:100%;
-        object-fit:contain;
+        object-fit:cover;
         object-position:center;
         background:#f8fafc;
-        padding:8px 4px
+        padding:1px 1px
       }
 
       /* Thumbs — limpos, sem borda, maiores e visíveis */
