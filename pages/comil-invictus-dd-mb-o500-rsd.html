@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comil Invictus DD — MB O500 RSDD — Sobralbus</title>
+  <title>Comil Invictus DD — MB O500 RSD — Sobralbus</title>
    <link rel="icon" type="image/png" href="assets/fotos/rodoviario.png">
   <meta name="description" content="Detalhes completos do Comil Invictus DD — MB O500 RSDD. Veja fotos, especificações e entre em contato com a Sobralbus.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,10 +123,10 @@
     .mini-card{background:var(--card);border:1px solid var(--border);border-radius:.65rem;overflow:hidden;transition:all .3s cubic-bezier(.4,.0,.2,1);cursor:pointer;box-shadow:0 8px 24px rgba(30,64,175,.08);position:relative;display:flex;flex-direction:column}
     .mini-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(30,64,175,.12);border-color:var(--primary-light)}
     .mini-card img{width:100%;height:130px;object-fit:cover;object-position:center}
-    .mini-card-body{padding:.6rem;display:flex;flex-direction:column;justify-content:space-between;flex:1}
+    .mini-card-body{padding:.6rem;display:flex;flex-direction:column;flex:1}
     .mini-card-title{font-size:.78rem;font-weight:800;margin-bottom:.15rem;line-height:1.3}
-    .mini-card-specs{font-size:.7rem;color:var(--muted);margin-bottom:.4rem}
-    .mini-card-price{font-size:.9rem;font-weight:900;color:var(--primary);margin-bottom:.55rem}
+    .mini-card-specs{font-size:.7rem;color:var(--muted);margin-bottom:.4rem;flex:1}
+    .mini-card-price{font-size:.9rem;font-weight:900;color:var(--primary);margin-bottom:.55rem;margin-top:auto}
     .mini-card .btn{font-size:.76rem;padding:.55rem .75rem;margin-top:auto}
 
     /* Footer */
@@ -147,6 +147,24 @@
     @media(min-width:768px){.footer-bottom{flex-direction:row;justify-content:space-between;text-align:left}}
     .footer-bottom p{color:rgba(255,255,255,.45);font-size:.75rem}
 
+
+    /* ── SCROLL REVEAL ── */
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .65s cubic-bezier(.22,.68,.38,1), transform .65s cubic-bezier(.22,.68,.38,1)
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0)
+    }
+    .reveal-delay-1{ transition-delay:.08s }
+    .reveal-delay-2{ transition-delay:.16s }
+    .reveal-delay-3{ transition-delay:.24s }
+    .reveal-delay-4{ transition-delay:.32s }
+    .reveal-delay-5{ transition-delay:.40s }
+    .reveal-delay-6{ transition-delay:.48s }
+
     /* WhatsApp Float */
     .whatsapp-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.4);animation:pulse-wa 2.5s infinite}
     @keyframes pulse-wa{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.4)}50%{box-shadow:0 4px 28px rgba(37,211,102,.65)}}
@@ -161,8 +179,20 @@
     .lb-nav.next{right:1rem}
 
     @media(max-width:640px){
-    /* Touch swipe hint */
-    .gallery-nav-btn{display:none}
+    /* Touch swipe hint — setas visíveis no mobile */
+    .gallery-nav-btn{
+      display:flex;
+      width:28px;height:28px;
+      border-radius:50%;
+      background:rgba(255,255,255,.88);
+      border:none;
+      cursor:pointer;
+      align-items:center;justify-content:center;
+      color:var(--foreground);
+      box-shadow:0 2px 8px rgba(0,0,0,.18);
+      font-size:.95rem;
+      backdrop-filter:blur(4px)
+    }
     .gallery{min-height:220px;background:#f8fafc}
     .gallery-main-img{height:auto;max-height:300px;object-fit:cover;background:#f8fafc;padding:8px 4px}
     .gallery-thumbs{padding:.35rem 0 .4rem;gap:.3rem;margin-top:-.1rem}
@@ -181,7 +211,7 @@
     .price-note{text-align:left}
     .price-cta{padding:.85rem .95rem;gap:.35rem}
     .price-box,.specs-box,.contact-box{border-radius:.75rem}
-    .price-value{font-size:1.45rem}
+    .price-value{font-size:1.75rem}
     .spec-row{padding:.45rem .75rem;font-size:.72rem}
     .contact-box-body{padding:.75rem .9rem;gap:.55rem}
     .mini-card{border-radius:.75rem;display:flex;flex-direction:column;}
@@ -201,7 +231,7 @@
     .header{background:linear-gradient(135deg, rgba(18,41,95,.96), rgba(37,84,162,.94));backdrop-filter:saturate(180%) blur(16px);position:fixed;top:0;left:0;right:0;z-index:100;transition:transform .28s ease,box-shadow .28s ease,background .4s ease;will-change:transform}
     .header.hidden{transform:translateY(-100%)}
     .header.scrolled{box-shadow:0 4px 22px rgba(0,0,0,.22)}
-    body{padding-top:32px}
+    body{padding-top:0}
     .header .container{padding-left:0;padding-right:1rem}
     .header-content{display:flex;align-items:center;justify-content:space-between;padding:.45rem 0 .45rem 0;min-height:var(--header-h);gap:.9rem;position:relative}
     .logo{display:flex;align-items:center;gap:.5rem;margin:0;margin-left:-2.75rem}
@@ -234,16 +264,18 @@
     .mobile-menu-overlay.active{display:block;opacity:1}
 
     .mobile-menu{
-      position:fixed;top:0;right:-100%;
+      position:fixed;top:0;right:0;
       width:300px;max-width:88%;height:100%;
-      background:linear-gradient(160deg,#0d1f45 0%,#0a1730 55%,#061020 100%);
+      background:linear-gradient(160deg,#2554A2 0%,#1e4a96 40%,#163d82 100%);
       z-index:201;
-      transition:right .42s cubic-bezier(.22,.68,.38,1);
+      transform:translateX(110%);
+      transition:transform .46s cubic-bezier(.22,.68,.38,1), opacity .38s ease;
+      opacity:0;
       overflow-y:auto;overflow-x:hidden;
       box-shadow:-20px 0 60px rgba(0,0,0,.45);
       display:flex;flex-direction:column
     }
-    .mobile-menu.active{right:0}
+    .mobile-menu.active{transform:translateX(0);opacity:1}
 
     /* Animated lines background */
     .mobile-menu::before{
@@ -270,7 +302,7 @@
     .mobile-menu::after{
       content:'';position:absolute;top:-80px;right:-40px;
       width:240px;height:240px;
-      background:radial-gradient(circle,rgba(59,111,212,.28) 0%,transparent 70%);
+      background:radial-gradient(circle,rgba(180,210,255,.18) 0%,transparent 70%);
       pointer-events:none;z-index:0;
       animation:mm-glow 4s ease-in-out infinite alternate
     }
@@ -283,7 +315,12 @@
       display:flex;align-items:center;justify-content:space-between;
       padding:1.25rem 1.1rem 1rem;
       position:relative;z-index:1;
-      border-bottom:1px solid rgba(255,255,255,.06)
+      border-bottom:1px solid rgba(255,255,255,.06);
+      opacity:0;transform:translateY(-10px);
+      animation:mm-header-in .5s .18s cubic-bezier(.22,.68,.38,1) forwards
+    }
+    @keyframes mm-header-in{
+      to{opacity:1;transform:translateY(0)}
     }
     .mobile-menu-logo{
       display:flex;align-items:center;gap:.5rem
@@ -381,7 +418,12 @@
     .mobile-menu-footer{
       padding:.85rem 1.1rem 1.1rem;
       position:relative;z-index:1;
-      border-top:1px solid rgba(255,255,255,.06)
+      border-top:1px solid rgba(255,255,255,.06);
+      opacity:0;transform:translateY(10px);
+      animation:mm-footer-in .5s .55s cubic-bezier(.22,.68,.38,1) forwards
+    }
+    @keyframes mm-footer-in{
+      to{opacity:1;transform:translateY(0)}
     }
     .mobile-menu-whats{
       display:flex;align-items:center;gap:.65rem;
@@ -400,7 +442,7 @@
     .mobile-menu-whats svg{width:18px;height:18px;fill:#25D366;flex-shrink:0}
 
     /* compact gallery and layout */
-    .breadcrumb{margin-top:calc(var(--header-h) - .35rem);padding:.35rem 0}
+    .breadcrumb{margin-top:var(--header-h);padding:.35rem 0}
     .breadcrumb-inner{gap:.33rem}
     .detail-page{padding:1.2rem 0 2.5rem}
     .detail-layout{gap:1.2rem}
@@ -421,7 +463,7 @@
     .mobile-price-value{font-size:1.15rem;font-weight:900;color:var(--foreground)}
     .mobile-price-note{font-size:.65rem;color:var(--muted)}
     .price-label{font-size:.75rem;font-weight:700;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
-    .price-value{font-size:2.2rem;font-weight:900;line-height:1;margin-top:.15rem}
+    .price-value{font-size:2.6rem;font-weight:900;line-height:1;margin-top:.15rem}
     .price-note{font-size:.8rem;opacity:.82;margin-top:.3rem;text-align:center}
     .price-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.95rem;justify-content:center}
     .price-pill{background:rgba(255,255,255,.18);padding:.24rem .7rem;border-radius:999px;font-size:.68rem;font-weight:700}
@@ -547,18 +589,18 @@
       .contact-map-col iframe{min-height:180px}
 
       /* ! ─ FOOTER ─ */
-      .footer{padding:2rem 0 .4rem;margin-top:1.5rem}
-      .logo-image{width:125px;height:70px}
-      .footer-grid{grid-template-columns:repeat(3,1fr);gap:.2rem .75rem;margin-bottom:.6rem;text-align:center}
+      .footer{padding:.9rem 0 .45rem;margin-top:1.2rem}
+      .logo-image{width:90px;height:auto;max-height:28px}
+      .footer-grid{grid-template-columns:repeat(4,1fr);gap:.15rem .4rem;margin-bottom:.4rem;text-align:left;align-items:start}
       .footer-brand{max-width:100%;grid-column:1}
-      .footer-brand p{font-size:.6rem;margin-bottom:.35rem;line-height:1.45}
-      .social-link{width:22px;height:22px}
-      .social-links{justify-content:flex-start;gap:.35rem}
-      .footer-title{font-size:.65rem;margin-bottom:.3rem}
-      .footer-links{gap:.2rem}
-      .footer-links a{font-size:.62rem}
-      .footer-bottom{padding-top:.4rem;gap:.15rem}
-      .footer-bottom p{font-size:.57rem}
+      .footer-brand p{display:none}
+      .social-link{width:18px;height:18px}
+      .social-links{justify-content:flex-start;gap:.25rem;margin-top:.2rem}
+      .footer-title{font-size:.58rem;margin-bottom:.2rem;letter-spacing:.02em}
+      .footer-links{gap:.15rem}
+      .footer-links a{font-size:.55rem}
+      .footer-bottom{padding-top:.3rem;gap:.1rem}
+      .footer-bottom p{font-size:.5rem}
 
       /* ─ SOBRE ─ */
       .about-image{height:260px}
@@ -572,24 +614,41 @@
 
 
   
-    /* ── BREADCRUMB: espaço mínimo abaixo do header ── */
+    /* ── BREADCRUMB: colado no header ── */
     .breadcrumb{
-      margin-top:calc(var(--header-h) - .35rem);
-      padding:.35rem 0;
+      margin-top:var(--header-h);
+      padding:.25rem 0;
     }
-    :root{ --header-h:60px }
+    :root{ --header-h:56px }
+    /* ── BREADCRUMB DESKTOP — sempre visível ── */
+    @media(min-width:646px){
+      .breadcrumb{
+        display:block;
+        margin-top:var(--header-h);
+        padding:.4rem 0;
+        background:var(--card);
+        border-bottom:1px solid var(--border)
+      }
+      .breadcrumb-inner{
+        font-size:.8rem;
+        gap:.45rem;
+        flex-wrap:nowrap
+      }
+    }
+
 
     /* ── Mobile: header menor, espaço menor ── */
     @media(max-width:645px){
-      :root{ --header-h:28px }
-      body{padding-top:20px}
+      :root{ --header-h:44px }
+      body{padding-top:0}
       .header-content{padding:.3rem 0 .3rem 0}
       .logo{margin-left:-2.5rem}
       .logo-image{width:240px;max-height:48px}
       .menu-btn{padding:.4rem .55rem}
       .menu-btn .icon{width:16px;height:16px}
-      .breadcrumb{ margin-top:calc(var(--header-h) - .25rem); padding:.18rem 0; }
-      .breadcrumb-inner{ font-size:.65rem; gap:.24rem; }
+      .breadcrumb{ margin-top:var(--header-h); padding:.12rem 0; }
+      .breadcrumb-inner{ font-size:.65rem; gap:.2rem; flex-wrap:nowrap; overflow:hidden; white-space:nowrap; }
+      .breadcrumb-inner span:last-child{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:calc(100vw - 130px); }
       .detail-page{ padding:.7rem 0 2rem }
       .gallery-main-img{ height:auto;max-height:300px;object-fit:cover;background:#f8fafc;padding:1px 1px }
       .gallery-thumbs{ padding:.28rem 0 .33rem; gap:.28rem; margin-top:-.1rem }
@@ -598,7 +657,16 @@
       .bus-title{ font-size:1.03rem }
       .detail-layout{ gap:.8rem }
       .footer{padding:.65rem 0 .35rem}
+      .footer-grid{grid-template-columns:repeat(4,1fr);gap:.12rem .35rem;margin-bottom:.3rem}
+      .footer-brand p{display:none}
+      .logo-image{width:80px;height:auto;max-height:24px}
+      .footer-title{font-size:.55rem;margin-bottom:.18rem}
+      .footer-links a{font-size:.52rem}
+      .footer-links{gap:.12rem}
+      .social-link{width:16px;height:16px}
+      .social-links{gap:.2rem}
       .footer-bottom{padding-top:.35rem}
+      .footer-bottom p{font-size:.48rem}
     }
 
   
@@ -606,7 +674,22 @@
     @media(max-width:639px){
 
       /* Galeria — imagem principal completa, sem corte */
-      .gallery-nav-btn{display:none}
+      .gallery-nav-btn{
+        display:flex;
+        width:28px;height:28px;
+        border-radius:50%;
+        background:rgba(255,255,255,.88);
+        border:none;
+        cursor:pointer;
+        align-items:center;justify-content:center;
+        color:var(--foreground);
+        box-shadow:0 2px 8px rgba(0,0,0,.18);
+        font-size:.95rem;
+        backdrop-filter:blur(4px);
+        transition:background .2s, transform .2s;
+        z-index:5
+      }
+      .gallery-nav-btn:active{transform:scale(.92);background:rgba(255,255,255,1)}
       .gallery{min-height:unset;background:#f8fafc}
       .gallery-main-img{
         height:auto;
@@ -678,14 +761,15 @@
       .container{padding:0 .3rem}
 
       /* Breadcrumb */
-      .breadcrumb{padding:.2rem 0}
-      .breadcrumb-inner{font-size:.6rem;gap:.18rem}
+      .breadcrumb{margin-top:var(--header-h);padding:.2rem 0}
+      .breadcrumb-inner{font-size:.6rem;gap:.18rem;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}
+      .breadcrumb-inner span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:calc(100vw - 120px)}
 
       /* Sidebar — preço */
       .price-box{border-radius:.7rem}
       .price-header{padding:.45rem .55rem;grid-template-columns:1fr;gap:.45rem}
       .price-label{font-size:.5rem}
-      .price-value{font-size:1.05rem}
+      .price-value{font-size:1.35rem}
       .price-note{font-size:.52rem;margin-top:.08rem;text-align:center}
       .price-pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.1rem;margin-top:.3rem;justify-items:center}
       .price-pill{font-size:.48rem;padding:.07rem .26rem;white-space:nowrap}
@@ -778,14 +862,14 @@
 <!-- ! Mobile Menu -->
   <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
   <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-header">
-      <div class="mobile-menu-logo">
-        <div class="mobile-menu-logo-dot"></div>
-        <span class="mobile-menu-title">Sobralbus</span>
+    <div class="mobile-menu-header" style="flex-direction:column;align-items:stretch;padding:1.4rem 1.1rem 1rem;gap:.6rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <img src="../assets/fotos/logo.png" alt="SobralBus" style="width:160px;height:auto;max-height:42px;object-fit:contain;filter:brightness(0) invert(1);">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
       </div>
-      <button class="mobile-menu-close" id="mobileMenuClose">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
+      <p style="font-size:.72rem;color:rgba(255,255,255,.55);font-weight:500;letter-spacing:.03em;margin:0;line-height:1.4;">Especializados em conforto e segurança.</p>
     </div>
     <div class="mobile-menu-links">
       <a href="../index.html#inicio" class="mobile-menu-link" style="animation-delay:.08s">
@@ -848,7 +932,7 @@
     <div class="detail-layout">
 
       <!-- ─── COLUNA PRINCIPAL ─── -->
-      <div class="box-main">
+      <div class="box-main reveal">
         <!-- Galeria -->
         <div class="gallery">
           <img id="mainImg" src="../assets/rodoviario/acz/A.png" alt="Comil Invictus DD — MB O500 RSDD" class="gallery-main-img" onclick="openLightbox()" onerror="this.style.opacity='.2'">
@@ -863,7 +947,7 @@
         <div class="gallery-thumbs" id="thumbs"></div>
 
         <!-- Info -->
-        <div class="bus-info">
+        <div class="bus-info reveal">
           <h1 class="bus-title">Comil Invictus DD — MB O500 RSDD</h1>
           <p class="bus-brand">Marca: Comil &nbsp;·&nbsp; Chassi: Mercedes-Benz</p>
           <div class="quick-specs">
@@ -877,10 +961,10 @@
       </div>
 
       <!-- ─── SIDEBAR ─── -->
-      <div class="sidebar">
+      <div class="sidebar reveal reveal-delay-2">
 
         <!-- Preço + CTAs -->
-        <div class="price-box">
+        <div class="price-box reveal">
           <div class="price-header">
             <div class="price-label">Valor do veículo</div>
             <div class="price-value">R$ 1.150.000</div>
@@ -906,7 +990,7 @@
         </div>
 
         <!-- Ficha Técnica -->
-        <div class="specs-box">
+        <div class="specs-box reveal reveal-delay-1">
           <div class="specs-box-header">📋 Ficha Técnica</div>
           <div class="specs-list">
             <div class="spec-row"><span class="spec-key">Carroceria</span><span class="spec-val">Comil Invictus DD</span></div>
@@ -929,7 +1013,7 @@
         </div>
 
         <!-- Contato -->
-        <div class="contact-box">
+        <div class="contact-box reveal reveal-delay-2">
           <div class="contact-box-header">📞 Fale com um especialista</div>
           <div class="contact-box-body">
             <div class="contact-row">
@@ -951,11 +1035,11 @@
     </div><!-- /detail-layout -->
 
     <!-- ─── RELACIONADOS ─── -->
-    <div class="related">
+    <div class="related reveal">
       <h2 class="related-title">Outros ônibus disponíveis</h2>
       <div class="related-grid">
         
-        <div class="mini-card">
+        <div class="mini-card reveal">
           <div class="mini-card-img-wrap"><img src="../assets/rodoviario/fzj/A.png" alt="Marcopolo Paradiso New G7 1800 DD" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">Marcopolo Paradiso New G7 1800 DD</div>
@@ -964,7 +1048,7 @@
             <a href="marcopolo-paradiso-new-g7-sobralbus.html" class="btn btn-primary">Ver Detalhes</a>
           </div>
         </div>
-        <div class="mini-card">
+        <div class="mini-card reveal reveal-delay-1">
           <div class="mini-card-img-wrap"><img src="../assets/rodoviario/g7-1050/B.png" alt="Marcopolo G7 1050" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">Marcopolo G7 1050</div>
@@ -973,7 +1057,7 @@
             <a href="marcopolo-g7-1050.html" class="btn btn-primary">Ver Detalhes</a>
           </div>
         </div>
-        <div class="mini-card">
+        <div class="mini-card reveal reveal-delay-2">
           <div class="mini-card-img-wrap"><img src="../assets/urbano/urbano-b-rodoviario/A.png" alt="Neobus MB OF 1721" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">Neobus MB OF 1721</div>
@@ -982,7 +1066,7 @@
             <a href="urbano-neobus-mb-of-1721-169-sobralbus.html" class="btn btn-primary">Ver Detalhes</a>
           </div>
         </div>
-        <div class="mini-card">
+        <div class="mini-card reveal reveal-delay-3">
           <div class="mini-card-img-wrap"><img src="../assets/urbano/urbano-torino/A.png" alt="Marcopolo Torino MB OF 1722" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">Marcopolo Torino MB OF 1722</div>
@@ -1204,11 +1288,8 @@
       mobileMenu.classList.add('active');
       document.body.style.overflow='hidden';
       // restart stagger animations
-      document.querySelectorAll('.mobile-menu-link').forEach(l => {
-        l.style.animation = 'none';
-        l.offsetHeight; // reflow
-        l.style.animation = '';
-      });
+      const resetEls = document.querySelectorAll('.mobile-menu-link, .mobile-menu-header, .mobile-menu-footer');
+      resetEls.forEach(l => { l.style.animation='none'; l.offsetHeight; l.style.animation=''; });
     }
     function closeMM() { mobileMenuOverlay.classList.remove('active'); mobileMenu.classList.remove('active'); document.body.style.overflow=''; }
 
@@ -1231,9 +1312,18 @@
         else img.addEventListener('load', applyBg);
       });
     });
+
+    // ── SCROLL REVEAL ─────────────────────────────
+    (function(){
+      const obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin:'0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+    })();
+
   </script>
 
 </body>
 </html>
-
-
