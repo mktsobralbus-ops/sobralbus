@@ -36,7 +36,7 @@
     .bc-sep{opacity:.4}
 
     /* ═══ MAIN ═══ */
-    .detail-page{padding:1.75rem 0 3.5rem}
+    .detail-page{padding:.9rem 0 2rem}
     .detail-layout{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start;grid-auto-flow:dense}
     @media(max-width:1024px){.detail-layout{grid-template-columns:1fr}}
 
@@ -45,7 +45,7 @@
 
     /* Galeria */
     .gallery{position:relative;overflow:hidden;transition:box-shadow .3s cubic-bezier(.4,.0,.2,1);display:flex;align-items:center;justify-content:center;padding:0;background:#f8fafc;border:none;border-radius:0}
-    .gallery-main-img{width:100%;height:650px;object-fit:contain;cursor:zoom-in;transition:transform .35s ease;will-change:transform;display:block;border-radius:0;border:none;background:#f8fafc}
+    .gallery-main-img{width:100%;height:420px;object-fit:cover;object-position:center;cursor:zoom-in;transition:transform .35s ease;will-change:transform;display:block;border-radius:0;border:none;background:#f8fafc}
     .gallery-main-img:hover{transform:scale(1.01)}
     .gallery-badges{position:absolute;top:.875rem;left:.875rem;display:flex;gap:0.5rem}
     .badge{padding:.22rem .65rem;border-radius:1rem;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
@@ -148,22 +148,27 @@
     .footer-bottom p{color:rgba(255,255,255,.45);font-size:.75rem}
 
 
-    /* ── SCROLL REVEAL ── */
-    .reveal{
-      opacity:0;
-      transform:translateY(10px);
-      transition:opacity .22s cubic-bezier(.25,.46,.45,.94), transform .22s cubic-bezier(.25,.46,.45,.94)
+    /* ── SCROLL REVEAL — só mobile ── */
+    @media(max-width:1023px){
+      .reveal{
+        opacity:0;
+        transform:translateY(10px);
+        transition:opacity .22s cubic-bezier(.25,.46,.45,.94), transform .22s cubic-bezier(.25,.46,.45,.94)
+      }
+      .reveal.visible{
+        opacity:1;
+        transform:translateY(0)
+      }
+      .reveal-delay-1{ transition-delay:.04s }
+      .reveal-delay-2{ transition-delay:.08s }
+      .reveal-delay-3{ transition-delay:.12s }
+      .reveal-delay-4{ transition-delay:.16s }
+      .reveal-delay-5{ transition-delay:.20s }
+      .reveal-delay-6{ transition-delay:.24s }
     }
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0)
+    @media(min-width:1024px){
+      .reveal{ opacity:1 !important; transform:none !important; transition:none !important }
     }
-    .reveal-delay-1{ transition-delay:.04s }
-    .reveal-delay-2{ transition-delay:.08s }
-    .reveal-delay-3{ transition-delay:.12s }
-    .reveal-delay-4{ transition-delay:.16s }
-    .reveal-delay-5{ transition-delay:.20s }
-    .reveal-delay-6{ transition-delay:.24s }
 
     /* WhatsApp Float */
     .whatsapp-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.4);animation:pulse-wa 2.5s infinite}
@@ -447,8 +452,8 @@
     .detail-page{padding:1.2rem 0 2.5rem}
     .detail-layout{gap:1.2rem}
     .box-main{border-radius:1rem}
-    .gallery{position:relative;overflow:hidden;min-height:520px;border-radius:0;background:#f8fafc}
-    .gallery-main-img{width:100%;height:100%;object-fit:contain;object-position:center;cursor:zoom-in;transition:transform .35s ease;will-change:transform;display:block;border-radius:0;border:none}
+    .gallery{position:relative;overflow:hidden;border-radius:0;background:#f8fafc}
+    .gallery-main-img{width:100%;height:420px;object-fit:cover;object-position:center;cursor:zoom-in;transition:transform .35s ease;will-change:transform;display:block;border-radius:0;border:none}
     .gallery-main-img:hover{transform:scale(1.01)}
     .gallery-thumbs{display:flex;gap:.6rem;padding:.55rem 0 .45rem;overflow-x:auto;background:transparent;position:relative;z-index:2;border-top:1px solid rgba(37,84,162,.08);justify-content:flex-start;margin-top:-.15rem}
     .thumb{flex-shrink:0;width:96px;height:70px;border-radius:.95rem;padding:6px;overflow:hidden;border:1px solid rgba(37,84,162,.14);cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;background:#fff;box-shadow:0 4px 16px rgba(15,32,75,.08)}
