@@ -1,0 +1,111 @@
+// ═══════════════════════════════════════════════════
+//  SOBRALBUS — BANCO DE DADOS DOS VEÍCULOS
+//  Edite este arquivo para adicionar/remover veículos
+//  Execute: node gerar-paginas.js após cada alteração
+// ═══════════════════════════════════════════════════
+
+const catalogo = [
+  {
+    slug:       "comil-invictus-dd-mb-o500-rsd",
+    titulo:     "Comil Invictus DD — MB O500 RSDD",
+    marca:      "Comil",
+    chassi:     "Mercedes-Benz O500 RSDD",
+    ano:        2019,
+    km:         "1.000.000",
+    lugares:    43,
+    preco:      "R$ 1.150.000",
+    precoNum:   1150000,
+    categoria:  "rodoviario",
+    destaque:   true,
+    ativo:      true,
+    imagem:     "../assets/rodoviario/acz/A.png",
+    ogImagem:   "https://sobralbus.com.br/assets/rodoviario/acz/A.png",
+    andares:    "2 (Duplo DD)",
+    descricao:  "Um dos ônibus mais robustos do catálogo. O chassi Mercedes-Benz O500 RSDD combinado com a carroceria Comil Invictus configuração Double Deck entrega alto padrão de conforto. Ideal para linhas interestaduais de longa distância.",
+    specs: [
+      { key: "Carroceria",       val: "Comil Invictus DD" },
+      { key: "Chassi",           val: "Mercedes-Benz O500 RSDD" },
+      { key: "Ano",              val: "2019" },
+      { key: "Quilometragem",    val: "1.000.000 km" },
+      { key: "Andares",          val: "2 (Duplo DD)" },
+      { key: "Lugares",          val: "43" },
+      { key: "Ar-condicionado",  val: "Duplo" },
+      { key: "Combustível",      val: "Diesel" },
+      { key: "Câmbio",           val: "Automático" },
+      { key: "Tipo",             val: "Rodoviário" },
+      { key: "Estado",           val: "Sobral — CE" },
+      { key: "Documentação",     val: "Em dia" },
+    ],
+    badges:     ["Destaque", "Rodoviário"],
+    imagens:    [
+      "../assets/rodoviario/acz/A.png",
+      "../assets/rodoviario/acz/B.png",
+      "../assets/rodoviario/acz/C.png",
+    ],
+    whatsapp:   "Olá,%20tenho%20interesse%20no%20Comil%20Invictus%20DD%20MB%20O500%20RSDD",
+  },
+  {
+    slug:       "marcopolo-g7-1050",
+    titulo:     "Marcopolo G7 1050 — MB O500 RS",
+    marca:      "Marcopolo",
+    chassi:     "Mercedes-Benz O500 RS 360 CV",
+    ano:        2019,
+    km:         "1.000.000",
+    lugares:    44,
+    preco:      "R$ 420.000",
+    precoNum:   420000,
+    categoria:  "rodoviario",
+    destaque:   false,
+    ativo:      true,
+    imagem:     "../assets/rodoviario/g7-1050/B.png",
+    ogImagem:   "https://sobralbus.com.br/assets/rodoviario/g7-1050/B.png",
+    andares:    "1",
+    descricao:  "Ônibus rodoviário Marcopolo G7 1050 sobre chassi Mercedes-Benz O500 RS 360 CV. Ideal para linhas interestaduais e fretamento executivo.",
+    specs: [
+      { key: "Carroceria",       val: "Marcopolo G7 1050" },
+      { key: "Chassi",           val: "Mercedes-Benz O500 RS 360 CV" },
+      { key: "Ano",              val: "2019" },
+      { key: "Quilometragem",    val: "1.000.000 km" },
+      { key: "Lugares",          val: "44" },
+      { key: "Combustível",      val: "Diesel" },
+      { key: "Câmbio",           val: "Mecânico" },
+      { key: "Tipo",             val: "Rodoviário" },
+      { key: "Estado",           val: "Sobral — CE" },
+      { key: "Documentação",     val: "Em dia" },
+    ],
+    badges:     ["Rodoviário"],
+    imagens:    [
+      "../assets/rodoviario/g7-1050/B.png",
+      "../assets/rodoviario/g7-1050/C.png",
+    ],
+    whatsapp:   "Olá,%20tenho%20interesse%20no%20Marcopolo%20G7%201050",
+  },
+  // ── ADICIONE NOVOS VEÍCULOS AQUI ──
+  // {
+  //   slug:      "nome-do-arquivo-sem-html",
+  //   titulo:    "Nome Completo do Veículo",
+  //   marca:     "Marca",
+  //   chassi:    "Chassi Completo",
+  //   ano:       2020,
+  //   km:        "000.000",
+  //   lugares:   00,
+  //   preco:     "R$ 000.000",
+  //   precoNum:  000000,
+  //   categoria: "rodoviario", // rodoviario | urbano | micro
+  //   destaque:  false,
+  //   ativo:     true,
+  //   imagem:    "../assets/CATEGORIA/PASTA/A.png",
+  //   ogImagem:  "https://sobralbus.com.br/assets/CATEGORIA/PASTA/A.png",
+  //   descricao: "Descrição do veículo...",
+  //   specs: [
+  //     { key: "Carroceria", val: "..." },
+  //     { key: "Chassi",     val: "..." },
+  //     // adicione as linhas da ficha técnica
+  //   ],
+  //   badges:  ["Destaque", "Rodoviário"],
+  //   imagens: ["../assets/CATEGORIA/PASTA/A.png"],
+  //   whatsapp: "Olá,%20tenho%20interesse%20no%20MODELO",
+  // },
+];
+
+module.exports = { catalogo };
