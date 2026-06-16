@@ -80,32 +80,65 @@ const catalogo = [
     ],
     whatsapp:   "Olá,%20tenho%20interesse%20no%20Marcopolo%20G7%201050",
   },
-  // ── ADICIONE NOVOS VEÍCULOS AQUI ──
-  // {
-  //   slug:      "nome-do-arquivo-sem-html",
-  //   titulo:    "Nome Completo do Veículo",
-  //   marca:     "Marca",
-  //   chassi:    "Chassi Completo",
-  //   ano:       2020,
-  //   km:        "000.000",
-  //   lugares:   00,
-  //   preco:     "R$ 000.000",
-  //   precoNum:  000000,
-  //   categoria: "rodoviario", // rodoviario | urbano | micro
-  //   destaque:  false,
-  //   ativo:     true,
-  //   imagem:    "../assets/CATEGORIA/PASTA/A.png",
-  //   ogImagem:  "https://sobralbus.com.br/assets/CATEGORIA/PASTA/A.png",
-  //   descricao: "Descrição do veículo...",
-  //   specs: [
-  //     { key: "Carroceria", val: "..." },
-  //     { key: "Chassi",     val: "..." },
-  //     // adicione as linhas da ficha técnica
-  //   ],
-  //   badges:  ["Destaque", "Rodoviário"],
-  //   imagens: ["../assets/CATEGORIA/PASTA/A.png"],
-  //   whatsapp: "Olá,%20tenho%20interesse%20no%20MODELO",
-  // },
+    {
+    slug:       "comil-pia-micro",
+    titulo:     "Comil Piá - MB - LO 916",
+    marca:      "Comil",
+    chassi:     "Mercedes-Benz LO 916",
+    ano:        2016,
+    km:         "394.590",
+    lugares:    31,
+    preco:      "320.000",
+    precoNum:   320000,
+    categoria:  "micro",
+    destaque:   false,
+    ativo:      true,
+    imagem:     "../assets/micro-onibus/comil-pia/A.png",
+    ogImagem:   "https://sobralbus.com.br/assets/micro-onibus/comil-pia/A.png",
+    descricao:  `Comil Piá 2016 – Mercedes-Benz LO 916
+Ideal para fretamento, transporte escolar, turismo e transporte corporativo.
+Capacidade para 31 passageiros + motorista, oferecendo conforto e praticidade.
+Equipado com ar-condicionado Spheros, porta-pacotes interno e cabine cabinada.
+Conta com carregadores USB em todas as poltronas e vidros móveis.
+Possui câmbio mecânico de 5 marchas + ré, garantindo economia e confiabilidade operacional.`,
+    specs: [
+      { key: "Carroceria", val: "Comil" },
+      { key: "Chassi", val: "Mercedes-Benz LO916" },
+      { key: "Ano", val: "2016" },
+      { key: "Quilometragem", val: "394.590" },
+      { key: "Lugares", val: "31" },
+      { key: "Combustível", val: "Diesel" },
+      { key: "Câmbio", val: "Mecânico" },
+      { key: "Tipo", val: "Micro" },
+      { key: "Estado", val: "Sobral — CE" },
+      { key: "Documentação", val: "Em dia" },
+      { key: "Banheiro", val: "Não" },
+      { key: "Carregador", val: "Sim" },
+      { key: "Ar-Condicionado", val: "Sim" },
+    ],
+    badges:     ["Micro"],
+    imagens:    [
+    "../assets/micro-onibus/comil-pia/A.png",
+    "../assets/micro-onibus/comil-pia/B.png",
+    "../assets/micro-onibus/comil-pia/C.png",
+    "../assets/micro-onibus/comil-pia/D.png",
+    "../assets/micro-onibus/comil-pia/E.png",
+    "../assets/micro-onibus/comil-pia/F.png",
+    "../assets/micro-onibus/comil-pia/G.png",
+    "../assets/micro-onibus/comil-pia/H.png",
+    "../assets/micro-onibus/comil-pia/I.png",
+    "../assets/micro-onibus/comil-pia/J.png",
+    "../assets/micro-onibus/comil-pia/K.png",
+    "../assets/micro-onibus/comil-pia/L.png",
+    "../assets/micro-onibus/comil-pia/M.png",
+    "../assets/micro-onibus/comil-pia/N.png",
+    "../assets/micro-onibus/comil-pia/O.png",
+    "../assets/micro-onibus/comil-pia/P.png",
+    "../assets/micro-onibus/comil-pia/Q.png",
+    "../assets/micro-onibus/comil-pia/R.png"
+    ],
+    whatsapp:   "Olá,%20tenho%20interesse%20no%20micro%20Comil%20Piá%202016%20no%20valor%20de%20R$320.000,00.%20Gostaria%20de%20mais%20informações.",
+  },
 ];
 
 module.exports = { catalogo };
