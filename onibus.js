@@ -80,7 +80,7 @@ const catalogo = [
     ],
     whatsapp:   "Olá,%20tenho%20interesse%20no%20Marcopolo%20G7%201050",
   },
-    {
+     {
     slug:       "comil-pia-micro",
     titulo:     "Comil Piá - MB - LO 916",
     marca:      "Comil",
@@ -88,22 +88,17 @@ const catalogo = [
     ano:        2016,
     km:         "394.590",
     lugares:    31,
-    preco:      "320.000",
+    preco:      "R$ 320.000",
     precoNum:   320000,
     categoria:  "micro",
     destaque:   false,
     ativo:      true,
     imagem:     "../assets/micro-onibus/comil-pia/A.png",
     ogImagem:   "https://sobralbus.com.br/assets/micro-onibus/comil-pia/A.png",
-    descricao:  `Comil Piá 2016 – Mercedes-Benz LO 916
-Ideal para fretamento, transporte escolar, turismo e transporte corporativo.
-Capacidade para 31 passageiros + motorista, oferecendo conforto e praticidade.
-Equipado com ar-condicionado Spheros, porta-pacotes interno e cabine cabinada.
-Conta com carregadores USB em todas as poltronas e vidros móveis.
-Possui câmbio mecânico de 5 marchas + ré, garantindo economia e confiabilidade operacional.`,
+    descricao:  "Comil Piá 2016 – Mercedes-Benz LO 916 Ideal para fretamento, transporte escolar, turismo e transporte corporativo. Capacidade para 31 passageiros + motorista, oferecendo conforto e praticidade. Equipado com ar-condicionado Spheros, porta-pacotes interno e cabine cabinada. Conta com carregadores USB em todas as poltronas e vidros móveis. Possui câmbio mecânico de 5 marchas + ré, garantindo economia e confiabilidade operacional.",
     specs: [
       { key: "Carroceria", val: "Comil" },
-      { key: "Chassi", val: "Mercedes-Benz LO916" },
+      { key: "Chassi", val: "Mercedes-Benz 916" },
       { key: "Ano", val: "2016" },
       { key: "Quilometragem", val: "394.590" },
       { key: "Lugares", val: "31" },
@@ -113,8 +108,8 @@ Possui câmbio mecânico de 5 marchas + ré, garantindo economia e confiabilidad
       { key: "Estado", val: "Sobral — CE" },
       { key: "Documentação", val: "Em dia" },
       { key: "Banheiro", val: "Não" },
-      { key: "Carregador", val: "Sim" },
-      { key: "Ar-Condicionado", val: "Sim" },
+      { key: "Carregador USB", val: "Sim" },
+      { key: "Ar-Condicionado", val: "Sim (Spheros)" },
     ],
     badges:     ["Micro"],
     imagens:    [
