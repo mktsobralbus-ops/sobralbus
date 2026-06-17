@@ -9,35 +9,35 @@
   ═══════════════════════════════════════════ -->
 
   <!-- ✏️ Título: Modelo + Chassi + Ano | Preço | Lugares | Sobralbus -->
-  <title>MODELO CHASSI ANO | R$ 000.000 | 00 Lugares | Sobralbus</title>
+  <title>%%SEO_TITLE%%</title>
   <!-- ✏️ -->
-  <meta name="description" content="MODELO com chassi CHASSI, ano ANO, 00 lugares. DIFERENCIAIS. À venda por R$ 000.000. Financiamento e troca aceita. Sobralbus.">
-  <meta name="keywords" content="MODELO à venda, CHASSI seminovo, ônibus ANO nordeste, comprar ônibus Sobralbus">
+  <meta name="description" content="%%SEO_DESC%%">
+  <meta name="keywords" content="%%SEO_KEYWORDS%%">
   <meta name="author" content="Sobralbus">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <!-- ✏️ slug = nome-do-arquivo sem .html -->
-  <link rel="canonical" href="https://sobralbus.com.br/pages/SLUG.html">
+  <link rel="canonical" href="%%CANONICAL%%">
 
   <!-- ═══ OPEN GRAPH ═══ -->
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="Sobralbus">
-  <meta property="og:title" content="MODELO CHASSI ANO — R$ 000.000 | Sobralbus"><!-- ✏️ -->
-  <meta property="og:description" content="MODELO à venda. CHASSI, ANO, 00 lugares. Financiamento e troca aceita."><!-- ✏️ -->
-  <meta property="og:image" content="https://sobralbus.com.br/assets/CATEGORIA/PASTA/A.png"><!-- ✏️ -->
+  <meta property="og:title" content="%%OG_TITLE%%"><!-- ✏️ -->
+  <meta property="og:description" content="%%OG_DESC%%"><!-- ✏️ -->
+  <meta property="og:image" content="%%OG_IMAGE%%"><!-- ✏️ -->
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="MODELO CHASSI ANO — Sobralbus"><!-- ✏️ -->
-  <meta property="og:url" content="https://sobralbus.com.br/pages/SLUG.html"><!-- ✏️ -->
+  <meta property="og:image:alt" content="%%OG_ALT%%"><!-- ✏️ -->
+  <meta property="og:url" content="%%CANONICAL%%"><!-- ✏️ -->
   <meta property="og:locale" content="pt_BR">
-  <meta property="product:price:amount" content="000000"><!-- ✏️ sem pontos -->
+  <meta property="product:price:amount" content="%%PRECO_NUM%%"><!-- ✏️ sem pontos -->
   <meta property="product:price:currency" content="BRL">
   <meta property="product:availability" content="in stock">
 
   <!-- ═══ TWITTER CARD ═══ -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MODELO CHASSI ANO — R$ 000.000"><!-- ✏️ -->
-  <meta name="twitter:description" content="MODELO à venda. 00 lugares, CHASSI, ANO. Sobralbus."><!-- ✏️ -->
-  <meta name="twitter:image" content="https://sobralbus.com.br/assets/CATEGORIA/PASTA/A.png"><!-- ✏️ -->
+  <meta name="twitter:title" content="%%OG_TITLE%%"><!-- ✏️ -->
+  <meta name="twitter:description" content="%%TWITTER_DESC%%"><!-- ✏️ -->
+  <meta name="twitter:image" content="%%OG_IMAGE%%"><!-- ✏️ -->
 
   <!-- ═══ GEO ═══ -->
   <meta name="geo.region" content="BR-CE">
@@ -48,19 +48,19 @@
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "MODELO — CHASSI ANO",<!-- ✏️ -->
-    "description": "DESCRIÇÃO PARA O GOOGLE.",<!-- ✏️ -->
-    "image": ["https://sobralbus.com.br/assets/CATEGORIA/PASTA/A.png"],<!-- ✏️ -->
-    "brand": {"@type":"Brand","name":"MARCA"},<!-- ✏️ -->
-    "manufacturer": {"@type":"Organization","name":"FABRICANTE_CHASSI"},<!-- ✏️ -->
-    "model": "MODELO",<!-- ✏️ -->
-    "vehicleModelDate": "ANO",<!-- ✏️ -->
-    "seatingCapacity": 0,<!-- ✏️ -->
+    "name": "%%TITULO%% %%ANO%%",<!-- ✏️ -->
+    "description": "%%DESCRICAO%%",<!-- ✏️ -->
+    "image": ["%%OG_IMAGE%%"],<!-- ✏️ -->
+    "brand": {"@type":"Brand","name":"%%MARCA%%"},<!-- ✏️ -->
+    "manufacturer": {"@type":"Organization","name":"%%CHASSI_FABRICANTE%%"},<!-- ✏️ -->
+    "model": "%%TITULO%%",<!-- ✏️ -->
+    "vehicleModelDate": "%%ANO%%",<!-- ✏️ -->
+    "seatingCapacity": %%LUGARES%%,<!-- ✏️ -->
     "offers": {
       "@type": "Offer",
-      "url": "https://sobralbus.com.br/pages/SLUG.html",<!-- ✏️ -->
+      "url": "%%CANONICAL%%",<!-- ✏️ -->
       "priceCurrency": "BRL",
-      "price": "000000",<!-- ✏️ -->
+      "price": "%%PRECO_NUM%%",<!-- ✏️ -->
       "priceValidUntil": "2026-12-31",
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
@@ -93,7 +93,7 @@
     "itemListElement": [
       {"@type":"ListItem","position":1,"name":"Início","item":"https://sobralbus.com.br/"},
       {"@type":"ListItem","position":2,"name":"Catálogo","item":"https://sobralbus.com.br/#catalogo"},
-      {"@type":"ListItem","position":3,"name":"MODELO CHASSI","item":"https://sobralbus.com.br/pages/SLUG.html"}<!-- ✏️ -->
+      {"@type":"ListItem","position":3,"name":"MODELO CHASSI","item":"%%CANONICAL%%"}<!-- ✏️ -->
     ]
   }
   </script>
@@ -1045,8 +1045,7 @@
       <span class="bc-sep">›</span>
       <a href="../index.html#catalogo">Catálogo</a>
       <span class="bc-sep">›</span>
-      <span><!-- ✏️ Nome do veículo -->
-      MODELO — CHASSI</span>
+      <span>%%BREADCRUMB%%</span>
     </div>
   </div>
 </div>
@@ -1061,13 +1060,11 @@
       <div class="box-main reveal">
         <!-- Galeria -->
         <div class="gallery">
-          <img id="mainImg" src="../assets/CATEGORIA/PASTA/A.png" alt="CARROCERIA — CHASSI" class="gallery-main-img" onclick="openLightbox()" onerror="this.style.opacity='.2'">
+          <img id="mainImg" src="%%PRIMEIRA_IMAGEM%%" alt="%%TITULO%% %%ANO%% — Sobralbus" class="gallery-main-img" onclick="openLightbox()" onerror="this.style.opacity='.2'">
           <div class="gallery-badges">
-            <!-- ✏️ badges: badge-green=Destaque | badge-blue=CATEGORIA | badge-orange=Urbano | badge-purple=Micro -->
-            <span class="badge badge-green">BADGE_1</span>
-            <span class="badge badge-blue">BADGE_2</span>
+            %%BADGES_HTML%%
           </div>
-          <span class="gallery-counter" id="counter">1 / 11</span>
+          <span class="gallery-counter" id="counter"></span>
           <button class="gallery-nav-btn prev" onclick="changeSlide(-1)">&#8249;</button>
           <button class="gallery-nav-btn next" onclick="changeSlide(1)">&#8250;</button>
         </div>
@@ -1075,18 +1072,15 @@
 
         <!-- Info -->
         <div class="bus-info reveal">
-          <!-- ✏️ -->
-          <h1 class="bus-title">MODELO — CHASSI</h1>
-          <!-- ✏️ -->
-          <p class="bus-brand">Marca: MARCA &nbsp;·&nbsp; Chassi: CHASSI</p>
+          <h1 class="bus-title">%%TITULO%%</h1>
+          <p class="bus-brand">Marca: %%MARCA%% &nbsp;·&nbsp; Chassi: %%CHASSI%%</p>
           <div class="quick-specs">
             <div class="qs-item"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Ano <strong>ANO</strong></div>
-            <div class="qs-item"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> <strong>000.000 km</strong></div>
-            <div class="qs-item"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> <strong>00 lugares</strong></div>
+            <div class="qs-item"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> <strong>%%KM%% km</strong></div>
+            <div class="qs-item"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> <strong>%%LUGARES%% lugares</strong></div>
           </div>
           <p class="desc-title">Sobre este veículo</p>
-          <!-- ✏️ Descrição detalhada do veículo -->
-            <p class="desc-text">DESCRIÇÃO DETALHADA DO VEÍCULO. Fale sobre diferenciais, estado de conservação, equipamentos e uso ideal.</p>
+          <p class="desc-text">%%DESCRICAO%%</p>
         </div>
       </div>
 
@@ -1097,8 +1091,7 @@
         <div class="price-box reveal">
           <div class="price-header">
             <div class="price-label">Valor do veículo</div>
-            <!-- ✏️ -->
-            <div class="price-value">R$ 000.000</div>
+            <div class="price-value">%%PRECO%%</div>
             <div class="price-note">Consulte condições de financiamento</div>
             <div class="price-pills">
               <span class="price-pill">✓ Financiamento</span>
@@ -1107,7 +1100,7 @@
             </div>
           </div>
           <div class="price-cta">
-            <a href="https://wa.me/5588996930066?text=Olá,%20tenho%20interesse%20no%20MODELO" target="_blank" class="btn btn-whats">
+            <a href="https://wa.me/5588996930066?text=%%WHATSAPP%%" target="_blank" class="btn btn-whats">
               <svg class="icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
               Chamar no WhatsApp
             </a>
@@ -1124,21 +1117,7 @@
         <div class="specs-box reveal reveal-delay-1">
           <div class="specs-box-header">📋 Ficha Técnica</div>
           <div class="specs-list">
-            <div class="spec-row"><span class="spec-key">Carroceria</span><span class="spec-val">CARROCERIA</span></div>
-            <div class="spec-row"><span class="spec-key">Chassi</span><span class="spec-val">CHASSI</span></div>
-            <div class="spec-row"><span class="spec-key">Ano</span><span class="spec-val">ANO</span></div>
-            <div class="spec-row"><span class="spec-key">Quilometragem</span><span class="spec-val">000.000 km</span></div>
-            <div class="spec-row"><span class="spec-key">Geladeira</span><span class="spec-val">Sim (nos dois pisos)</span></div>
-            <div class="spec-row"><span class="spec-key">Carregador USB</span><span class="spec-val">Sim (e tipo C)</span></div>
-            <div class="spec-row"><span class="spec-key">Banheiro</span><span class="spec-val">Sim</span></div>
-            <div class="spec-row"><span class="spec-key">Capacidade</span><span class="spec-val">43 passageiros</span></div>
-            <div class="spec-row"><span class="spec-key">Combustível</span><span class="spec-val">Diesel</span></div>
-            <div class="spec-row"><span class="spec-key">Câmbio</span><span class="spec-val">Mecânico</span></div>
-            <div class="spec-row"><span class="spec-key">Ar-condicionado</span><span class="spec-val">Duplo</span></div>
-            <div class="spec-row"><span class="spec-key">Tipo</span><span class="spec-val">CATEGORIA</span></div>
-            <div class="spec-row"><span class="spec-key">Estado</span><span class="spec-val">Ceará — CE</span></div>
-            <div class="spec-row"><span class="spec-key">Documentação</span><span class="spec-val">Em dia</span></div>
-
+%%SPECS_HTML%%
           </div>
         </div>
 
@@ -1280,12 +1259,7 @@
 
   <script>
     // ── GALERIA ──────────────────────────────────
-        const images = [
-    // ✏️ Substitua pelos caminhos reais das imagens
-    "../assets/CATEGORIA/PASTA/A.png",
-    "../assets/CATEGORIA/PASTA/B.png",
-    // adicione mais conforme necessário
-  ];
+        const images = [%%IMAGENS_ARRAY%%];
     let current = 0;
     const mainImgElement = document.getElementById('mainImg');
     if (mainImgElement) {
@@ -1411,7 +1385,7 @@
 
     // ── INIT ──────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
-      buildThumbs();
+      updateGallery();
 
       // Mini-card blur bg: injeta background-image no wrapper para preencher sem cortar
       document.querySelectorAll('.mini-card-img-wrap').forEach(function(wrap) {
