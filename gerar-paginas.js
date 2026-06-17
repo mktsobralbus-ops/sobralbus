@@ -170,4 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
 `;
 
 fs.writeFileSync(CATALOGO_JS, cardsJS, 'utf-8');
-console.log('✅ assets/js/catalogo.js atualizado.');
+console.log('✅ js/catalogo.js atualizado.');
