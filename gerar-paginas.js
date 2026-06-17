@@ -146,12 +146,12 @@ if (!indexHtml.includes('%%CARDS_HTML%%')) {
 }
 
 // ══ 3. GERAR CATALOGO.JS (fallback) ═════════════
-console.log('\n⚙️  Gerando assets/js/catalogo.js...');
+console.log('\n⚙️  Gerando js/catalogo.js...');
 const cardsJS = `// AUTO-GERADO — não edite manualmente
 // Edite onibus.js e rode: node gerar-paginas.js
 const catalogoData = ${JSON.stringify(ativos, null, 2)};
 `;
 fs.writeFileSync(CATALOGO_JS, cardsJS, 'utf-8');
-console.log('  ✓ assets/js/catalogo.js atualizado.');
+console.log('  ✓ js/catalogo.js atualizado.');
 
 console.log('\n✅ Tudo gerado! Próximo passo: git add . && git commit -m "Atualiza catálogo" && git push\n');
