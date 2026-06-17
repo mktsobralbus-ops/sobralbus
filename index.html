@@ -534,29 +534,7 @@
         <button class="filter-btn" data-filter="urbano">Urbano</button>
         <button class="filter-btn" data-filter="micro">Micro</button>
       </div>
-      <div class="bus-grid">
-        <div class="bus-card" data-type="rodoviario">
-          <div class="bus-card-image">
-            <img loading="lazy" decoding="async" src="assets/rodoviario/acz/A.png" alt="Comil Invictus DD - MB O500 RSD">
-            <span class="bus-badge badge-highlight">Destaque</span>
-            <span class="badge-type">Rodoviário</span>
-          </div>
-          <div class="bus-card-content">
-            <h3 class="bus-card-title">Comil Invictus DD - MB O500 RSD</h3>
-            <p class="bus-card-brand">COMIL</p>
-            <div class="bus-card-specs">
-              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>2019</span>
-              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>1.000.000 km</span>
-              <span class="bus-card-spec"><svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>43 lugares</span>
-            </div>
-            <div class="bus-card-price">R$ 1.150.000</div>
-            <div class="bus-card-actions">
-              <a href="pages/comil-invictus-dd-mb-o500-rsd.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
-              <a href="https://wa.me/5588996930066?text=Olá! Tenho interesse no Comil Invictus DD - MB O500 RSD de 2019 no valor de R$1.150.000,00. Gostaria de mais informação." class="btn btn-accent">WhatsApp</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="bus-grid" id="bus-grid">%%CARDS_HTML%%</div>
     </div>
   </section>
 
@@ -813,8 +791,18 @@
           document.querySelectorAll('.bus-card').forEach(card => {
             card.style.display = (filter === 'todos' || card.getAttribute('data-type') === filter) ? '' : 'none';
           });
+          // reveal nos cards visíveis
+          document.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
         });
       });
+
+      // Reveal observer
+      const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.bus-card').forEach(el => revealObs.observe(el));
 
       // ! performSearch
       function performSearch() {
