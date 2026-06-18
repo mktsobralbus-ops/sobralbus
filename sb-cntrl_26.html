@@ -229,6 +229,11 @@
           <p>Visão geral do catálogo Sobralbus</p>
         </div>
         <div class="stats-grid">
+          <div class="stat-card" style="border-left:3px solid var(--green)">
+            <div class="label" style="color:var(--green)">✓ Sincronizado</div>
+            <div class="value" style="font-size:1rem;color:var(--green)">onibus.js</div>
+            <div class="sub">última atualização ao abrir</div>
+          </div>
           <div class="stat-card">
             <div class="label">Total de Veículos</div>
             <div class="value" id="stat-total">—</div>
@@ -392,6 +397,10 @@
 
           <div class="form-actions">
             <button class="btn-primary-sm" onclick="gerarCodigo()">Gerar Código →</button>
+            <small style="display:block;color:var(--muted);font-size:.72rem;margin-top:.8rem;line-height:1.6">
+              Após gerar: cole no <code>onibus.js</code> → rode <code>node gerar-paginas.js</code> → <code>git push</code>.<br>
+              O catálogo do site atualiza automaticamente após o deploy.
+            </small>
             <button class="btn-sm" onclick="limparForm()">Limpar</button>
           </div>
         </div>
@@ -483,8 +492,22 @@ const CREDENCIAIS = {
 };
 
 // Dados simulados (em produção, viria do onibus.js via import ou fetch)
+// ⚠️ Sincronizado com onibus.js — atualize aqui ao adicionar veículos
 const catalogoAdmin = [
-  
+  {
+    "slug": "marcopolo-paradiso-new-g7",
+    "titulo": "Marcopolo Paradiso New G7 1800 DD - MB O500 RSD",
+    "marca": "Marcopolo",
+    "chassi": "Mercedes-Benz O500 RSD",
+    "ano": 2020,
+    "km": "989.000",
+    "lugares": 60,
+    "preco": "R$ 1.350.000",
+    "precoNum": 1350000,
+    "categoria": "rodoviario",
+    "destaque": true,
+    "ativo": true
+  }
 ];
 
 // ─── AUTH ────────────────────────────────────────────

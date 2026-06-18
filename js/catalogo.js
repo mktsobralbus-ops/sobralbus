@@ -1,7 +1,8 @@
-// AUTO-GERADO — não edite manualmente
+// AUTO-GERADO por gerar-paginas.js — não edite manualmente
 // Edite onibus.js e rode: node gerar-paginas.js
 
-const catalogoData = [
+(function() {
+  const dados = [
   {
     "slug": "marcopolo-paradiso-new-g7",
     "titulo": "Marcopolo Paradiso New G7 1800 DD - MB O500 RSD",
@@ -11,155 +12,100 @@ const catalogoData = [
     "km": "989.000",
     "lugares": 60,
     "preco": "R$ 1.350.000",
-    "precoNum": 1350000,
     "categoria": "rodoviario",
     "destaque": true,
-    "ativo": true,
-    "imagem": "..assets/rodoviario/fzj/A.png",
-    "ogImagem": "https://sobralbus.com.br/assets/rodoviario/fzj/A.png",
-    "descricao": "O Marcopolo Paradiso New G7 1800 DD 2019/2020, sobre chassi Mercedes-Benz O500 RSDD, oferece conforto, desempenho e excelente estado de conservação. Conta com 12 poltronas leito total no piso inferior e 48 semi leito no superior, além de ar-condicionado Spheros/Valeo, geladeiras e carregadores USB/USB-C em todas as poltronas. Possui manutenção em dia, pneus dianteiros novos, rodas de alumínio e pintura nova na cor laranja. Seu conjunto garante conforto aos passageiros e eficiência operacional. É ideal para turismo, fretamento executivo e viagens rodoviárias de média e longa distância.",
-    "specs": [
-      {
-        "key": "Carroceria",
-        "val": "Marcopolo Paradiso New G7 1800 DD"
-      },
-      {
-        "key": "Chassi",
-        "val": "Mercedes-Benz O500 RSD"
-      },
-      {
-        "key": "Ano",
-        "val": "2020"
-      },
-      {
-        "key": "Quilometragem",
-        "val": "980.000"
-      },
-      {
-        "key": "Lugares",
-        "val": "60"
-      },
-      {
-        "key": "Combustível",
-        "val": "Diesel"
-      },
-      {
-        "key": "Câmbio",
-        "val": "Mecânico"
-      },
-      {
-        "key": "Tipo",
-        "val": "Rodoviario"
-      },
-      {
-        "key": "Estado",
-        "val": "Sobral — CE"
-      },
-      {
-        "key": "Documentação",
-        "val": "Em dia"
-      },
-      {
-        "key": "Banheiro",
-        "val": "Sim"
-      },
-      {
-        "key": "Carregador USB",
-        "val": "Sim, e tipo C"
-      },
-      {
-        "key": "Ar-condicionado",
-        "val": "Sim (Spheros/Valeo)"
-      },
-      {
-        "key": "Andares",
-        "val": "2 Pisos"
-      },
-      {
-        "key": "Geladeira",
-        "val": "Sim (nos 2 pisos)"
-      }
-    ],
-    "badges": [
-      "Destaque",
-      "Rodoviário"
-    ],
-    "imagens": [
-      "..assets/rodoviario/fzj/A.png",
-      "..assets/rodoviario/fzj/B.png",
-      "..assets/rodoviario/fzj/C.png",
-      "..assets/rodoviario/fzj/D.png",
-      "..assets/rodoviario/fzj/E.png",
-      "..assets/rodoviario/fzj/F.png",
-      "..assets/rodoviario/fzj/G.png",
-      "..assets/rodoviario/fzj/H.png",
-      "..assets/rodoviario/fzj/I.png",
-      "..assets/rodoviario/fzj/J.png",
-      "..assets/rodoviario/fzj/K.png",
-      "..assets/rodoviario/fzj/L.png",
-      "..assets/rodoviario/fzj/M.png",
-      "..assets/rodoviario/fzj/N.png",
-      "..assets/rodoviario/fzj/O.png",
-      "..assets/rodoviario/fzj/P.png",
-      "..assets/rodoviario/fzj/Q.png",
-      "..assets/rodoviario/fzj/R.png",
-      "..assets/rodoviario/fzj/S.png",
-      "..assets/rodoviario/fzj/T.png"
-    ],
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Rodoviario%20Marcopolo%20Paradiso%20New%20G7%201800%20DD,%20no%20valor%20de%20R$%201.350.000,00.%20Gostaria%20de%20mais%20informações."
+    "imagem": "assets/rodoviario/fzj/A.png",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%201800%20DD.%20Gostaria%20de%20mais%20informações."
   }
 ];
 
-function gerarCards(lista) {
-  return lista.map(v => `
-    <div class="bus-card reveal" data-category="${v.categoria}">
-      <div class="card-img-wrap">
-        <img src="${v.imagem.replace('../', '')}" alt="${v.titulo}" loading="lazy" onerror="this.style.opacity='.3'">
-        ${v.destaque ? '<span class="badge-destaque">Destaque</span>' : ''}
-        <span class="badge-cat">${
-          v.categoria === 'rodoviario' ? 'Rodoviário' :
-          v.categoria === 'urbano'     ? 'Urbano'     : 'Micro'
-        }</span>
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">${v.titulo}</h3>
-        <p class="card-meta">Marca: ${v.marca} · Chassi: ${v.chassi}</p>
-        <div class="card-specs">
-          <span>📅 ${v.ano}</span>
-          <span>🔄 ${v.km} km</span>
-          <span>👤 ${v.lugares} lugares</span>
-        </div>
-        <div class="card-price">${v.preco}</div>
-        <div class="card-btns">
-          <a href="pages/${v.slug}.html" class="btn-ver">Ver Detalhes</a>
-          <a href="https://wa.me/5588996930066?text=${v.whatsapp}" target="_blank" class="btn-wpp-card">WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
+  const SVG_CAL  = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+  const SVG_KM   = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>';
+  const SVG_SEAT = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
 
-function filtrarCards(categoria) {
-  const lista = categoria === 'todos'
-    ? catalogoData
-    : catalogoData.filter(v => v.categoria === categoria);
-  document.getElementById('catalogo-grid').innerHTML = gerarCards(lista);
-  document.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
-}
+  function buildCard(v) {
+    const catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
+    const destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
+    return `
+        <div class="bus-card reveal" data-type="${v.categoria}">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="${v.imagem}" alt="${v.titulo}" onerror="this.style.opacity='.2'">
+            ${destBadge}
+            <span class="badge-type">${catName}</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">${v.titulo}</h3>
+            <p class="bus-card-brand">${v.marca}</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec">${SVG_CAL}${v.ano}</span>
+              <span class="bus-card-spec">${SVG_KM}${v.km} km</span>
+              <span class="bus-card-spec">${SVG_SEAT}${v.lugares} lugares</span>
+            </div>
+            <div class="bus-card-price">${v.preco}</div>
+            <div class="bus-card-actions">
+              <a href="pages/${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>`;
+  }
 
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
-  });
-}, { threshold: 0.1 });
+  function renderCards(filtro) {
+    const grid = document.getElementById('bus-grid');
+    if (!grid) return;
+    const lista = filtro === 'todos' ? dados : dados.filter(v => v.categoria === filtro);
+    grid.innerHTML = lista.length
+      ? lista.map(buildCard).join('')
+      : '<p style="grid-column:1/-1;text-align:center;padding:3rem;color:#64748b">Nenhum veículo encontrado.</p>';
+    // Reveal
+    grid.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  filtrarCards('todos');
-  document.querySelectorAll('[data-filter]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      filtrarCards(btn.dataset.filter);
+  // Reveal observer
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+
+  // Inicializar
+  document.addEventListener('DOMContentLoaded', function() {
+    renderCards('todos');
+
+    // Filtros (compatível com data-filter e data-type)
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        // Limpar busca se existir
+        const si = document.getElementById('searchInput');
+        const ts = document.getElementById('typeSelect');
+        if (si) si.value = '';
+        if (ts) ts.value = '';
+        renderCards(this.dataset.filter);
+      });
     });
+
+    // Busca (se existir)
+    function performSearch() {
+      const term = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const cat  = document.getElementById('typeSelect')?.value || '';
+      document.querySelectorAll('[data-filter]').forEach(b => {
+        b.classList.toggle('active', b.dataset.filter === (cat || 'todos'));
+      });
+      const grid = document.getElementById('bus-grid');
+      if (!grid) return;
+      const lista = dados.filter(v => {
+        const matchCat  = !cat || v.categoria === cat;
+        const matchTerm = !term || v.titulo.toLowerCase().includes(term) || v.marca.toLowerCase().includes(term) || v.categoria.includes(term);
+        return matchCat && matchTerm;
+      });
+      grid.innerHTML = lista.length
+        ? lista.map(buildCard).join('')
+        : '<p style="grid-column:1/-1;text-align:center;padding:3rem;color:#64748b">Nenhum veículo encontrado.</p>';
+      grid.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
+    }
+
+    document.getElementById('searchBtn')?.addEventListener('click', performSearch);
+    document.getElementById('searchInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') performSearch(); });
+    document.getElementById('typeSelect')?.addEventListener('change', performSearch);
   });
-});
+})();
