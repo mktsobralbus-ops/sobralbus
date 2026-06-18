@@ -16,6 +16,20 @@
     "destaque": true,
     "imagem": "assets/rodoviario/fzj/A.png",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%201800%20DD.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "comil-invictus-dd-mb-o500",
+    "titulo": "Comil Invictus DD - MB O500 RSD",
+    "marca": "Comil",
+    "chassi": "Mercedes-Benz O500 RSD",
+    "ano": 2019,
+    "km": "1.200.000",
+    "lugares": 43,
+    "preco": "R$ 1.150.000",
+    "categoria": "rodoviario",
+    "destaque": true,
+    "imagem": "assets/rodoviario/acz/A.png",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20ônibus%20rodoviário%20Comil%20Invictus%20DDno%20valor%20de%20R$%201.150.000,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
 

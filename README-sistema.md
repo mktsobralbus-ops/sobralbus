@@ -29,8 +29,8 @@ Acesse via URL direta: `seusite.com/sb-ctrl-2024.html`
 **RENOMEIE o arquivo admin.html antes de publicar!**
 
 Credenciais padrão (troque no arquivo):
-- admin / sb@2024!
-- sobralbus / frota#953
+- admin / sb2026@!
+- sobralbus / sb2026!!
 
 ## Segurança do painel
 
