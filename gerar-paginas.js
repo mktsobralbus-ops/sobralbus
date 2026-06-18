@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
-//  SOBRALBUS — GERADOR v4
+//  SOBRALBUS — GERADOR v5
 //  Uso: node gerar-paginas.js
-//  Gera: páginas produto + catalogo.js (index carrega via JS)
+//  Gera: páginas produto + catalogo.js (index + relacionados)
 // ═══════════════════════════════════════════════════
 
 const fs   = require('fs');
@@ -60,7 +60,9 @@ catalogo.forEach(v => {
     .replaceAll('%%SPECS_HTML%%',       buildSpecsHTML(v.specs))
     .replaceAll('%%PRIMEIRA_IMAGEM%%',  v.imagens[0])
     .replaceAll('%%IMAGENS_ARRAY%%',    buildImgsArray(v.imagens))
-    .replaceAll('%%WHATSAPP%%',         v.whatsapp);
+    .replaceAll('%%WHATSAPP%%',         v.whatsapp)
+    .replaceAll('%%SLUG%%',             v.slug)
+    .replaceAll('%%CATEGORIA%%',        v.categoria);
 
   fs.writeFileSync(path.join(OUTPUT_DIR, `${v.slug}.html`), p, 'utf-8');
   console.log(`  ✓ pages/${v.slug}.html  (${v.imagens.length} fotos | ${v.specs.length} specs)`);
@@ -68,14 +70,13 @@ catalogo.forEach(v => {
 });
 console.log(`  → ${gerados} gerada(s), ${ignorados} ignorada(s).`);
 
-// ══ 2. CATALOGO.JS — carregado pelo index no browser ══
+// ══ 2. CATALOGO.JS — usado pelo index E pelos relacionados ══
 console.log('\n⚙️  Gerando assets/js/catalogo.js...');
 
 const SVG_CAL  = `<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`;
 const SVG_KM   = `<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>`;
 const SVG_SEAT = `<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`;
 
-// Serializar dados para JS (sem imagens e specs para manter leve)
 const dadosCards = ativos.map(v => ({
   slug:       v.slug,
   titulo:     v.titulo,
@@ -96,6 +97,9 @@ const cardsJS = `// AUTO-GERADO por gerar-paginas.js — não edite manualmente
 
 (function() {
   const dados = ${JSON.stringify(dadosCards, null, 2)};
+
+  // Exposto globalmente para uso em outras páginas (ex: relacionados nas páginas produto)
+  window.__sobralbusCatalogo = dados;
 
   const SVG_CAL  = '${SVG_CAL.replace(/'/g, "\\'")}';
   const SVG_KM   = '${SVG_KM.replace(/'/g, "\\'")}';
@@ -130,30 +134,28 @@ const cardsJS = `// AUTO-GERADO por gerar-paginas.js — não edite manualmente
 
   function renderCards(filtro) {
     const grid = document.getElementById('bus-grid');
-    if (!grid) return;
+    if (!grid) return; // estamos numa página produto, não no index
     const lista = filtro === 'todos' ? dados : dados.filter(v => v.categoria === filtro);
     grid.innerHTML = lista.length
       ? lista.map(buildCard).join('')
       : '<p style="grid-column:1/-1;text-align:center;padding:3rem;color:#64748b">Nenhum veículo encontrado.</p>';
-    // Reveal
     grid.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
   }
 
-  // Reveal observer
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
   }, { threshold: 0.08 });
 
-  // Inicializar
   document.addEventListener('DOMContentLoaded', function() {
+    // Só roda a lógica do índice se o grid existir nesta página
+    if (!document.getElementById('bus-grid')) return;
+
     renderCards('todos');
 
-    // Filtros (compatível com data-filter e data-type)
     document.querySelectorAll('[data-filter]').forEach(btn => {
       btn.addEventListener('click', function() {
         document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        // Limpar busca se existir
         const si = document.getElementById('searchInput');
         const ts = document.getElementById('typeSelect');
         if (si) si.value = '';
@@ -162,7 +164,6 @@ const cardsJS = `// AUTO-GERADO por gerar-paginas.js — não edite manualmente
       });
     });
 
-    // Busca (se existir)
     function performSearch() {
       const term = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const cat  = document.getElementById('typeSelect')?.value || '';
@@ -170,7 +171,6 @@ const cardsJS = `// AUTO-GERADO por gerar-paginas.js — não edite manualmente
         b.classList.toggle('active', b.dataset.filter === (cat || 'todos'));
       });
       const grid = document.getElementById('bus-grid');
-      if (!grid) return;
       const lista = dados.filter(v => {
         const matchCat  = !cat || v.categoria === cat;
         const matchTerm = !term || v.titulo.toLowerCase().includes(term) || v.marca.toLowerCase().includes(term) || v.categoria.includes(term);
@@ -190,6 +190,6 @@ const cardsJS = `// AUTO-GERADO por gerar-paginas.js — não edite manualmente
 `;
 
 fs.writeFileSync(CATALOGO_JS, cardsJS, 'utf-8');
-console.log('  ✓ assets/js/catalogo.js gerado.');
+console.log('  ✓ assets/js/catalogo.js gerado (index + relacionados).');
 console.log('\n✅ Pronto! Próximo passo:');
 console.log('   git add . && git commit -m "Atualiza catálogo" && git push\n');

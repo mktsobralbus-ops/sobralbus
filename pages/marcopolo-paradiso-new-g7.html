@@ -1052,7 +1052,7 @@
 
 
 <!-- ═══ DETALHE ═══ -->
-<main class="detail-page">
+<main class="detail-page" data-current-slug="marcopolo-paradiso-new-g7">
   <div class="container">
     <div class="detail-layout">
 
@@ -1161,44 +1161,8 @@
     <!-- ─── RELACIONADOS ─── -->
     <div class="related reveal">
       <h2 class="related-title">Outros ônibus disponíveis</h2>
-      <div class="related-grid">
-        
-        <div class="mini-card reveal">
-          <div class="mini-card-img-wrap"><img src="../assets/rodoviario/fzj/A.png" alt="Marcopolo Paradiso New G7 1800 DD" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
-          <div class="mini-card-body">
-            <div class="mini-card-title">Marcopolo Paradiso New G7 1800 DD</div>
-            <div class="mini-card-specs">2020 · 60 lugares</div>
-            <div class="mini-card-price">R$ 1.350.000</div>
-            <a href="marcopolo-paradiso-new-g7-sobralbus.html" class="btn btn-primary">Ver Detalhes</a>
-          </div>
-        </div>
-        <div class="mini-card reveal reveal-delay-1">
-          <div class="mini-card-img-wrap"><img src="../assets/rodoviario/g7-1050/B.png" alt="Marcopolo G7 1050" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
-          <div class="mini-card-body">
-            <div class="mini-card-title">Marcopolo G7 1050</div>
-            <div class="mini-card-specs">2014 · 50 lugares</div>
-            <div class="mini-card-price">R$ 420.000</div>
-            <a href="marcopolo-g7-1050.html" class="btn btn-primary">Ver Detalhes</a>
-          </div>
-        </div>
-        <div class="mini-card reveal reveal-delay-2">
-          <div class="mini-card-img-wrap"><img src="../assets/urbano/urbano-b-rodoviario/A.png" alt="Neobus MB OF 1721" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
-          <div class="mini-card-body">
-            <div class="mini-card-title">Neobus MB OF 1721</div>
-            <div class="mini-card-specs">2014 · 140.000 km · 44 lugares</div>
-            <div class="mini-card-price">R$ 169.990</div>
-            <a href="urbano-neobus-mb-of-1721-169-sobralbus.html" class="btn btn-primary">Ver Detalhes</a>
-          </div>
-        </div>
-        <div class="mini-card reveal reveal-delay-3">
-          <div class="mini-card-img-wrap"><img src="../assets/urbano/urbano-torino/A.png" alt="Marcopolo Torino MB OF 1722" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
-          <div class="mini-card-body">
-            <div class="mini-card-title">Marcopolo Torino MB OF 1722</div>
-            <div class="mini-card-specs">2011 · 38 lugares</div>
-            <div class="mini-card-price">R$ 115.000</div>
-            <a href="marcopolo-urbano-torino-sobralbus.html" class="btn btn-primary">Ver Detalhes</a>
-          </div>
-        </div>
+      <div class="related-grid" id="related-grid">
+        <p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Carregando outros veículos...</p>
       </div>
     </div>
 
@@ -1445,5 +1409,58 @@
     })();
 
   </script>
+
+<script src="../assets/js/catalogo.js"></script>
+<script>
+  // ── RELACIONADOS: gerado a partir do catalogo.js, excluindo o veículo atual ──
+  document.addEventListener('DOMContentLoaded', function() {
+    const grid = document.getElementById('related-grid');
+    if (!grid) return;
+
+    // Espera o catalogo.js carregar window.__sobralbusCatalogo (exposto pelo catalogo.js)
+    function renderRelated() {
+      const dados = window.__sobralbusCatalogo || [];
+      const slugAtual = document.querySelector('.detail-page')?.dataset.currentSlug || '';
+      const categoriaAtual = 'rodoviario';
+
+      if (!dados.length) {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
+        return;
+      }
+
+      // Prioriza mesma categoria, exclui o atual, limita a 4
+      let candidatos = dados.filter(v => v.slug !== slugAtual);
+      let mesmaCategoria = candidatos.filter(v => v.categoria === categoriaAtual);
+      let outros = candidatos.filter(v => v.categoria !== categoriaAtual);
+      let lista = [...mesmaCategoria, ...outros].slice(0, 4);
+
+      if (!lista.length) {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
+        return;
+      }
+
+      grid.innerHTML = lista.map((v, i) => `
+        <div class="mini-card reveal reveal-delay-${i}">
+          <div class="mini-card-img-wrap"><img src="../${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
+          <div class="mini-card-body">
+            <div class="mini-card-title">${v.titulo}</div>
+            <div class="mini-card-specs">${v.ano} · ${v.km} km · ${v.lugares} lugares</div>
+            <div class="mini-card-price">${v.preco}</div>
+            <a href="${v.slug}.html" class="btn btn-primary">Ver Detalhes</a>
+          </div>
+        </div>
+      `).join('');
+
+      // Reveal
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      grid.querySelectorAll('.mini-card.reveal').forEach(el => obs.observe(el));
+    }
+
+    // catalogo.js expõe window.__sobralbusCatalogo de forma síncrona (script já carregado antes)
+    renderRelated();
+  });
+</script>
 </body>
 </html>
