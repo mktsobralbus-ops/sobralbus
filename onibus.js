@@ -62,58 +62,6 @@ const catalogo = [
     ],
     whatsapp:   "Olá,%20tenho%20interesse%20no%20ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%201800%20DD.%20Gostaria%20de%20mais%20informações.",
   },
-    {
-    slug:       "comil-invictus-dd-mb-o500",
-    titulo:     "Comil Invictus DD - MB O500 RSD",
-    marca:      "Comil",
-    chassi:     "Mercedes-Benz O500 RSD",
-    ano:        2019,
-    km:         "1.200.000",
-    lugares:    43,
-    preco:      "R$ 1.150.000",
-    precoNum:   1150000,
-    categoria:  "rodoviario",
-    destaque:   true,
-    ativo:      true,
-    imagem:     "../assets/rodoviario/acz/A.png",
-    ogImagem:   "https://sobralbus.com.br/assets/rodoviario/acz/A.png",
-    descricao:  `Este Comil Invictus Double Decker, montado sobre o robusto chassi Mercedes-Benz O500 RSDD, oferece alto padrão de conforto, segurança e excelente apresentação visual.
-
-Equipado com 43 poltronas leito total (12 no piso inferior e 31 no piso superior), ar-condicionado, geladeiras nos dois pisos, carregadores USB e Tipo-C em todas as poltronas e rodas de alumínio, proporciona uma experiência premium aos passageiros. Conta ainda com manutenção em dia, pneus dianteiros novos e pintura preta totalmente renovada.
-
-Ideal para operações de turismo interestadual, viagens de longa distância, excursões, transporte executivo e linhas rodoviárias de padrão diferenciado, garantindo conforto, rentabilidade e valorização da frota.`,
-    specs: [
-      { key: "Carroceria", val: "Comil Invictus DD" },
-      { key: "Chassi", val: "Mercedes-Benz" },
-      { key: "Ano", val: "2019" },
-      { key: "Quilometragem", val: "1.200.000" },
-      { key: "Lugares", val: "43 (12 no piso inferior e 31 no piso superior)" },
-      { key: "Combustível", val: "Diesel" },
-      { key: "Câmbio", val: "Mecânico" },
-      { key: "Tipo", val: "Rodoviário" },
-      { key: "Estado", val: "Sobral — CE" },
-      { key: "Documentação", val: "Em dia" },
-      { key: "Ar-Condicionado", val: "Sim" },
-      { key: "Carregador USB", val: "Sim (e tipo C)" },
-      { key: "Banheiro", val: "Sim" },
-      { key: "Geladeira", val: "Sim(nos 2 pisos)" },
-    ],
-    badges:     ["Destaque", "Rodoviário"],
-    imagens:    [
-    "../assets/rodoviario/acz/A.png",
-    "../assets/rodoviario/acz/B.png",
-    "../assets/rodoviario/acz/C.png",
-    "../assets/rodoviario/acz/D.png",
-    "../assets/rodoviario/acz/E.png",
-    "../assets/rodoviario/acz/F.png",
-    "../assets/rodoviario/acz/G.png",
-    "../assets/rodoviario/acz/H.png",
-    "../assets/rodoviario/acz/I.png",
-    "../assets/rodoviario/acz/J.png",
-    "../assets/rodoviario/acz/K.png"
-    ],
-    whatsapp:   "Olá,%20tenho%20interesse%20no%20ônibus%20rodoviário%20Comil%20Invictus%20DDno%20valor%20de%20R$%201.150.000,00.%20Gostaria%20de%20mais%20informações.",
-  },
 ];
 
 module.exports = { catalogo };
