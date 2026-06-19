@@ -193,6 +193,7 @@
   <div class="topbar">
     <div class="topbar-logo">SobralBus · <span>Gestão</span></div>
     <div class="topbar-actions">
+      <span id="sync-status" style="font-size:.72rem;color:var(--muted);padding:.2rem .6rem;background:var(--border);border-radius:2rem">—</span>
       <span class="badge-user" id="badge-user"></span>
       <button class="btn-logout" onclick="fazerLogout()">Sair</button>
     </div>
@@ -277,7 +278,10 @@
         <div class="table-wrap">
           <div class="table-header">
             <h2>Todos os veículos</h2>
-            <button class="btn-primary-sm" onclick="mostrarPagina('novo')">+ Novo Veículo</button>
+            <div style="display:flex;gap:.6rem">
+              <button class="btn-sm" onclick="iniciarAdmin()" title="Recarregar do site">↻ Atualizar</button>
+              <button class="btn-primary-sm" onclick="mostrarPagina('novo')">+ Novo Veículo</button>
+            </div>
           </div>
           <table>
             <thead><tr>
@@ -491,24 +495,8 @@ const CREDENCIAIS = {
   'sobralbus': 'sb2026!!', // pode ter vários usuários
 };
 
-// Dados simulados (em produção, viria do onibus.js via import ou fetch)
-// ⚠️ Sincronizado com onibus.js — atualize aqui ao adicionar veículos
-const catalogoAdmin = [
-  {
-    "slug": "marcopolo-paradiso-new-g7",
-    "titulo": "Marcopolo Paradiso New G7 1800 DD - MB O500 RSD",
-    "marca": "Marcopolo",
-    "chassi": "Mercedes-Benz O500 RSD",
-    "ano": 2020,
-    "km": "989.000",
-    "lugares": 60,
-    "preco": "R$ 1.350.000",
-    "precoNum": 1350000,
-    "categoria": "rodoviario",
-    "destaque": true,
-    "ativo": true
-  }
-];
+// ── Catálogo carregado automaticamente do catalogo.js do site ──
+let catalogoAdmin = []; // preenchido via fetch ao logar
 
 // ─── AUTH ────────────────────────────────────────────
 let usuarioAtual = null;
@@ -552,9 +540,49 @@ function mostrarPagina(id) {
 }
 
 // ─── INICIAR ──────────────────────────────────────────
+// ── Carrega catálogo do site e inicializa o painel ──
 function iniciarAdmin() {
-  // Stats
-  const ativos = catalogoAdmin.filter(v => v.ativo);
+  const statusEl = document.getElementById('sync-status');
+  if (statusEl) statusEl.textContent = 'Carregando...';
+
+  // Tenta ler o catalogo.js do site (relativo à raiz do projeto)
+  // Se o painel estiver na raiz, o caminho é assets/js/catalogo.js
+  // Se o painel estiver em outra pasta, ajuste o caminho abaixo
+  fetch('../assets/js/catalogo.js?v=' + Date.now())
+    .then(r => {
+      if (!r.ok) throw new Error('catalogo.js não encontrado');
+      return r.text();
+    })
+    .then(texto => {
+      // Extrair o array "dados" do catalogo.js usando regex
+      const match = texto.match(/const dados\s*=\s*(\[[\s\S]*?\]);/);
+      if (!match) throw new Error('Formato do catalogo.js não reconhecido');
+      catalogoAdmin = JSON.parse(match[1]);
+      if (statusEl) { statusEl.textContent = '✓ Sincronizado'; statusEl.style.color = 'var(--green)'; }
+      renderAdmin();
+    })
+    .catch(err => {
+      console.warn('Fetch falhou, tentando caminho alternativo...', err);
+      // Tenta caminho alternativo (se painel estiver na raiz)
+      fetch('assets/js/catalogo.js?v=' + Date.now())
+        .then(r => r.text())
+        .then(texto => {
+          const match = texto.match(/const dados\s*=\s*(\[[\s\S]*?\]);/);
+          if (!match) throw new Error('Formato não reconhecido');
+          catalogoAdmin = JSON.parse(match[1]);
+          if (statusEl) { statusEl.textContent = '✓ Sincronizado'; statusEl.style.color = 'var(--green)'; }
+          renderAdmin();
+        })
+        .catch(() => {
+          if (statusEl) { statusEl.textContent = '⚠ catalogo.js não encontrado — rode o gerador'; statusEl.style.color = 'var(--gold)'; }
+          catalogoAdmin = [];
+          renderAdmin();
+        });
+    });
+}
+
+function renderAdmin() {
+  const ativos = catalogoAdmin.filter(v => v.ativo !== false);
   document.getElementById('stat-total').textContent = ativos.length;
   document.getElementById('stat-rod').textContent = ativos.filter(v=>v.categoria==='rodoviario').length;
   document.getElementById('stat-urb').textContent = ativos.filter(v=>v.categoria==='urbano').length;
@@ -562,29 +590,35 @@ function iniciarAdmin() {
 
   // Tabela destaques
   const destaques = ativos.filter(v => v.destaque);
-  document.getElementById('tbl-destaques').innerHTML = destaques.map(v => `
+  document.getElementById('tbl-destaques').innerHTML = destaques.length
+    ? destaques.map(v => `
     <tr>
       <td><strong>${v.titulo}</strong><br><span style="font-size:.75rem;color:var(--muted)">${v.slug}.html</span></td>
       <td><span class="badge badge-blue">${v.categoria}</span></td>
       <td>${v.preco}</td>
       <td><span class="badge badge-green">Ativo</span></td>
-    </tr>`).join('');
+    </tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1rem">Nenhum destaque no momento</td></tr>';
 
   // Tabela veículos
-  document.getElementById('tbl-veiculos').innerHTML = catalogoAdmin.map(v => `
+  document.getElementById('tbl-veiculos').innerHTML = catalogoAdmin.length
+    ? catalogoAdmin.map(v => `
     <tr>
-      <td><strong>${v.titulo}</strong></td>
+      <td><strong>${v.titulo}</strong><br><span style="font-size:.72rem;color:var(--muted)">${v.slug}.html</span></td>
       <td>${v.ano}</td>
       <td>${v.km} km</td>
       <td>${v.preco}</td>
       <td><span class="badge badge-blue">${v.categoria}</span></td>
-      <td><span class="badge ${v.ativo ? 'badge-green' : 'badge-gray'}">${v.ativo ? 'Ativo' : 'Inativo'}</span>
-          ${v.destaque ? '<span class="badge badge-yellow" style="margin-left:.3rem">Destaque</span>' : ''}</td>
       <td>
-        <button class="btn-sm" onclick="editarVeiculo('${v.slug}')">Editar</button>
-        <button class="btn-sm danger" onclick="confirmarRemover('${v.slug}')">Remover</button>
+        <span class="badge ${v.ativo !== false ? 'badge-green' : 'badge-gray'}">${v.ativo !== false ? 'Ativo' : 'Inativo'}</span>
+        ${v.destaque ? '<span class="badge badge-yellow" style="margin-left:.3rem">Destaque</span>' : ''}
       </td>
-    </tr>`).join('');
+      <td>
+        <a href="../pages/${v.slug}.html" target="_blank" class="btn-sm">Ver</a>
+        <button class="btn-sm" onclick="editarVeiculo('${v.slug}')">Editar</button>
+      </td>
+    </tr>`).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:1.5rem">Nenhum veículo — rode <code>node gerar-paginas.js</code> e faça o deploy</td></tr>';
 
   // Specs editor inicial
   adicionarSpecsPadrao();
