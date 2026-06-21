@@ -340,7 +340,7 @@ const CREDENCIAIS = {
 };
 // ═══════════════════════════════════════════════════
 
-let supabase = null;
+let sbClient = null;
 let usuarioAtual = null;
 let veiculoEditandoId = null;
 
@@ -348,7 +348,7 @@ let veiculoEditandoId = null;
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   document.getElementById('config-missing-screen').style.display = 'flex';
 } else {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   document.getElementById('login-screen').style.display = 'flex';
 }
 
@@ -391,7 +391,7 @@ async function carregarVeiculos() {
   const statusEl = document.getElementById('sync-status');
   statusEl.textContent = 'Carregando...';
   try {
-    const { data, error } = await supabase.from('veiculos').select('*').order('criado_em', { ascending: false });
+    const { data, error } = await sbClient.from('veiculos').select('*').order('criado_em', { ascending: false });
     if (error) throw error;
     veiculosCache = data || [];
     statusEl.textContent = '✓ Sincronizado';
@@ -571,9 +571,9 @@ async function salvarVeiculo() {
   try {
     let error;
     if (veiculoEditandoId) {
-      ({ error } = await supabase.from('veiculos').update(payload).eq('id', veiculoEditandoId));
+      ({ error } = await sbClient.from('veiculos').update(payload).eq('id', veiculoEditandoId));
     } else {
-      ({ error } = await supabase.from('veiculos').insert([payload]));
+      ({ error } = await sbClient.from('veiculos').insert([payload]));
     }
     if (error) throw error;
     mostrarToast(veiculoEditandoId ? 'Veículo atualizado!' : 'Veículo adicionado!', 'success');
@@ -591,7 +591,7 @@ async function salvarVeiculo() {
 async function removerVeiculo(id, titulo) {
   if (!confirm(`Remover "${titulo}" permanentemente do banco de dados?\n\nEsta ação não pode ser desfeita. Para apenas ocultar do site, edite o veículo e marque "Ativo: Não".`)) return;
   try {
-    const { error } = await supabase.from('veiculos').delete().eq('id', id);
+    const { error } = await sbClient.from('veiculos').delete().eq('id', id);
     if (error) throw error;
     mostrarToast('Veículo removido.', 'success');
     await carregarVeiculos();
@@ -626,7 +626,7 @@ async function publicarSite() {
 
   try {
     logLine('Buscando veículos ativos...');
-    const { data: ativos, error } = await supabase.from('veiculos').select('*').eq('ativo', true);
+    const { data: ativos, error } = await sbClient.from('veiculos').select('*').eq('ativo', true);
     if (error) throw error;
     logLine(`${ativos.length} veículo(s) encontrado(s).`);
 
