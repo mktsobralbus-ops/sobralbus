@@ -298,6 +298,9 @@
             <div class="info-box"><strong>2. Editar ou remover</strong><br>Na lista de Veículos, use os botões "Editar" ou "Remover" em cada linha.</div>
             <div class="info-box"><strong>3. Publicar no site</strong><br>Depois de fazer suas alterações, vá em "Publicar no Site" e clique no botão. Isso gera as páginas e atualiza o site automaticamente — sem precisar editar nenhum arquivo manualmente.</div>
             <div class="info-box warn"><strong>Sobre este painel</strong><br>Este arquivo não está linkado em nenhuma parte do site. Acesse digitando a URL diretamente. Não compartilhe o link.</div>
+            <div class="info-box"><strong>Sobre o Token do GitHub</strong><br>Na primeira vez que clicar em "Publicar", o painel vai pedir seu GitHub Token. Ele fica salvo só neste navegador (nunca no código). Se quiser trocar ou remover, use o botão abaixo.<br><br>
+              <button class="btn-sm" onclick="if(confirm('Remover o token salvo neste navegador?')){limparGithubToken();mostrarToast('Token removido. Será pedido novamente ao publicar.','success');}">🔑 Remover token salvo</button>
+            </div>
           </div>
         </div>
       </div>
@@ -315,9 +318,20 @@
 const SUPABASE_URL      = 'https://kitolxdypltemtxmysol.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpdG9seGR5cGx0ZW10eG15c29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MzY1MDYsImV4cCI6MjA5NzQxMjUwNn0.B6Vht62s0_33RYKeWF4qERqRIuFGeHv-xZ7Xt7PjPek';
 
-const GITHUB_TOKEN = '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';
-const GITHUB_REPO  = 'mktsobralbus-ops/sobralbus';
-const GITHUB_BRANCH = 'main';      // branch padrão do repo
+const GITHUB_REPO   = 'mktsobralbus-ops/sobralbus';
+const GITHUB_BRANCH = 'main';
+
+// O token NUNCA fica salvo no código — é digitado pelo usuário no navegador
+// e guardado apenas no localStorage do computador dele (nunca vai pro GitHub)
+function getGithubToken() {
+  return localStorage.getItem('sb_github_token') || '';
+}
+function setGithubToken(token) {
+  localStorage.setItem('sb_github_token', token);
+}
+function limparGithubToken() {
+  localStorage.removeItem('sb_github_token');
+}
 
 // Credenciais do painel (login local, independente do Supabase)
 const CREDENCIAIS = {
@@ -591,8 +605,14 @@ async function publicarSite() {
   const btn = document.getElementById('btn-publicar');
   const log = document.getElementById('publicar-log');
 
-  if (!GITHUB_TOKEN || !GITHUB_REPO) {
-    mostrarToast('Configure GITHUB_TOKEN e GITHUB_REPO no início do script.', 'error');
+  let token = getGithubToken();
+  if (!token) {
+    token = prompt('Cole seu GitHub Personal Access Token (ghp_...):\n\nEle ficará salvo apenas neste navegador, nunca no código.');
+    if (!token) { mostrarToast('Publicação cancelada — token não informado.', 'error'); return; }
+    setGithubToken(token);
+  }
+  if (!GITHUB_REPO) {
+    mostrarToast('Configure GITHUB_REPO no início do script.', 'error');
     return;
   }
 
@@ -757,7 +777,7 @@ function gerarCatalogoJS(ativos) {
 // ── GITHUB API ─────────────────────────────────────
 async function githubGetFile(path) {
   const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`, {
-    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    headers: { Authorization: `token ${getGithubToken()}`, Accept: 'application/vnd.github.v3+json' }
   });
   if (!res.ok) throw new Error(`Não foi possível buscar ${path} (${res.status})`);
   const data = await res.json();
@@ -769,7 +789,7 @@ async function githubPutFile(path, content, message) {
   let sha = null;
   try {
     const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+      headers: { Authorization: `token ${getGithubToken()}`, Accept: 'application/vnd.github.v3+json' }
     });
     if (getRes.ok) { const d = await getRes.json(); sha = d.sha; }
   } catch (e) { /* arquivo não existe ainda, ok */ }
@@ -783,7 +803,7 @@ async function githubPutFile(path, content, message) {
 
   const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
     method: 'PUT',
-    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    headers: { Authorization: `token ${getGithubToken()}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
   if (!res.ok) {
