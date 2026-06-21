@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SB · Gestão</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0f1117;
+      --surface: #1a1d27;
+      --border:  #2a2d3e;
+      --primary: #2554A2;
+      --gold:    #c9a84c;
+      --green:   #22c55e;
+      --red:     #ef4444;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* LOGIN */
+    #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 3rem 2.5rem; width: 360px; }
+    .login-logo { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
+    .login-title { font-size: 1.4rem; font-weight: 700; margin-bottom: .4rem; }
+    .login-sub { font-size: .82rem; color: var(--muted); margin-bottom: 2rem; }
+    .field { margin-bottom: 1.2rem; }
+    .field label { display: block; font-size: .78rem; color: var(--muted); margin-bottom: .45rem; letter-spacing: .04em; }
+    .field input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: .75rem 1rem; border-radius: 8px; font-size: .9rem; font-family: 'Inter', sans-serif; transition: border-color .2s; }
+    .field input:focus { outline: none; border-color: var(--primary); }
+    .btn-login { width: 100%; background: var(--primary); color: #fff; border: none; padding: .85rem; border-radius: 8px; font-weight: 600; font-size: .9rem; cursor: pointer; transition: opacity .2s; margin-top: .5rem; }
+    .btn-login:hover { opacity: .88; }
+    .login-error { color: var(--red); font-size: .78rem; margin-top: .8rem; display: none; }
+
+    /* ADMIN */
+    #admin-screen { display: none; }
+    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: .9rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .topbar-logo { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .topbar-logo span { color: var(--gold); }
+    .topbar-actions { display: flex; gap: .8rem; align-items: center; }
+    #sync-status { font-size: .72rem; padding: .2rem .6rem; background: var(--border); border-radius: 2rem; color: var(--muted); }
+    .badge-user { font-size: .72rem; background: var(--border); padding: .3rem .75rem; border-radius: 2rem; color: var(--muted); }
+    .btn-logout { font-size: .75rem; color: var(--muted); background: none; border: 1px solid var(--border); padding: .3rem .8rem; border-radius: 6px; cursor: pointer; transition: all .2s; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 57px); }
+    .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; }
+    .sidebar-section { padding: .3rem 1.2rem; font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-top: 1.2rem; margin-bottom: .3rem; }
+    .sidebar a { display: flex; align-items: center; gap: .7rem; padding: .65rem 1.2rem; color: var(--muted); font-size: .85rem; text-decoration: none; cursor: pointer; border-left: 2px solid transparent; transition: all .2s; }
+    .sidebar a:hover, .sidebar a.active { color: var(--text); border-left-color: var(--primary); background: rgba(37,84,162,.1); }
+
+    .main { padding: 2rem; overflow-y: auto; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .page-header h1 { font-size: 1.4rem; font-weight: 700; }
+    .page-header p { font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; }
+    .stat-card .label { font-size: .72rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: .5rem; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; }
+    .stat-card .sub { font-size: .75rem; color: var(--muted); margin-top: .3rem; }
+
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .table-header { padding: 1rem 1.4rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .table-header h2 { font-size: .9rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: .75rem 1.2rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+    td { padding: .85rem 1.2rem; font-size: .84rem; border-bottom: 1px solid rgba(42,45,62,.5); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .badge { font-size: .65rem; padding: .2rem .55rem; border-radius: 3px; font-weight: 600; }
+    .badge-green { background: rgba(34,197,94,.15); color: var(--green); }
+    .badge-blue  { background: rgba(37,84,162,.2); color: #7da8e8; }
+    .badge-gray  { background: var(--border); color: var(--muted); }
+    .badge-yellow { background: rgba(201,168,76,.15); color: var(--gold); }
+
+    .btn-sm { font-size: .72rem; padding: .3rem .7rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--border); background: none; color: var(--muted); transition: all .2s; margin-right: .3rem; }
+    .btn-sm:hover { border-color: var(--primary); color: var(--text); }
+    .btn-sm.danger:hover { border-color: var(--red); color: var(--red); }
+    .btn-primary-sm { background: var(--primary); color: #fff; border: none; padding: .5rem 1.1rem; border-radius: 7px; font-size: .8rem; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+    .btn-primary-sm:hover { opacity: .85; }
+    .btn-primary-sm:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-publish { background: var(--green); color: #fff; border: none; padding: .55rem 1.3rem; border-radius: 7px; font-size: .82rem; font-weight: 700; cursor: pointer; transition: opacity .2s; display: flex; align-items: center; gap: .5rem; }
+    .btn-publish:hover { opacity: .85; }
+    .btn-publish:disabled { opacity: .4; cursor: not-allowed; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-full { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; }
+    .form-group label { font-size: .75rem; color: var(--muted); letter-spacing: .04em; }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      padding: .65rem .9rem; border-radius: 7px; font-size: .87rem;
+      font-family: 'Inter', sans-serif; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-section { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 1.5rem 0 .8rem; padding-bottom: .4rem; border-bottom: 1px solid var(--border); }
+    .form-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; margin-bottom: 1.2rem; }
+    .form-actions { display: flex; gap: .8rem; margin-top: 1.5rem; align-items: center; }
+
+    .spec-row-edit { display: grid; grid-template-columns: 1fr 1fr auto; gap: .6rem; margin-bottom: .5rem; align-items: center; }
+    .btn-add-spec { background: none; border: 1px dashed var(--border); color: var(--muted); width: 100%; padding: .5rem; border-radius: 6px; cursor: pointer; font-size: .78rem; transition: all .2s; margin-top: .3rem; }
+    .btn-add-spec:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: .9rem; transition: color .2s; }
+    .btn-del:hover { color: var(--red); }
+
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; background: var(--surface); border: 1px solid var(--border); padding: .9rem 1.4rem; border-radius: 9px; font-size: .85rem; display: flex; align-items: center; gap: .65rem; transform: translateY(80px); opacity: 0; transition: all .3s cubic-bezier(.22,.68,.38,1); max-width: 360px; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 3px solid var(--green); }
+    .toast.error   { border-left: 3px solid var(--red); }
+    .toast.info    { border-left: 3px solid var(--primary); }
+
+    .info-box { background: rgba(37,84,162,.1); border: 1px solid rgba(37,84,162,.3); border-radius: 8px; padding: 1rem 1.2rem; font-size: .83rem; color: #7da8e8; line-height: 1.6; margin-bottom: 1rem; }
+    .info-box strong { color: var(--text); }
+    .info-box.warn { background: rgba(201,168,76,.1); border-color: rgba(201,168,76,.3); color: var(--gold); }
+    .info-box.warn strong { color: var(--gold); }
+
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .config-missing { padding: 3rem; text-align: center; }
+    .config-missing h2 { font-size: 1.2rem; margin-bottom: .6rem; }
+    .config-missing p { color: var(--muted); font-size: .88rem; max-width: 480px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+
+<!-- ── CONFIG MISSING (mostrado se as chaves não foram preenchidas) ── -->
+<div id="config-missing-screen" style="display:none; min-height:100vh; display:flex; align-items:center; justify-content:center;">
+  <div class="config-missing">
+    <h2>⚙️ Configuração pendente</h2>
+    <p>Preencha as variáveis <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no início do script deste arquivo antes de usar o painel.</p>
+  </div>
+</div>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen" style="display:none">
+  <div class="login-box">
+    <div class="login-logo">SobralBus · <span style="color:var(--gold)">Sistema</span></div>
+    <div class="login-title">Acesso restrito</div>
+    <div class="login-sub">Entre com suas credenciais</div>
+    <div class="field">
+      <label>USUÁRIO</label>
+      <input type="text" id="login-user" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>SENHA</label>
+      <input type="password" id="login-pass">
+    </div>
+    <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Credenciais incorretas.</div>
+  </div>
+</div>
+
+<!-- ── ADMIN ── -->
+<div id="admin-screen">
+  <div class="topbar">
+    <div class="topbar-logo">SobralBus · <span>Gestão</span></div>
+    <div class="topbar-actions">
+      <span id="sync-status">—</span>
+      <span class="badge-user" id="badge-user"></span>
+      <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+    </div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-section">Principal</div>
+      <a onclick="mostrarPagina('dashboard')" class="active" data-page="dashboard"><span>📊</span> Dashboard</a>
+      <a onclick="mostrarPagina('veiculos')" data-page="veiculos"><span>🚌</span> Veículos</a>
+      <a onclick="abrirNovoVeiculo()" data-page="novo"><span>➕</span> Adicionar Veículo</a>
+      <div class="sidebar-section">Ferramentas</div>
+      <a onclick="mostrarPagina('publicar')" data-page="publicar"><span>🚀</span> Publicar no Site</a>
+      <a onclick="mostrarPagina('instrucoes')" data-page="instrucoes"><span>📖</span> Instruções</a>
+    </div>
+
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p>Visão geral do catálogo Sobralbus</p>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Total de Veículos</div><div class="value" id="stat-total">—</div><div class="sub">no catálogo</div></div>
+          <div class="stat-card"><div class="label">Rodoviários</div><div class="value" id="stat-rod">—</div><div class="sub">ativos</div></div>
+          <div class="stat-card"><div class="label">Urbanos</div><div class="value" id="stat-urb">—</div><div class="sub">ativos</div></div>
+          <div class="stat-card"><div class="label">Micro</div><div class="value" id="stat-mic">—</div><div class="sub">ativos</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><h2>Veículos em destaque</h2></div>
+          <table><thead><tr><th>Veículo</th><th>Categoria</th><th>Preço</th><th>Status</th></tr></thead>
+          <tbody id="tbl-destaques"></tbody></table>
+        </div>
+      </div>
+
+      <!-- VEÍCULOS -->
+      <div class="page" id="page-veiculos">
+        <div class="page-header">
+          <div><h1>Veículos</h1><p>Gerencie todos os veículos do catálogo</p></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header">
+            <h2>Todos os veículos</h2>
+            <div style="display:flex;gap:.6rem">
+              <button class="btn-sm" onclick="carregarVeiculos()">↻ Atualizar</button>
+              <button class="btn-primary-sm" onclick="abrirNovoVeiculo()">+ Novo Veículo</button>
+            </div>
+          </div>
+          <table><thead><tr><th>Veículo</th><th>Ano</th><th>KM</th><th>Preço</th><th>Categoria</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbl-veiculos"></tbody></table>
+        </div>
+      </div>
+
+      <!-- NOVO / EDITAR VEÍCULO -->
+      <div class="page" id="page-novo">
+        <div class="page-header">
+          <div><h1 id="form-title">Novo Veículo</h1><p>Preencha os dados do veículo</p></div>
+        </div>
+        <div class="form-box">
+          <input type="hidden" id="f-id">
+          <div class="form-section">Identificação</div>
+          <div class="form-grid">
+            <div class="form-group"><label>SLUG (gerado automaticamente, pode editar)</label><input type="text" id="f-slug" placeholder="ex: comil-invictus-dd-mb-o500"></div>
+            <div class="form-group"><label>TÍTULO COMPLETO</label><input type="text" id="f-titulo" placeholder="ex: Comil Invictus DD — MB O500 RSDD" oninput="sugerirSlug()"></div>
+            <div class="form-group"><label>MARCA</label><input type="text" id="f-marca" placeholder="Comil"></div>
+            <div class="form-group"><label>CHASSI</label><input type="text" id="f-chassi" placeholder="Mercedes-Benz O500 RSDD"></div>
+            <div class="form-group"><label>ANO</label><input type="number" id="f-ano" placeholder="2020"></div>
+            <div class="form-group"><label>KM (ex: 1.000.000)</label><input type="text" id="f-km" placeholder="120.000"></div>
+            <div class="form-group"><label>LUGARES</label><input type="number" id="f-lugares" placeholder="44"></div>
+            <div class="form-group"><label>PREÇO (ex: R$ 420.000)</label><input type="text" id="f-preco" placeholder="R$ 420.000" oninput="sugerirPrecoNum()"></div>
+            <div class="form-group"><label>PREÇO NUMÉRICO (automático)</label><input type="number" id="f-preconum" placeholder="420000"></div>
+            <div class="form-group"><label>CATEGORIA</label>
+              <select id="f-categoria"><option value="rodoviario">Rodoviário</option><option value="urbano">Urbano</option><option value="micro">Micro</option></select>
+            </div>
+            <div class="form-group"><label>DESTAQUE?</label>
+              <select id="f-destaque"><option value="false">Não</option><option value="true">Sim</option></select>
+            </div>
+            <div class="form-group"><label>ATIVO?</label>
+              <select id="f-ativo"><option value="true">Sim</option><option value="false">Não</option></select>
+            </div>
+          </div>
+
+          <div class="form-section">Imagens</div>
+          <div class="form-grid">
+            <div class="form-group form-full"><label>CAMINHO DA IMAGEM PRINCIPAL (relativo à pasta pages/)</label><input type="text" id="f-imagem" placeholder="../assets/rodoviario/PASTA/A.png"></div>
+            <div class="form-group form-full"><label>OG IMAGE (URL completa para redes sociais)</label><input type="text" id="f-ogimagem" placeholder="https://sobralbus.com.br/assets/rodoviario/PASTA/A.png"></div>
+            <div class="form-group form-full"><label>IMAGENS DA GALERIA (uma por linha, caminhos relativos)</label><textarea id="f-imagens" placeholder="../assets/rodoviario/PASTA/A.png&#10;../assets/rodoviario/PASTA/B.png"></textarea></div>
+          </div>
+
+          <div class="form-section">Conteúdo</div>
+          <div class="form-grid">
+            <div class="form-group form-full"><label>DESCRIÇÃO DO VEÍCULO</label><textarea id="f-descricao" placeholder="Descreva o veículo..."></textarea></div>
+            <div class="form-group form-full"><label>TEXTO DO WHATSAPP (URL encoded)</label><input type="text" id="f-whatsapp" placeholder="Olá,%20tenho%20interesse..."></div>
+            <div class="form-group form-full"><label>BADGES (separados por vírgula)</label><input type="text" id="f-badges" placeholder="Destaque, Rodoviário"></div>
+          </div>
+
+          <div class="form-section">Ficha Técnica</div>
+          <div id="specs-editor"></div>
+          <button class="btn-add-spec" onclick="addSpec()">+ Adicionar linha</button>
+
+          <div class="form-actions">
+            <button class="btn-primary-sm" id="btn-salvar" onclick="salvarVeiculo()">💾 Salvar Veículo</button>
+            <button class="btn-sm" onclick="mostrarPagina('veiculos')">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUBLICAR -->
+      <div class="page" id="page-publicar">
+        <div class="page-header"><div><h1>Publicar no Site</h1><p>Gera as páginas HTML e envia para o site automaticamente</p></div></div>
+        <div class="info-box">
+          <strong>Como funciona:</strong> ao clicar em publicar, o sistema busca todos os veículos ativos no banco, gera os arquivos HTML de cada um e faz o commit direto no GitHub. O Vercel detecta a mudança e publica o site automaticamente em 1-2 minutos.
+        </div>
+        <div class="form-box" style="text-align:center;padding:3rem">
+          <button class="btn-publish" id="btn-publicar" onclick="publicarSite()" style="margin:0 auto;font-size:1rem;padding:.9rem 2.2rem">
+            🚀 Publicar Alterações no Site
+          </button>
+          <div id="publicar-log" style="margin-top:1.5rem;text-align:left;max-width:500px;margin-left:auto;margin-right:auto;font-size:.8rem;color:var(--muted);"></div>
+        </div>
+      </div>
+
+      <!-- INSTRUÇÕES -->
+      <div class="page" id="page-instrucoes">
+        <div class="page-header"><div><h1>Instruções</h1><p>Como usar o painel</p></div></div>
+        <div class="form-box">
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div class="info-box"><strong>1. Adicionar veículo</strong><br>Clique em "Adicionar Veículo", preencha os dados e clique em "Salvar". O veículo já fica salvo no banco de dados.</div>
+            <div class="info-box"><strong>2. Editar ou remover</strong><br>Na lista de Veículos, use os botões "Editar" ou "Remover" em cada linha.</div>
+            <div class="info-box"><strong>3. Publicar no site</strong><br>Depois de fazer suas alterações, vá em "Publicar no Site" e clique no botão. Isso gera as páginas e atualiza o site automaticamente — sem precisar editar nenhum arquivo manualmente.</div>
+            <div class="info-box warn"><strong>Sobre este painel</strong><br>Este arquivo não está linkado em nenhuma parte do site. Acesse digitando a URL diretamente. Não compartilhe o link.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  CONFIGURAÇÃO — PREENCHA ANTES DE USAR
+// ═══════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://kitolxdypltemtxmysol.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpdG9seGR5cGx0ZW10eG15c29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MzY1MDYsImV4cCI6MjA5NzQxMjUwNn0.B6Vht62s0_33RYKeWF4qERqRIuFGeHv-xZ7Xt7PjPek';
+
+const GITHUB_TOKEN = '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';
+const GITHUB_REPO  = 'mktsobralbus-ops/sobralbus';
+const GITHUB_BRANCH = 'main';      // branch padrão do repo
+
+// Credenciais do painel (login local, independente do Supabase)
+const CREDENCIAIS = {
+  'admin':     'sb2026@!',
+  'sobralbus': 'sb2026!!',
+};
+// ═══════════════════════════════════════════════════
+
+let supabase = null;
+let usuarioAtual = null;
+let veiculoEditandoId = null;
+
+// ── Inicialização ──────────────────────────────────
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  document.getElementById('config-missing-screen').style.display = 'flex';
+} else {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ── AUTH (login local do painel) ───────────────────
+function fazerLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if (CREDENCIAIS[u] && CREDENCIAIS[u] === p) {
+    usuarioAtual = u;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    document.getElementById('badge-user').textContent = u;
+    carregarVeiculos();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    setTimeout(() => document.getElementById('login-error').style.display = 'none', 3000);
+  }
+}
+function fazerLogout() {
+  usuarioAtual = null;
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !usuarioAtual && document.getElementById('login-screen').style.display !== 'none') fazerLogin(); });
+
+// ── NAVEGAÇÃO ──────────────────────────────────────
+function mostrarPagina(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => { if (a.dataset.page === id) a.classList.add('active'); });
+}
+
+// ── CARREGAR VEÍCULOS DO SUPABASE ──────────────────
+let veiculosCache = [];
+
+async function carregarVeiculos() {
+  const statusEl = document.getElementById('sync-status');
+  statusEl.textContent = 'Carregando...';
+  try {
+    const { data, error } = await supabase.from('veiculos').select('*').order('criado_em', { ascending: false });
+    if (error) throw error;
+    veiculosCache = data || [];
+    statusEl.textContent = '✓ Sincronizado';
+    statusEl.style.color = 'var(--green)';
+    renderDashboard();
+    renderTabelaVeiculos();
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = '⚠ Erro ao conectar';
+    statusEl.style.color = 'var(--red)';
+    mostrarToast('Erro ao carregar veículos: ' + err.message, 'error');
+  }
+}
+
+function renderDashboard() {
+  const ativos = veiculosCache.filter(v => v.ativo);
+  document.getElementById('stat-total').textContent = ativos.length;
+  document.getElementById('stat-rod').textContent = ativos.filter(v=>v.categoria==='rodoviario').length;
+  document.getElementById('stat-urb').textContent = ativos.filter(v=>v.categoria==='urbano').length;
+  document.getElementById('stat-mic').textContent = ativos.filter(v=>v.categoria==='micro').length;
+
+  const destaques = ativos.filter(v => v.destaque);
+  document.getElementById('tbl-destaques').innerHTML = destaques.length
+    ? destaques.map(v => `
+      <tr>
+        <td><strong>${v.titulo}</strong><br><span style="font-size:.75rem;color:var(--muted)">${v.slug}.html</span></td>
+        <td><span class="badge badge-blue">${v.categoria}</span></td>
+        <td>${v.preco}</td>
+        <td><span class="badge badge-green">Ativo</span></td>
+      </tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1rem">Nenhum destaque no momento</td></tr>';
+}
+
+function renderTabelaVeiculos() {
+  document.getElementById('tbl-veiculos').innerHTML = veiculosCache.length
+    ? veiculosCache.map(v => `
+      <tr>
+        <td><strong>${v.titulo}</strong><br><span style="font-size:.72rem;color:var(--muted)">${v.slug}.html</span></td>
+        <td>${v.ano}</td>
+        <td>${v.km} km</td>
+        <td>${v.preco}</td>
+        <td><span class="badge badge-blue">${v.categoria}</span></td>
+        <td>
+          <span class="badge ${v.ativo ? 'badge-green' : 'badge-gray'}">${v.ativo ? 'Ativo' : 'Inativo'}</span>
+          ${v.destaque ? '<span class="badge badge-yellow" style="margin-left:.3rem">Destaque</span>' : ''}
+        </td>
+        <td>
+          <button class="btn-sm" onclick="editarVeiculo('${v.id}')">Editar</button>
+          <button class="btn-sm danger" onclick="removerVeiculo('${v.id}','${v.titulo.replace(/'/g,"\\'")}')">Remover</button>
+        </td>
+      </tr>`).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:1.5rem">Nenhum veículo cadastrado ainda</td></tr>';
+}
+
+// ── FORM: NOVO / EDITAR ────────────────────────────
+function abrirNovoVeiculo() {
+  veiculoEditandoId = null;
+  document.getElementById('form-title').textContent = 'Novo Veículo';
+  limparForm();
+  mostrarPagina('novo');
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+}
+
+function editarVeiculo(id) {
+  const v = veiculosCache.find(x => x.id === id);
+  if (!v) return;
+  veiculoEditandoId = id;
+  document.getElementById('form-title').textContent = 'Editar Veículo';
+
+  document.getElementById('f-id').value = v.id;
+  document.getElementById('f-slug').value = v.slug;
+  document.getElementById('f-titulo').value = v.titulo;
+  document.getElementById('f-marca').value = v.marca;
+  document.getElementById('f-chassi').value = v.chassi;
+  document.getElementById('f-ano').value = v.ano;
+  document.getElementById('f-km').value = v.km;
+  document.getElementById('f-lugares').value = v.lugares;
+  document.getElementById('f-preco').value = v.preco;
+  document.getElementById('f-preconum').value = v.preco_num;
+  document.getElementById('f-categoria').value = v.categoria;
+  document.getElementById('f-destaque').value = String(v.destaque);
+  document.getElementById('f-ativo').value = String(v.ativo);
+  document.getElementById('f-imagem').value = v.imagem;
+  document.getElementById('f-ogimagem').value = v.og_imagem;
+  document.getElementById('f-imagens').value = (v.imagens || []).join('\n');
+  document.getElementById('f-descricao').value = v.descricao;
+  document.getElementById('f-whatsapp').value = v.whatsapp;
+  document.getElementById('f-badges').value = (v.badges || []).join(', ');
+
+  document.getElementById('specs-editor').innerHTML = '';
+  (v.specs || []).forEach(s => addSpec(s.key, s.val));
+
+  mostrarPagina('novo');
+}
+
+function limparForm() {
+  document.getElementById('f-id').value = '';
+  document.querySelectorAll('#page-novo input, #page-novo textarea').forEach(el => el.value = '');
+  document.getElementById('f-categoria').value = 'rodoviario';
+  document.getElementById('f-destaque').value = 'false';
+  document.getElementById('f-ativo').value = 'true';
+  adicionarSpecsPadrao();
+}
+
+function sugerirSlug() {
+  if (veiculoEditandoId) return; // não muda slug ao editar
+  const titulo = document.getElementById('f-titulo').value;
+  const slug = titulo.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-').replace(/-+/g, '-');
+  document.getElementById('f-slug').value = slug;
+}
+
+function sugerirPrecoNum() {
+  const preco = document.getElementById('f-preco').value;
+  const num = preco.replace(/[^\d]/g, '');
+  document.getElementById('f-preconum').value = num;
+}
+
+// ── SPECS EDITOR ───────────────────────────────────
+function addSpec(key='', val='') {
+  const container = document.getElementById('specs-editor');
+  const row = document.createElement('div');
+  row.className = 'spec-row-edit';
+  row.innerHTML = `
+    <input type="text" placeholder="Carroceria" value="${key}" class="spec-key-input">
+    <input type="text" placeholder="Comil Invictus DD" value="${val}" class="spec-val-input">
+    <button class="btn-del" onclick="this.parentElement.remove()">✕</button>`;
+  container.appendChild(row);
+}
+function adicionarSpecsPadrao() {
+  document.getElementById('specs-editor').innerHTML = '';
+  [['Carroceria',''],['Chassi',''],['Ano',''],['Quilometragem',''],['Lugares',''],['Combustível','Diesel'],['Câmbio','Mecânico'],['Tipo',''],['Estado','Sobral — CE'],['Documentação','Em dia']].forEach(([k,v]) => addSpec(k,v));
+}
+
+// ── SALVAR (insert ou update) ──────────────────────
+async function salvarVeiculo() {
+  const slug      = document.getElementById('f-slug').value.trim();
+  const titulo    = document.getElementById('f-titulo').value.trim();
+  if (!slug || !titulo) { mostrarToast('Preencha ao menos Slug e Título.', 'error'); return; }
+
+  const imagensRaw = document.getElementById('f-imagens').value.trim();
+  const badgesRaw  = document.getElementById('f-badges').value.trim();
+  const imagens    = imagensRaw.split('\n').map(l=>l.trim()).filter(Boolean);
+  const badges     = badgesRaw.split(',').map(b=>b.trim()).filter(Boolean);
+
+  const specs = [];
+  document.querySelectorAll('.spec-row-edit').forEach(row => {
+    const k = row.querySelector('.spec-key-input').value.trim();
+    const v = row.querySelector('.spec-val-input').value.trim();
+    if (k) specs.push({ key: k, val: v });
+  });
+
+  const payload = {
+    slug, titulo,
+    marca:     document.getElementById('f-marca').value.trim(),
+    chassi:    document.getElementById('f-chassi').value.trim(),
+    ano:       parseInt(document.getElementById('f-ano').value) || 0,
+    km:        document.getElementById('f-km').value.trim(),
+    lugares:   parseInt(document.getElementById('f-lugares').value) || 0,
+    preco:     document.getElementById('f-preco').value.trim(),
+    preco_num: parseInt(document.getElementById('f-preconum').value) || 0,
+    categoria: document.getElementById('f-categoria').value,
+    destaque:  document.getElementById('f-destaque').value === 'true',
+    ativo:     document.getElementById('f-ativo').value === 'true',
+    imagem:    document.getElementById('f-imagem').value.trim(),
+    og_imagem: document.getElementById('f-ogimagem').value.trim(),
+    descricao: document.getElementById('f-descricao').value.trim(),
+    whatsapp:  document.getElementById('f-whatsapp').value.trim(),
+    specs, badges, imagens,
+  };
+
+  const btn = document.getElementById('btn-salvar');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Salvando...';
+
+  try {
+    let error;
+    if (veiculoEditandoId) {
+      ({ error } = await supabase.from('veiculos').update(payload).eq('id', veiculoEditandoId));
+    } else {
+      ({ error } = await supabase.from('veiculos').insert([payload]));
+    }
+    if (error) throw error;
+    mostrarToast(veiculoEditandoId ? 'Veículo atualizado!' : 'Veículo adicionado!', 'success');
+    await carregarVeiculos();
+    mostrarPagina('veiculos');
+  } catch (err) {
+    console.error(err);
+    mostrarToast('Erro ao salvar: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = '💾 Salvar Veículo';
+  }
+}
+
+// ── REMOVER ────────────────────────────────────────
+async function removerVeiculo(id, titulo) {
+  if (!confirm(`Remover "${titulo}" permanentemente do banco de dados?\n\nEsta ação não pode ser desfeita. Para apenas ocultar do site, edite o veículo e marque "Ativo: Não".`)) return;
+  try {
+    const { error } = await supabase.from('veiculos').delete().eq('id', id);
+    if (error) throw error;
+    mostrarToast('Veículo removido.', 'success');
+    await carregarVeiculos();
+  } catch (err) {
+    mostrarToast('Erro ao remover: ' + err.message, 'error');
+  }
+}
+
+// ── PUBLICAR NO SITE (gera HTML + commit no GitHub) ──
+async function publicarSite() {
+  const btn = document.getElementById('btn-publicar');
+  const log = document.getElementById('publicar-log');
+
+  if (!GITHUB_TOKEN || !GITHUB_REPO) {
+    mostrarToast('Configure GITHUB_TOKEN e GITHUB_REPO no início do script.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Publicando...';
+  log.innerHTML = '';
+
+  function logLine(msg) {
+    log.innerHTML += `<div>• ${msg}</div>`;
+  }
+
+  try {
+    logLine('Buscando veículos ativos...');
+    const { data: ativos, error } = await supabase.from('veiculos').select('*').eq('ativo', true);
+    if (error) throw error;
+    logLine(`${ativos.length} veículo(s) encontrado(s).`);
+
+    logLine('Buscando template do site...');
+    const template = await githubGetFile('MODELO-pagina-produto.html');
+
+    logLine('Gerando páginas HTML...');
+    const arquivos = [];
+    for (const v of ativos) {
+      const html = gerarHTMLVeiculo(template, v);
+      arquivos.push({ path: `pages/${v.slug}.html`, content: html });
+    }
+
+    logLine('Gerando catalogo.js...');
+    const catalogoJs = gerarCatalogoJS(ativos);
+    arquivos.push({ path: 'assets/js/catalogo.js', content: catalogoJs });
+
+    logLine(`Enviando ${arquivos.length} arquivo(s) para o GitHub...`);
+    for (const arq of arquivos) {
+      await githubPutFile(arq.path, arq.content, `Atualiza ${arq.path} via painel admin`);
+      logLine(`  ✓ ${arq.path}`);
+    }
+
+    logLine('✅ Publicado! O Vercel vai atualizar o site em 1-2 minutos.');
+    mostrarToast('Site publicado com sucesso!', 'success');
+  } catch (err) {
+    console.error(err);
+    logLine('❌ Erro: ' + err.message);
+    mostrarToast('Erro ao publicar: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Publicar Alterações no Site';
+  }
+}
+
+// ── GERAÇÃO DE HTML (mesma lógica do gerar-paginas.js) ──
+function gerarHTMLVeiculo(template, v) {
+  const url = `https://sobralbus.com.br/pages/${v.slug}.html`;
+  const specsHTML  = (v.specs||[]).map(s => `\n            <div class="spec-row"><span class="spec-key">${s.key}</span><span class="spec-val">${s.val}</span></div>`).join('');
+  const cls = ['badge-green','badge-blue','badge-orange','badge-purple'];
+  const badgesHTML = (v.badges||[]).map((b,i)=>`<span class="badge ${cls[i%cls.length]}">${b}</span>`).join('\n            ');
+  const imgsArray  = '\n    ' + (v.imagens||[]).map(i=>`"${i}"`).join(',\n    ') + '\n  ';
+  const schemaSpecs = (v.specs||[]).map(s=>`      {"@type":"PropertyValue","name":"${s.key}","value":"${s.val}"}`).join(',\n') + ',\n      {"@type":"PropertyValue","name":"Financiamento","value":"Disponível"},\n      {"@type":"PropertyValue","name":"Troca","value":"Aceita"}';
+
+  return template
+    .replaceAll('%%SEO_TITLE%%',        `${v.titulo} ${v.ano} | ${v.preco} | ${v.lugares} Lugares | Sobralbus`)
+    .replaceAll('%%SEO_DESC%%',         `${v.titulo} com chassi ${v.chassi}, ano ${v.ano}, ${v.lugares} lugares. À venda por ${v.preco}. Financiamento e troca aceita.`)
+    .replaceAll('%%SEO_KEYWORDS%%',     `${v.titulo} à venda, ${v.chassi} seminovo, ônibus ${v.ano} nordeste, comprar ônibus Sobralbus`)
+    .replaceAll('%%CANONICAL%%',        url)
+    .replaceAll('%%OG_TITLE%%',         `${v.titulo} ${v.ano} — ${v.preco} | Sobralbus`)
+    .replaceAll('%%OG_DESC%%',          `${v.titulo} à venda. ${v.chassi}, ${v.ano}, ${v.lugares} lugares. Financiamento e troca aceita.`)
+    .replaceAll('%%OG_IMAGE%%',         v.og_imagem)
+    .replaceAll('%%OG_ALT%%',           `${v.titulo} ${v.ano} — Sobralbus`)
+    .replaceAll('%%PRECO_NUM%%',        String(v.preco_num))
+    .replaceAll('%%TWITTER_DESC%%',     `${v.titulo} à venda. ${v.lugares} lugares, ${v.chassi}, ${v.ano}. Sobralbus.`)
+    .replaceAll('%%CHASSI_FABRICANTE%%',v.chassi.split(' ')[0])
+    .replaceAll('%%SCHEMA_SPECS%%',     schemaSpecs)
+    .replaceAll('%%TITULO%%',           v.titulo)
+    .replaceAll('%%MARCA%%',            v.marca)
+    .replaceAll('%%CHASSI%%',           v.chassi)
+    .replaceAll('%%ANO%%',              String(v.ano))
+    .replaceAll('%%KM%%',               v.km)
+    .replaceAll('%%LUGARES%%',          String(v.lugares))
+    .replaceAll('%%PRECO%%',            v.preco)
+    .replaceAll('%%DESCRICAO%%',        v.descricao)
+    .replaceAll('%%BREADCRUMB%%',       v.titulo)
+    .replaceAll('%%BADGES_HTML%%',      badgesHTML)
+    .replaceAll('%%SPECS_HTML%%',       specsHTML)
+    .replaceAll('%%PRIMEIRA_IMAGEM%%',  (v.imagens||[])[0] || '')
+    .replaceAll('%%IMAGENS_ARRAY%%',    imgsArray)
+    .replaceAll('%%WHATSAPP%%',         v.whatsapp)
+    .replaceAll('%%SLUG%%',             v.slug)
+    .replaceAll('%%CATEGORIA%%',        v.categoria);
+}
+
+function gerarCatalogoJS(ativos) {
+  const dadosCards = ativos.map(v => ({
+    slug: v.slug, titulo: v.titulo, marca: v.marca, chassi: v.chassi,
+    ano: v.ano, km: v.km, lugares: v.lugares, preco: v.preco,
+    categoria: v.categoria, destaque: v.destaque,
+    imagem: v.imagem.replace('../',''), whatsapp: v.whatsapp,
+  }));
+
+  return `// AUTO-GERADO pelo painel admin — não edite manualmente
+
+(function() {
+  const dados = ${JSON.stringify(dadosCards, null, 2)};
+  window.__sobralbusCatalogo = dados;
+
+  const SVG_CAL  = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+  const SVG_KM   = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>';
+  const SVG_SEAT = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
+
+  function buildCard(v) {
+    const catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
+    const destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
+    return \\\`
+        <div class="bus-card reveal" data-type="\\\${v.categoria}">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="\\\${v.imagem}" alt="\\\${v.titulo}" onerror="this.style.opacity='.2'">
+            \\\${destBadge}
+            <span class="badge-type">\\\${catName}</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">\\\${v.titulo}</h3>
+            <p class="bus-card-brand">\\\${v.marca}</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec">\\\${SVG_CAL}\\\${v.ano}</span>
+              <span class="bus-card-spec">\\\${SVG_KM}\\\${v.km} km</span>
+              <span class="bus-card-spec">\\\${SVG_SEAT}\\\${v.lugares} lugares</span>
+            </div>
+            <div class="bus-card-price">\\\${v.preco}</div>
+            <div class="bus-card-actions">
+              <a href="pages/\\\${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=\\\${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>\\\`;
+  }
+
+  function renderCards(filtro) {
+    const grid = document.getElementById('bus-grid');
+    if (!grid) return;
+    const lista = filtro === 'todos' ? dados : dados.filter(v => v.categoria === filtro);
+    grid.innerHTML = lista.length ? lista.map(buildCard).join('') : '<p style="grid-column:1/-1;text-align:center;padding:3rem;color:#64748b">Nenhum veículo encontrado.</p>';
+    grid.querySelectorAll('.bus-card.reveal').forEach(el => revealObs.observe(el));
+  }
+
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!document.getElementById('bus-grid')) return;
+    renderCards('todos');
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderCards(this.dataset.filter);
+      });
+    });
+  });
+})();
+`;
+}
+
+// ── GITHUB API ─────────────────────────────────────
+async function githubGetFile(path) {
+  const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`, {
+    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!res.ok) throw new Error(`Não foi possível buscar ${path} (${res.status})`);
+  const data = await res.json();
+  return decodeURIComponent(escape(atob(data.content)));
+}
+
+async function githubPutFile(path, content, message) {
+  // Primeiro tenta pegar o SHA do arquivo (se já existir)
+  let sha = null;
+  try {
+    const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`, {
+      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (getRes.ok) { const d = await getRes.json(); sha = d.sha; }
+  } catch (e) { /* arquivo não existe ainda, ok */ }
+
+  const body = {
+    message,
+    content: btoa(unescape(encodeURIComponent(content))),
+    branch: GITHUB_BRANCH,
+  };
+  if (sha) body.sha = sha;
+
+  const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || `Falha ao enviar ${path}`);
+  }
+}
+
+// ── TOAST ──────────────────────────────────────────
+function mostrarToast(msg, tipo = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = (tipo === 'success' ? '✓ ' : tipo === 'error' ? '✕ ' : 'ℹ ') + msg;
+  t.className = `toast ${tipo} show`;
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>
