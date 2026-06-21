@@ -4,7 +4,7 @@
   const dados = [
   {
     "slug": "comil-invictus-dd-1800-mb-o500-rsd",
-    "titulo": "Comil Invictus DD 1800 - MB O500 Rsd",
+    "titulo": "Comil Invictus DD - MB O500 Rsd",
     "marca": "Comil",
     "chassi": "Mercedes-Benz O500 RSDD",
     "ano": 2019,
@@ -14,7 +14,21 @@
     "categoria": "rodoviario",
     "destaque": true,
     "imagem": "assets/rodoviario/acz/A.png",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%201800%com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "marcopolo-paradiso-new-g7-1800-dd",
+    "titulo": "Marcopolo Paradiso New G7 1800 DD",
+    "marca": "Marcopolo",
+    "chassi": "Mercedes-Benz O500 RSDD",
+    "ano": 2020,
+    "km": "989.000",
+    "lugares": 60,
+    "preco": "R$1.350.000",
+    "categoria": "rodoviario",
+    "destaque": true,
+    "imagem": "assets/rodoviario/fzj/A.png",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%20DD%201800%20com%20valor%20de%20R$%201.350.00,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
   window.__sobralbusCatalogo = dados;
