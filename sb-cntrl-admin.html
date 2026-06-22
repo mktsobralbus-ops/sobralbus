@@ -723,28 +723,28 @@ function gerarCatalogoJS(ativos) {
   function buildCard(v) {
     const catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
     const destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
-    return \\\`
-        <div class="bus-card reveal" data-type="\\\${v.categoria}">
+    return \`
+        <div class="bus-card reveal" data-type="\${v.categoria}">
           <div class="bus-card-image">
-            <img loading="lazy" decoding="async" src="\\\${v.imagem}" alt="\\\${v.titulo}" onerror="this.style.opacity='.2'">
-            \\\${destBadge}
-            <span class="badge-type">\\\${catName}</span>
+            <img loading="lazy" decoding="async" src="\${v.imagem}" alt="\${v.titulo}" onerror="this.style.opacity='.2'">
+            \${destBadge}
+            <span class="badge-type">\${catName}</span>
           </div>
           <div class="bus-card-content">
-            <h3 class="bus-card-title">\\\${v.titulo}</h3>
-            <p class="bus-card-brand">\\\${v.marca}</p>
+            <h3 class="bus-card-title">\${v.titulo}</h3>
+            <p class="bus-card-brand">\${v.marca}</p>
             <div class="bus-card-specs">
-              <span class="bus-card-spec">\\\${SVG_CAL}\\\${v.ano}</span>
-              <span class="bus-card-spec">\\\${SVG_KM}\\\${v.km} km</span>
-              <span class="bus-card-spec">\\\${SVG_SEAT}\\\${v.lugares} lugares</span>
+              <span class="bus-card-spec">\${SVG_CAL}\${v.ano}</span>
+              <span class="bus-card-spec">\${SVG_KM}\${v.km} km</span>
+              <span class="bus-card-spec">\${SVG_SEAT}\${v.lugares} lugares</span>
             </div>
-            <div class="bus-card-price">\\\${v.preco}</div>
+            <div class="bus-card-price">\${v.preco}</div>
             <div class="bus-card-actions">
-              <a href="pages/\\\${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
-              <a href="https://wa.me/5588996930066?text=\\\${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
+              <a href="pages/\${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=\${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
             </div>
           </div>
-        </div>\\\`;
+        </div>\`;
   }
 
   function renderCards(filtro) {
