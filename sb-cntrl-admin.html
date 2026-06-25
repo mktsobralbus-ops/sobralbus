@@ -721,30 +721,29 @@ function gerarCatalogoJS(ativos) {
   const SVG_SEAT = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
 
   function buildCard(v) {
-    const catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
-    const destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
-    return \`
-        <div class="bus-card reveal" data-type="\${v.categoria}">
-          <div class="bus-card-image">
-            <img loading="lazy" decoding="async" src="\${v.imagem}" alt="\${v.titulo}" onerror="this.style.opacity='.2'">
-            \${destBadge}
-            <span class="badge-type">\${catName}</span>
-          </div>
-          <div class="bus-card-content">
-            <h3 class="bus-card-title">\${v.titulo}</h3>
-            <p class="bus-card-brand">\${v.marca}</p>
-            <div class="bus-card-specs">
-              <span class="bus-card-spec">\${SVG_CAL}\${v.ano}</span>
-              <span class="bus-card-spec">\${SVG_KM}\${v.km} km</span>
-              <span class="bus-card-spec">\${SVG_SEAT}\${v.lugares} lugares</span>
-            </div>
-            <div class="bus-card-price">\${v.preco}</div>
-            <div class="bus-card-actions">
-              <a href="pages/\${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
-              <a href="https://wa.me/5588996930066?text=\${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
-            </div>
-          </div>
-        </div>\`;
+    var catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
+    var destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
+    return '<div class="bus-card reveal" data-type="' + v.categoria + '">' +
+      '<div class="bus-card-image">' +
+        '<img loading="lazy" decoding="async" src="' + v.imagem + '" alt="' + v.titulo + '" onerror="this.style.opacity=.2">' +
+        destBadge +
+        '<span class="badge-type">' + catName + '</span>' +
+      '</div>' +
+      '<div class="bus-card-content">' +
+        '<h3 class="bus-card-title">' + v.titulo + '</h3>' +
+        '<p class="bus-card-brand">' + v.marca + '</p>' +
+        '<div class="bus-card-specs">' +
+          '<span class="bus-card-spec">' + SVG_CAL + v.ano + '</span>' +
+          '<span class="bus-card-spec">' + SVG_KM + v.km + ' km</span>' +
+          '<span class="bus-card-spec">' + SVG_SEAT + v.lugares + ' lugares</span>' +
+        '</div>' +
+        '<div class="bus-card-price">' + v.preco + '</div>' +
+        '<div class="bus-card-actions">' +
+          '<a href="pages/' + v.slug + '.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>' +
+          '<a href="https://wa.me/5588996930066?text=' + v.whatsapp + '" target="_blank" class="btn btn-accent">WhatsApp</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   function renderCards(filtro) {
