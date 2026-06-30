@@ -118,6 +118,44 @@
     .toast.info    { border-left: 3px solid var(--primary); }
 
     .info-box { background: rgba(37,84,162,.1); border: 1px solid rgba(37,84,162,.3); border-radius: 8px; padding: 1rem 1.2rem; font-size: .83rem; color: #7da8e8; line-height: 1.6; margin-bottom: 1rem; }
+
+    /* ── UPLOAD DE FOTOS ── */
+    .upload-dropzone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 2.2rem 1.5rem;
+      text-align: center; cursor: pointer; transition: all .2s; background: var(--bg);
+    }
+    .upload-dropzone:hover, .upload-dropzone.dragover { border-color: var(--primary); background: rgba(37,84,162,.06); }
+    .upload-icon { font-size: 2.2rem; display: block; margin-bottom: .6rem; }
+    .upload-dropzone-content p { margin: .2rem 0; color: var(--text); font-size: .85rem; }
+
+    .upload-progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .upload-progress-fill { height: 100%; width: 0%; background: var(--primary); transition: width .2s; }
+
+    .fotos-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: .7rem;
+      margin-top: 1rem;
+    }
+    .foto-item {
+      position: relative; aspect-ratio: 4/3; border-radius: 8px; overflow: hidden;
+      border: 2px solid var(--border); cursor: grab; background: var(--bg);
+    }
+    .foto-item.is-cover { border-color: var(--gold); }
+    .foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .foto-item .foto-cover-badge {
+      position: absolute; top: 4px; left: 4px; background: var(--gold); color: var(--bg);
+      font-size: .6rem; font-weight: 700; padding: .15rem .4rem; border-radius: 3px;
+    }
+    .foto-item .foto-remove {
+      position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(0,0,0,.6); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: .7rem; line-height: 1;
+    }
+    .foto-item .foto-remove:hover { background: var(--red); }
+    .foto-item.uploading { opacity: .5; }
+    .foto-item.uploading::after {
+      content: '⏳'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; background: rgba(0,0,0,.3);
+    }
     .info-box strong { color: var(--text); }
     .info-box.warn { background: rgba(201,168,76,.1); border-color: rgba(201,168,76,.3); color: var(--gold); }
     .info-box.warn strong { color: var(--gold); }
@@ -250,12 +288,31 @@
             </div>
           </div>
 
-          <div class="form-section">Imagens</div>
-          <div class="form-grid">
-            <div class="form-group form-full"><label>CAMINHO DA IMAGEM PRINCIPAL (relativo à pasta pages/)</label><input type="text" id="f-imagem" placeholder="../assets/rodoviario/PASTA/A.png"></div>
-            <div class="form-group form-full"><label>OG IMAGE (URL completa para redes sociais)</label><input type="text" id="f-ogimagem" placeholder="https://sobralbus.com.br/assets/rodoviario/PASTA/A.png"></div>
-            <div class="form-group form-full"><label>IMAGENS DA GALERIA (uma por linha, caminhos relativos)</label><textarea id="f-imagens" placeholder="../assets/rodoviario/PASTA/A.png&#10;../assets/rodoviario/PASTA/B.png"></textarea></div>
+          <div class="form-section">Fotos do Veículo</div>
+          <div class="info-box" style="margin-bottom:1rem">
+            Arraste as fotos abaixo ou clique para selecionar. A <strong>primeira foto</strong> da lista será usada como capa do anúncio. As imagens são comprimidas e enviadas automaticamente.
           </div>
+
+          <div id="upload-dropzone" class="upload-dropzone">
+            <input type="file" id="upload-input" accept="image/*" multiple style="display:none">
+            <div class="upload-dropzone-content">
+              <span class="upload-icon">📷</span>
+              <p><strong>Clique para selecionar</strong> ou arraste as fotos aqui</p>
+              <p style="font-size:.72rem;color:var(--muted)">JPG ou PNG · serão comprimidas automaticamente</p>
+            </div>
+          </div>
+
+          <div id="upload-progress" style="display:none;margin-top:.8rem">
+            <div class="upload-progress-bar"><div class="upload-progress-fill" id="upload-progress-fill"></div></div>
+            <p id="upload-progress-text" style="font-size:.75rem;color:var(--muted);margin-top:.4rem"></p>
+          </div>
+
+          <div id="fotos-grid" class="fotos-grid"></div>
+
+          <!-- Campos ocultos que continuam guardando os dados reais -->
+          <input type="hidden" id="f-imagem">
+          <input type="hidden" id="f-ogimagem">
+          <input type="hidden" id="f-imagens">
 
           <div class="form-section">Conteúdo</div>
           <div class="form-grid">
@@ -481,6 +538,10 @@ function editarVeiculo(id) {
   document.getElementById('f-whatsapp').value = v.whatsapp;
   document.getElementById('f-badges').value = (v.badges || []).join(', ');
 
+  // Carrega as fotos já existentes no uploader visual
+  fotosState = (v.imagens || []).map(url => ({ url, uploading: false }));
+  renderFotosGrid();
+
   document.getElementById('specs-editor').innerHTML = '';
   (v.specs || []).forEach(s => addSpec(s.key, s.val));
 
@@ -494,6 +555,8 @@ function limparForm() {
   document.getElementById('f-destaque').value = 'false';
   document.getElementById('f-ativo').value = 'true';
   adicionarSpecsPadrao();
+  fotosState = [];
+  renderFotosGrid();
 }
 
 function sugerirSlug() {
@@ -505,6 +568,138 @@ function sugerirSlug() {
     .trim().replace(/\s+/g, '-').replace(/-+/g, '-');
   document.getElementById('f-slug').value = slug;
 }
+
+// ── UPLOAD DE FOTOS (Supabase Storage) ─────────────
+const STORAGE_BUCKET = 'fotos-onibus';
+let fotosState = []; // [{ url, uploading }]
+
+function renderFotosGrid() {
+  const grid = document.getElementById('fotos-grid');
+  if (!grid) return;
+  grid.innerHTML = fotosState.map((f, i) => `
+    <div class="foto-item ${i === 0 ? 'is-cover' : ''} ${f.uploading ? 'uploading' : ''}" draggable="${!f.uploading}" data-idx="${i}">
+      ${i === 0 ? '<span class="foto-cover-badge">CAPA</span>' : ''}
+      <img src="${f.url || ''}" alt="Foto ${i+1}">
+      ${!f.uploading ? `<button type="button" class="foto-remove" onclick="removerFoto(${i})">✕</button>` : ''}
+    </div>
+  `).join('');
+
+  // Atualiza os campos ocultos com as URLs reais (na ordem atual)
+  const urls = fotosState.filter(f => !f.uploading).map(f => f.url);
+  document.getElementById('f-imagem').value = urls[0] || '';
+  document.getElementById('f-ogimagem').value = urls[0] || '';
+  document.getElementById('f-imagens').value = urls.join('\n');
+
+  ativarDragReorder();
+}
+
+function ativarDragReorder() {
+  const grid = document.getElementById('fotos-grid');
+  let dragIdx = null;
+  grid.querySelectorAll('.foto-item[draggable="true"]').forEach(item => {
+    item.addEventListener('dragstart', () => { dragIdx = Number(item.dataset.idx); });
+    item.addEventListener('dragover', e => e.preventDefault());
+    item.addEventListener('drop', () => {
+      const dropIdx = Number(item.dataset.idx);
+      if (dragIdx === null || dragIdx === dropIdx) return;
+      const moved = fotosState.splice(dragIdx, 1)[0];
+      fotosState.splice(dropIdx, 0, moved);
+      renderFotosGrid();
+    });
+  });
+}
+
+function removerFoto(idx) {
+  fotosState.splice(idx, 1);
+  renderFotosGrid();
+}
+
+// Comprime a imagem no navegador antes de enviar (reduz tamanho, mantém qualidade boa)
+function comprimirImagem(file, maxWidth = 1600, qualidade = 0.8) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxWidth) {
+        height = Math.round(height * (maxWidth / width));
+        width = maxWidth;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', qualidade);
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function processarUploadDeArquivos(fileList) {
+  const arquivos = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  if (!arquivos.length) return;
+
+  const progressWrap = document.getElementById('upload-progress');
+  const progressFill = document.getElementById('upload-progress-fill');
+  const progressText = document.getElementById('upload-progress-text');
+  progressWrap.style.display = 'block';
+
+  let enviados = 0;
+  for (const file of arquivos) {
+    const placeholderIdx = fotosState.length;
+    fotosState.push({ url: URL.createObjectURL(file), uploading: true });
+    renderFotosGrid();
+
+    progressText.textContent = `Enviando ${enviados + 1} de ${arquivos.length}...`;
+
+    try {
+      const comprimida = await comprimirImagem(file);
+      const nomeArquivo = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+      const caminho = `${nomeArquivo}`;
+
+      const { error: upErr } = await sbClient.storage
+        .from(STORAGE_BUCKET)
+        .upload(caminho, comprimida, { contentType: 'image/jpeg', upsert: false });
+      if (upErr) throw upErr;
+
+      const { data: pub } = sbClient.storage.from(STORAGE_BUCKET).getPublicUrl(caminho);
+      fotosState[placeholderIdx] = { url: pub.publicUrl, uploading: false };
+    } catch (err) {
+      console.error('Erro no upload:', err);
+      mostrarToast('Erro ao enviar uma foto: ' + err.message, 'error');
+      fotosState.splice(placeholderIdx, 1);
+    }
+
+    enviados++;
+    progressFill.style.width = `${(enviados / arquivos.length) * 100}%`;
+    renderFotosGrid();
+  }
+
+  progressText.textContent = 'Concluído!';
+  setTimeout(() => { progressWrap.style.display = 'none'; progressFill.style.width = '0%'; }, 1200);
+}
+
+// Conecta os eventos do dropzone (clique e arrastar)
+document.addEventListener('DOMContentLoaded', () => {
+  const dropzone = document.getElementById('upload-dropzone');
+  const input = document.getElementById('upload-input');
+  if (!dropzone || !input) return;
+
+  dropzone.addEventListener('click', () => input.click());
+  input.addEventListener('change', () => { processarUploadDeArquivos(input.files); input.value = ''; });
+
+  ['dragenter','dragover'].forEach(evt =>
+    dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add('dragover'); })
+  );
+  ['dragleave','drop'].forEach(evt =>
+    dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.remove('dragover'); })
+  );
+  dropzone.addEventListener('drop', e => {
+    if (e.dataTransfer.files.length) processarUploadDeArquivos(e.dataTransfer.files);
+  });
+});
 
 function sugerirPrecoNum() {
   const preco = document.getElementById('f-preco').value;
@@ -533,6 +728,11 @@ async function salvarVeiculo() {
   const slug      = document.getElementById('f-slug').value.trim();
   const titulo    = document.getElementById('f-titulo').value.trim();
   if (!slug || !titulo) { mostrarToast('Preencha ao menos Slug e Título.', 'error'); return; }
+
+  if (fotosState.some(f => f.uploading)) {
+    mostrarToast('Aguarde o upload das fotos terminar antes de salvar.', 'error');
+    return;
+  }
 
   const imagensRaw = document.getElementById('f-imagens').value.trim();
   const badgesRaw  = document.getElementById('f-badges').value.trim();
@@ -707,7 +907,7 @@ function gerarCatalogoJS(ativos) {
     slug: v.slug, titulo: v.titulo, marca: v.marca, chassi: v.chassi,
     ano: v.ano, km: v.km, lugares: v.lugares, preco: v.preco,
     categoria: v.categoria, destaque: v.destaque,
-    imagem: v.imagem.replace('../',''), whatsapp: v.whatsapp,
+    imagem: v.imagem.startsWith('http') ? v.imagem : v.imagem.replace('../',''), whatsapp: v.whatsapp,
   }));
 
   return `// AUTO-GERADO pelo painel admin — não edite manualmente
@@ -721,29 +921,30 @@ function gerarCatalogoJS(ativos) {
   const SVG_SEAT = '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
 
   function buildCard(v) {
-    var catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
-    var destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
-    return '<div class="bus-card reveal" data-type="' + v.categoria + '">' +
-      '<div class="bus-card-image">' +
-        '<img loading="lazy" decoding="async" src="' + v.imagem + '" alt="' + v.titulo + '" onerror="this.style.opacity=.2">' +
-        destBadge +
-        '<span class="badge-type">' + catName + '</span>' +
-      '</div>' +
-      '<div class="bus-card-content">' +
-        '<h3 class="bus-card-title">' + v.titulo + '</h3>' +
-        '<p class="bus-card-brand">' + v.marca + '</p>' +
-        '<div class="bus-card-specs">' +
-          '<span class="bus-card-spec">' + SVG_CAL + v.ano + '</span>' +
-          '<span class="bus-card-spec">' + SVG_KM + v.km + ' km</span>' +
-          '<span class="bus-card-spec">' + SVG_SEAT + v.lugares + ' lugares</span>' +
-        '</div>' +
-        '<div class="bus-card-price">' + v.preco + '</div>' +
-        '<div class="bus-card-actions">' +
-          '<a href="pages/' + v.slug + '.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>' +
-          '<a href="https://wa.me/5588996930066?text=' + v.whatsapp + '" target="_blank" class="btn btn-accent">WhatsApp</a>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
+    const catName   = v.categoria === 'rodoviario' ? 'Rodoviário' : v.categoria === 'urbano' ? 'Urbano' : 'Micro';
+    const destBadge = v.destaque ? '<span class="bus-badge badge-highlight">Destaque</span>' : '';
+    return `
+        <div class="bus-card reveal" data-type="${v.categoria}">
+          <div class="bus-card-image">
+            <img loading="lazy" decoding="async" src="${v.imagem}" alt="${v.titulo}" onerror="this.style.opacity='.2'">
+            ${destBadge}
+            <span class="badge-type">${catName}</span>
+          </div>
+          <div class="bus-card-content">
+            <h3 class="bus-card-title">${v.titulo}</h3>
+            <p class="bus-card-brand">${v.marca}</p>
+            <div class="bus-card-specs">
+              <span class="bus-card-spec">${SVG_CAL}${v.ano}</span>
+              <span class="bus-card-spec">${SVG_KM}${v.km} km</span>
+              <span class="bus-card-spec">${SVG_SEAT}${v.lugares} lugares</span>
+            </div>
+            <div class="bus-card-price">${v.preco}</div>
+            <div class="bus-card-actions">
+              <a href="pages/${v.slug}.html" target="_blank" class="btn btn-primary">Ver Detalhes</a>
+              <a href="https://wa.me/5588996930066?text=${v.whatsapp}" target="_blank" class="btn btn-accent">WhatsApp</a>
+            </div>
+          </div>
+        </div>\`;
   }
 
   function renderCards(filtro) {
