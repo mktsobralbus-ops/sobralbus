@@ -41,7 +41,7 @@
     "preco": "R$ 350.000",
     "categoria": "urbano",
     "destaque": false,
-    "imagem": "..assets/urbano/marcopolo-ideale/A.png",
+    "imagem": "assets/urbano/marcopolo-ideale/A.png",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Marcopolo%20Ideale%20MB%20Of%201721%202015%20no%20valor%20de%20R$%20350.00,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
