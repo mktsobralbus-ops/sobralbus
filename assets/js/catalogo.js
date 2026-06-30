@@ -60,7 +60,7 @@
   },
   {
     "slug": "marcopolo-g7-mb-o500-rs-360-cv-2014",
-    "titulo": "Marcopolo G7 - MB  O500 RS 360 CV - 2014",
+    "titulo": "Marcopolo G7 1050 - MB  O500 RS 360 CV - 2014",
     "marca": "Marcopolo",
     "chassi": "Mercedes-Benz O500 RS",
     "ano": 2014,
