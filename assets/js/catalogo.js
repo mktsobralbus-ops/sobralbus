@@ -31,20 +31,6 @@
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Micro%20Marcopolo%20New%20Senior%202020%20com%20valor%20de%20R$%20495.00,00.%20Gostaria%20de%20mais%20informações."
   },
   {
-    "slug": "marcopolo-ideale-mb-of-1721-2015",
-    "titulo": "Marcopolo Ideale - MB OF 1721 - 2015",
-    "marca": "Marcopolo",
-    "chassi": "Mercedes-Benz OF 1721",
-    "ano": 2015,
-    "km": "943.760",
-    "lugares": 48,
-    "preco": "R$ 350.000",
-    "categoria": "urbano",
-    "destaque": false,
-    "imagem": "assets/urbano/marcopolo-ideale/A.png",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Marcopolo%20Ideale%20MB%20Of%201721%202015%20no%20valor%20de%20R$%20350.00,00.%20Gostaria%20de%20mais%20informações."
-  },
-  {
     "slug": "comil-invictus-dd-1800-mb-o500-rsd",
     "titulo": "Comil Invictus DD - MB O500 Rsd",
     "marca": "Comil",
