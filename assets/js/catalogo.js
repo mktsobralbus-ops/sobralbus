@@ -31,20 +31,6 @@
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Micro%20Marcopolo%20New%20Senior%202020%20com%20valor%20de%20R$%20495.00,00.%20Gostaria%20de%20mais%20informações."
   },
   {
-    "slug": "comil-invictus-dd-1800-mb-o500-rsd",
-    "titulo": "Comil Invictus DD - MB O500 Rsd",
-    "marca": "Comil",
-    "chassi": "Mercedes-Benz O500 RSDD",
-    "ano": 2019,
-    "km": "1.200.000",
-    "lugares": 43,
-    "preco": "R$ 1.150.000",
-    "categoria": "rodoviario",
-    "destaque": true,
-    "imagem": "assets/rodoviario/acz/A.png",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
-  },
-  {
     "slug": "marcopolo-g7-mb-o500-rs-360-cv-2014",
     "titulo": "Marcopolo G7 1050 - MB  O500 RS 360 CV - 2014",
     "marca": "Marcopolo",
@@ -57,6 +43,20 @@
     "destaque": false,
     "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1782825531315-mk09m9.jpg",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20G7%20MB%20O500%20-2014-%20com%20valor%20de%20R$%20420.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "comil-invictus-dd-1800-mb-o500-rsd",
+    "titulo": "Comil Invictus DD - MB O500 Rsd",
+    "marca": "Comil",
+    "chassi": "Mercedes-Benz O500 RSDD",
+    "ano": 2019,
+    "km": "1.200.000",
+    "lugares": 43,
+    "preco": "R$ 1.150.000",
+    "categoria": "rodoviario",
+    "destaque": true,
+    "imagem": "assets/rodoviario/acz/A.png",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
   window.__sobralbusCatalogo = dados;
