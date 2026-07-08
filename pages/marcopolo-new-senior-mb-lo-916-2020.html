@@ -119,6 +119,8 @@
   }
   </script>
 
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link rel="icon" type="image/png" href="../assets/fotos/rodoviario.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -242,6 +244,26 @@
     .mini-card-specs{font-size:.7rem;color:var(--muted);margin-bottom:.4rem;flex:1}
     .mini-card-price{font-size:.9rem;font-weight:900;color:var(--primary);margin-bottom:.55rem;margin-top:auto}
     .mini-card .btn{font-size:.76rem;padding:.55rem .75rem;margin-top:auto}
+
+    /* Ver mais */
+    .related-footer{display:flex;justify-content:center;margin-top:1.25rem}
+    .btn-ver-mais{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.6rem;background:var(--card);border:2px solid var(--primary);border-radius:.75rem;color:var(--primary);font-size:.82rem;font-weight:800;cursor:pointer;transition:all .3s cubic-bezier(.4,.0,.2,1);font-family:'Inter',sans-serif;letter-spacing:.01em;box-shadow:0 4px 14px rgba(37,84,162,.1)}
+    .btn-ver-mais:hover{background:var(--primary);color:#fff;transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,84,162,.28)}
+    .btn-ver-mais:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .btn-ver-mais svg{transition:transform .3s}
+    .btn-ver-mais:not(:disabled):hover svg{transform:translateY(2px)}
+    .mini-card-skeleton{background:var(--card);border:1px solid var(--border);border-radius:.65rem;overflow:hidden;box-shadow:0 8px 24px rgba(30,64,175,.06)}
+    .skeleton-img{width:100%;height:130px;background:linear-gradient(90deg,#e8edf5 25%,#f4f6f9 50%,#e8edf5 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+    .skeleton-body{padding:.6rem;display:flex;flex-direction:column;gap:.45rem}
+    .skeleton-line{height:.65rem;border-radius:.3rem;background:linear-gradient(90deg,#e8edf5 25%,#f4f6f9 50%,#e8edf5 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+    .skeleton-line.w-75{width:75%}
+    .skeleton-line.w-50{width:50%}
+    .skeleton-line.w-40{width:40%}
+    .skeleton-btn{height:2rem;border-radius:.4rem;background:linear-gradient(90deg,#e8edf5 25%,#f4f6f9 50%,#e8edf5 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;margin-top:.3rem}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .mini-card.card-enter{opacity:0;transform:translateY(14px)}
+    .mini-card.card-enter-active{opacity:1;transform:translateY(0);transition:opacity .32s cubic-bezier(.25,.46,.45,.94),transform .32s cubic-bezier(.25,.46,.45,.94)}
+    .related-status{text-align:center;font-size:.75rem;color:var(--muted);margin-top:.5rem;min-height:1.2rem}
 
     /* Footer */
     .footer{background:#2554A2;color:#fff;padding:.5rem 0 .35rem;margin-top:1rem}
@@ -1170,6 +1192,13 @@
       <div class="related-grid" id="related-grid">
         <p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Carregando outros veículos...</p>
       </div>
+      <p class="related-status" id="related-status"></p>
+      <div class="related-footer" id="related-footer" style="display:none">
+        <button class="btn-ver-mais" id="btn-ver-mais" onclick="carregarMais()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          Ver mais veículos
+        </button>
+      </div>
     </div>
 
   </div>
@@ -1422,55 +1451,222 @@
 
 <script src="../assets/js/catalogo.js"></script>
 <script>
-  // ── RELACIONADOS: gerado a partir do catalogo.js, excluindo o veículo atual ──
-  document.addEventListener('DOMContentLoaded', function() {
+// ═══════════════════════════════════════════════════════════════════
+//  RELACIONADOS — Supabase + fallback catalogo.js + "Ver mais"
+// ═══════════════════════════════════════════════════════════════════
+(function () {
+
+  // ── CONFIGURAÇÃO SUPABASE ─────────────────────────────────────────
+  // Substitua pelos valores do seu projeto Supabase:
+  //   Project URL  →  https://app.supabase.com → Settings → API
+  //   Anon Key     →  https://app.supabase.com → Settings → API
+  const SUPABASE_URL  = '%%SUPABASE_URL%%';   // ex: https://xyzxyz.supabase.co
+  const SUPABASE_ANON = '%%SUPABASE_ANON_KEY%%'; // chave pública (anon)
+  const TABELA        = 'veiculos';           // nome da tabela no Supabase
+  // ────────────────────────────────────────────────────────────────
+
+  const LOTE          = 4;   // cards exibidos por vez
+  const slugAtual     = document.querySelector('.detail-page')?.dataset.currentSlug || '';
+  const categoriaAtual = 'micro';
+
+  let todosVeiculos   = [];  // lista completa carregada
+  let exibidos        = 0;   // quantos já foram renderizados
+  let supabaseAtivo   = false;
+
+  // ── HELPERS ──────────────────────────────────────────────────────
+  function skeletonHTML(n) {
+    return Array.from({length: n}, () => `
+      <div class="mini-card-skeleton">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line w-75"></div>
+          <div class="skeleton-line w-50"></div>
+          <div class="skeleton-line w-40"></div>
+          <div class="skeleton-btn"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  function cardHTML(v) {
+    const imgSrc = supabaseAtivo
+      ? (v.imagem_url || v.imagem || '')
+      : `../${v.imagem}`;
+    const href = supabaseAtivo
+      ? (v.slug ? `${v.slug}.html` : '#')
+      : `${v.slug}.html`;
+    return `
+      <div class="mini-card card-enter">
+        <div class="mini-card-img-wrap">
+          <img src="${imgSrc}" alt="${v.titulo || ''}" loading="lazy"
+               onerror="this.parentElement.style.opacity='.2'">
+        </div>
+        <div class="mini-card-body">
+          <div class="mini-card-title">${v.titulo || ''}</div>
+          <div class="mini-card-specs">${v.ano || ''} · ${v.km || ''} km · ${v.lugares || ''} lugares</div>
+          <div class="mini-card-price">${v.preco || ''}</div>
+          <a href="${href}" class="btn btn-primary">Ver Detalhes</a>
+        </div>
+      </div>`;
+  }
+
+  function atualizarBotao() {
+    const footer = document.getElementById('related-footer');
+    const btn    = document.getElementById('btn-ver-mais');
+    const status = document.getElementById('related-status');
+    if (!footer || !btn) return;
+
+    const restantes = todosVeiculos.length - exibidos;
+    if (restantes > 0) {
+      footer.style.display = 'flex';
+      btn.disabled = false;
+      btn.innerHTML = `
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+        </svg>
+        Ver mais veículos
+        <span style="font-size:.7rem;opacity:.7;font-weight:600">(${restantes} restante${restantes !== 1 ? 's' : ''})</span>`;
+      if (status) status.textContent = `Mostrando ${exibidos} de ${todosVeiculos.length} veículos`;
+    } else {
+      footer.style.display = 'none';
+      if (status) status.textContent = todosVeiculos.length > 0
+        ? `Todos os ${todosVeiculos.length} veículos exibidos`
+        : '';
+    }
+  }
+
+  function renderizarLote() {
     const grid = document.getElementById('related-grid');
     if (!grid) return;
 
-    // Espera o catalogo.js carregar window.__sobralbusCatalogo (exposto pelo catalogo.js)
-    function renderRelated() {
-      const dados = window.__sobralbusCatalogo || [];
-      const slugAtual = document.querySelector('.detail-page')?.dataset.currentSlug || '';
-      const categoriaAtual = 'micro';
+    const lote = todosVeiculos.slice(exibidos, exibidos + LOTE);
+    if (!lote.length) { atualizarBotao(); return; }
 
-      if (!dados.length) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
-        return;
-      }
+    // Insere os novos cards
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'contents';
+    wrapper.innerHTML = lote.map(cardHTML).join('');
+    grid.appendChild(wrapper);
 
-      // Prioriza mesma categoria, exclui o atual, limita a 4
-      let candidatos = dados.filter(v => v.slug !== slugAtual);
-      let mesmaCategoria = candidatos.filter(v => v.categoria === categoriaAtual);
-      let outros = candidatos.filter(v => v.categoria !== categoriaAtual);
-      let lista = [...mesmaCategoria, ...outros].slice(0, 4);
+    // Anima entrada dos novos cards
+    const novos = wrapper.querySelectorAll('.mini-card.card-enter');
+    novos.forEach((el, i) => {
+      setTimeout(() => {
+        el.classList.add('card-enter-active');
+        setTimeout(() => el.classList.remove('card-enter', 'card-enter-active'), 400);
+      }, i * 60);
+    });
 
-      if (!lista.length) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
-        return;
-      }
+    // Aplica blur bg nas novas imagens
+    wrapper.querySelectorAll('.mini-card-img-wrap').forEach(function(wrap) {
+      const img = wrap.querySelector('img');
+      function applyBg() { if (img.src) wrap.style.backgroundImage = 'url(' + img.src + ')'; }
+      if (img.complete) applyBg(); else img.addEventListener('load', applyBg);
+    });
 
-      grid.innerHTML = lista.map((v, i) => `
-        <div class="mini-card reveal reveal-delay-${i}">
-          <div class="mini-card-img-wrap"><img src="../${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
-          <div class="mini-card-body">
-            <div class="mini-card-title">${v.titulo}</div>
-            <div class="mini-card-specs">${v.ano} · ${v.km} km · ${v.lugares} lugares</div>
-            <div class="mini-card-price">${v.preco}</div>
-            <a href="${v.slug}.html" class="btn btn-primary">Ver Detalhes</a>
-          </div>
-        </div>
-      `).join('');
+    exibidos += lote.length;
+    atualizarBotao();
+  }
 
-      // Reveal
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-      }, { threshold: 0.1 });
-      grid.querySelectorAll('.mini-card.reveal').forEach(el => obs.observe(el));
+  function inicializarGrid(dados) {
+    const grid = document.getElementById('related-grid');
+    if (!grid) return;
+
+    // Ordena: mesma categoria primeiro, exclui atual
+    let candidatos = dados.filter(v => v.slug !== slugAtual);
+    let mesmaCategoria = candidatos.filter(v => v.categoria === categoriaAtual);
+    let outros = candidatos.filter(v => v.categoria !== categoriaAtual);
+    todosVeiculos = [...mesmaCategoria, ...outros];
+
+    if (!todosVeiculos.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
+      return;
     }
 
-    // catalogo.js expõe window.__sobralbusCatalogo de forma síncrona (script já carregado antes)
-    renderRelated();
+    grid.innerHTML = ''; // limpa skeleton/mensagem
+    exibidos = 0;
+    renderizarLote(); // exibe primeiro lote
+  }
+
+  // ── CARREGA MAIS (chamado pelo botão) ────────────────────────────
+  window.carregarMais = function () {
+    const btn = document.getElementById('btn-ver-mais');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+             style="animation:spin .8s linear infinite">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Carregando...`;
+    }
+    // Pequeno delay visual antes de renderizar
+    setTimeout(renderizarLote, 180);
+  };
+
+  // ── ESTILO SPIN ───────────────────────────────────────────────────
+  const styleEl = document.createElement('style');
+  styleEl.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+  document.head.appendChild(styleEl);
+
+  // ── FONTE DE DADOS: SUPABASE OU FALLBACK ──────────────────────────
+  async function carregarDoSupabase() {
+    if (!window.supabase || !SUPABASE_URL || SUPABASE_URL.includes('%%')) {
+      return null; // Supabase não configurado
+    }
+    try {
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      const { data, error } = await client
+        .from(TABELA)
+        .select('slug, titulo, ano, km, lugares, preco, imagem_url, categoria, status')
+        .eq('status', 'disponivel')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data || [];
+    } catch (err) {
+      console.warn('[Sobralbus] Supabase indisponível, usando catalogo.js como fallback.', err);
+      return null;
+    }
+  }
+
+  function carregarDoFallback() {
+    return window.__sobralbusCatalogo || [];
+  }
+
+  // ── INICIALIZAÇÃO ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', async function () {
+    const grid = document.getElementById('related-grid');
+    if (!grid) return;
+
+    // Exibe skeletons enquanto carrega
+    grid.innerHTML = skeletonHTML(LOTE);
+
+    let dados = await carregarDoSupabase();
+
+    if (dados && dados.length > 0) {
+      supabaseAtivo = true;
+      inicializarGrid(dados);
+    } else {
+      // Fallback: aguarda catalogo.js estar pronto
+      supabaseAtivo = false;
+      const dadosFallback = carregarDoFallback();
+      if (dadosFallback.length > 0) {
+        inicializarGrid(dadosFallback);
+      } else {
+        // Tenta novamente após 500ms (catalogo.js pode ainda estar carregando)
+        setTimeout(function () {
+          const df = carregarDoFallback();
+          if (df.length > 0) {
+            inicializarGrid(df);
+          } else {
+            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Nenhum outro veículo disponível no momento.</p>';
+          }
+        }, 500);
+      }
+    }
   });
+
+})();
 </script>
 </body>
 </html>
