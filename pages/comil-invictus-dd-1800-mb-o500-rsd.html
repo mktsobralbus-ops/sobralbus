@@ -1173,13 +1173,6 @@ Ideal para operações de turismo interestadual, viagens de longa distância, ex
       <div class="related-grid" id="related-grid">
         <p style="grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem">Carregando outros veículos...</p>
       </div>
-      <p class="related-status" id="related-status"></p>
-      <div class="related-footer" id="related-footer" style="display:none">
-        <button class="btn-ver-mais" id="btn-ver-mais" onclick="carregarMais()">
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          Ver mais veículos
-        </button>
-      </div>
     </div>
 
   </div>
@@ -1451,7 +1444,7 @@ Ideal para operações de turismo interestadual, viagens de longa distância, ex
 
       grid.innerHTML = lista.map((v, i) => `
         <div class="mini-card reveal reveal-delay-${i}">
-          <div class="mini-card-img-wrap"><img src="${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
+          <div class="mini-card-img-wrap"><img src="../${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">${v.titulo}</div>
             <div class="mini-card-specs">${v.ano} · ${v.km} km · ${v.lugares} lugares</div>
