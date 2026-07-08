@@ -907,7 +907,7 @@ function gerarCatalogoJS(ativos) {
     slug: v.slug, titulo: v.titulo, marca: v.marca, chassi: v.chassi,
     ano: v.ano, km: v.km, lugares: v.lugares, preco: v.preco,
     categoria: v.categoria, destaque: v.destaque,
-    imagem: v.imagem.startsWith('http') ? v.imagem : v.imagem.replace('../',''), whatsapp: v.whatsapp,
+    imagem: v.imagem.startsWith('http') ? v.imagem : v.imagem.replace('',''), whatsapp: v.whatsapp,
   }));
 
   const partes = [];
