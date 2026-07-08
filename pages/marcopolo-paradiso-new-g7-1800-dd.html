@@ -1449,7 +1449,7 @@
 
       grid.innerHTML = lista.map((v, i) => `
         <div class="mini-card reveal reveal-delay-${i}">
-          <div class="mini-card-img-wrap"><img src="../${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
+          <div class="mini-card-img-wrap"><img src="${v.imagem}" alt="${v.titulo}" loading="lazy" onerror="this.parentElement.style.opacity='.2'"></div>
           <div class="mini-card-body">
             <div class="mini-card-title">${v.titulo}</div>
             <div class="mini-card-specs">${v.ano} · ${v.km} km · ${v.lugares} lugares</div>
