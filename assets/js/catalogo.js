@@ -13,7 +13,7 @@
     "preco": "R$1.350.000",
     "categoria": "rodoviario",
     "destaque": true,
-    "imagem": "assets/rodoviario/fzj/A.png",
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783594007140-iffl34.jpg",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%20DD%201800%20com%20valor%20de%20R$%201.350.00,00.%20Gostaria%20de%20mais%20informações."
   },
   {
@@ -55,7 +55,7 @@
     "preco": "R$ 1.150.000",
     "categoria": "rodoviario",
     "destaque": true,
-    "imagem": "assets/rodoviario/acz/A.png",
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783594152682-tsp8ip.jpg",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
