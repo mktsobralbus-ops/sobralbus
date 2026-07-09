@@ -73,20 +73,6 @@
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.000,00.%20Gostaria%20de%20mais%20informações."
   },
   {
-    "slug": "urbano-neobus-mb-of-1721-2014-soft",
-    "titulo": "Urbano Neobus - MB OF 1721 - 2014 - SOFT",
-    "marca": "Neobus/Marcopolo",
-    "chassi": "Mercedes-Benz OF 1721",
-    "ano": 2014,
-    "km": "1.043.925",
-    "lugares": 44,
-    "preco": "R$ 169.000",
-    "categoria": "urbano",
-    "destaque": false,
-    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783599263401-02k6rf.jpg",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Neobus%20MB%20Of%201721%202014%20no%20valor%20de%20R$%20169.000,00.%20Gostaria%20de%20mais%20informações."
-  },
-  {
     "slug": "marcopolo-volare-dw9-mb-lo-916-2015",
     "titulo": "Marcopolo Volare DW9 - MB LO 916 - 2015",
     "marca": "Marcopolo",
@@ -99,6 +85,20 @@
     "destaque": false,
     "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783596535328-ympdmz.jpg",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Micro%20Ônibus%20Marcopolo%20Volare%20DW9%202015%20no%20valor%20de%20R$%20315.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "urbano-neobus-mb-of-1721-2014-soft",
+    "titulo": "Urbano Neobus - MB OF 1721 - 2014 - SOFT",
+    "marca": "Neobus/Marcopolo",
+    "chassi": "Mercedes-Benz OF 1721",
+    "ano": 2014,
+    "km": "1.043.925",
+    "lugares": 44,
+    "preco": "R$ 169.000",
+    "categoria": "urbano",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783599263401-02k6rf.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Neobus%20MB%20Of%201721%202014%20soft%20no%20valor%20de%20R$%20169.000,00.%20Gostaria%20de%20mais%20informações."
   },
   {
     "slug": "urbano-neobus-mb-of-1721-2014",
