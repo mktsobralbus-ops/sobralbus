@@ -13,8 +13,8 @@
     "preco": "R$1.350.000",
     "categoria": "rodoviario",
     "destaque": true,
-    "imagem": "assets/rodoviario/fzj/A.png",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%20DD%201800%20com%20valor%20de%20R$%201.350.00,00.%20Gostaria%20de%20mais%20informações."
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783594007140-iffl34.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20Paradiso%20New%20G7%20DD%201800%20no%20valor%20de%20R$%201.350.000,00.%20Gostaria%20de%20mais%20informações."
   },
   {
     "slug": "marcopolo-new-senior-mb-lo-916-2020",
@@ -28,7 +28,7 @@
     "categoria": "micro",
     "destaque": false,
     "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1782820982654-qdzbiz.jpg",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Micro%20Marcopolo%20New%20Senior%202020%20com%20valor%20de%20R$%20495.00,00.%20Gostaria%20de%20mais%20informações."
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Micro%20Marcopolo%20New%20Senior%202020%20com%20valor%20de%20R$%20495.000,00.%20Gostaria%20de%20mais%20informações."
   },
   {
     "slug": "marcopolo-g7-mb-o500-rs-360-cv-2014",
@@ -42,7 +42,21 @@
     "categoria": "rodoviario",
     "destaque": false,
     "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1782825531315-mk09m9.jpg",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20G7%20MB%20O500%20-2014-%20com%20valor%20de%20R$%20420.000,00.%20Gostaria%20de%20mais%20informações."
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Marcopolo%20G7%20MB%20O500%20-2014-%20no%20valor%20de%20R$%20420.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "comil-pia-mb-lo-916-2016",
+    "titulo": "Comil Pia - MB LO 916 - 2016",
+    "marca": "Comil",
+    "chassi": "Mercedes-Benz LO 916",
+    "ano": 2016,
+    "km": "394.583",
+    "lugares": 32,
+    "preco": "R$ 320.000",
+    "categoria": "micro",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783597372063-z3q2c8.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Micro%20Ônibus%20Comil%20Pia%202016%20no%20valor%20de%20R$%20320.000,00.%20Gostaria%20de%20mais%20informações."
   },
   {
     "slug": "comil-invictus-dd-1800-mb-o500-rsd",
@@ -55,8 +69,64 @@
     "preco": "R$ 1.150.000",
     "categoria": "rodoviario",
     "destaque": true,
-    "imagem": "assets/rodoviario/acz/A.png",
-    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.00,00.%20Gostaria%20de%20mais%20informações."
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783594152682-tsp8ip.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Rodoviário%20Comil%20Invictus%20DD%20com%20valor%20de%20R$%201.150.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "marcopolo-volare-dw9-mb-lo-916-2015",
+    "titulo": "Marcopolo Volare DW9 - MB LO 916 - 2015",
+    "marca": "Marcopolo",
+    "chassi": "Mercedes-Benz LO 916",
+    "ano": 2015,
+    "km": "235.276",
+    "lugares": 32,
+    "preco": "R$ 315.000",
+    "categoria": "micro",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783596535328-ympdmz.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Micro%20Ônibus%20Marcopolo%20Volare%20DW9%202015%20no%20valor%20de%20R$%20315.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "urbano-neobus-mb-of-1721-2014-soft",
+    "titulo": "Urbano Neobus - MB OF 1721 - 2014 - SOFT",
+    "marca": "Neobus/Marcopolo",
+    "chassi": "Mercedes-Benz OF 1721",
+    "ano": 2014,
+    "km": "1.043.925",
+    "lugares": 44,
+    "preco": "R$ 169.000",
+    "categoria": "urbano",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783599263401-02k6rf.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Neobus%20MB%20Of%201721%202014%20soft%20no%20valor%20de%20R$%20169.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "urbano-neobus-mb-of-1721-2014",
+    "titulo": "Urbano Neobus-  MB OF 1721 - 2014",
+    "marca": "Neobus/Marcopolo",
+    "chassi": "Mercedes-Benz OF 1721",
+    "ano": 2014,
+    "km": "1.013.325",
+    "lugares": 44,
+    "preco": "R$ 155.000",
+    "categoria": "urbano",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783598762123-7tytry.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Neobus%20MB%20Of%201721%202014%20no%20valor%20de%20R$%20155.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "marcopolo-ideale-mb-of-1721-2013",
+    "titulo": "Marcopolo Ideale - MB OF 1721 - 2013",
+    "marca": "Marcopolo",
+    "chassi": "Mercedes-Benz OF 1721",
+    "ano": 2013,
+    "km": "794.319",
+    "lugares": 48,
+    "preco": "R$ 275.000",
+    "categoria": "urbano",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783600206267-56dys3.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Marcopolo%20Ideale%20MB%20Of%201721%202013%20no%20valor%20de%20R$%20275.000,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
   window.__sobralbusCatalogo = dados;
