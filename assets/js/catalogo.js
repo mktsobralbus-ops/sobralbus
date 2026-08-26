@@ -127,6 +127,20 @@
     "destaque": false,
     "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1783600206267-56dys3.jpg",
     "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Marcopolo%20Ideale%20MB%20Of%201721%202013%20no%20valor%20de%20R$%20275.000,00.%20Gostaria%20de%20mais%20informações."
+  },
+  {
+    "slug": "marcopolo-ideale-mb-of-1721-2017",
+    "titulo": "Marcopolo Ideale - MB OF 1721 - 2017",
+    "marca": "Marcopolo",
+    "chassi": "Mercedes-Benz OF 1721",
+    "ano": 2017,
+    "km": "247.600",
+    "lugares": 50,
+    "preco": "R$ 430.000,00",
+    "categoria": "urbano",
+    "destaque": false,
+    "imagem": "https://kitolxdypltemtxmysol.supabase.co/storage/v1/object/public/fotos-onibus/1787750311505-mjel13.jpg",
+    "whatsapp": "Olá,%20tenho%20interesse%20no%20Ônibus%20Urbano%20Marcopolo%20Ideale%20MB%20Of%201721%202017%20no%20valor%20de%20R$%20430.000,00.%20Gostaria%20de%20mais%20informações."
   }
 ];
   window.__sobralbusCatalogo = dados;
